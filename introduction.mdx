@@ -1,43 +1,42 @@
 ---
 title: Introduction
-description: 'Welcome to the home of your new documentation'
+description: "Welcome to the Langtrace AI documentation"
 ---
-
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
-/>
 
 ## Setting up
 
-The first step to world-class documentation is setting up your editing environments.
+The first step to using our SDK is to import into your Typescript or Python project.
 
-<CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
+Step 1. Generate an API key from the Langtrace AI dashboard.
 
-## Make it yours
+- Go to the [Langtrace AI dashboard](https://langtrace.ai/login)
+- Click on the `API Keys` tab
+- Click on the `Generate API Key` button
+- Copy the generated API key
 
-Update your docs to your brand and add valuable content for the best user conversion.
+Step 2. Install the SDK on your project:
+
+<CodeGroup>
+
+```typescript Typescript
+import { init } from "@langtrace-init/init";
+
+init({ api_key: LANGTRACE_API_KEY });
+```
+
+```python Python
+from langtrace_python_sdk import langtrace
+
+langtrace.init(api_key=LANGTRACE_API_KEY)
+```
+
+</CodeGroup>
+
+Step 3. Review your traces on the Langtrace AI dashboard. You can now view your traces on the [Langtrace AI dashboard](https://langtrace.ai/dashboard).
+
+## Reference
+
+Dive into the SDK features. Here are some of the features you can use with the Langtrace AI SDK:
 
 <CardGroup cols={2}>
   <Card
