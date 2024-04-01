@@ -1,18 +1,15 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
-  },
+  "name": "Langtrace AI Docs",
+  "logo": "/logo.svg",
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
+    "primary": "#EB712D",
     "light": "#07C983",
-    "dark": "#0D9373",
+    "dark": "#EB712D",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#EB712D",
+      "to": "#EB8F7B"
     }
   },
   "topbarLinks": [
@@ -27,11 +24,6 @@
   },
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://langtrace.ai/docs"
-    },
-    {
       "name": "Community",
       "icon": "slack",
       "url": "https://langtrace.slack.com/"
@@ -40,26 +32,24 @@
       "name": "Blog",
       "icon": "newspaper",
       "url": "https://langtrace.ai/blog"
+    },
+    {
+      "name": "Demo Playground",
+      "icon": "play",
+      "url": "https://langtrace.ai/demo"
     }
   ],
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "development"]
+      "pages": ["introduction", "quickstart", "concepts"]
     },
     {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
+      "group": "Integrations",
+      "pages": ["integrations/vendors"]
     },
     {
-      "group": "API Documentation",
+      "group": "Self Hosting",
       "pages": ["api-reference/introduction"]
     },
     {
@@ -72,8 +62,8 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "twitter": "https://twitter.com/langtraceai",
+    "github": "https://github.com/Scale3-Labs/langtrace",
+    "linkedin": "https://www.linkedin.com/company/Scale3"
   }
 }
