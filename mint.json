@@ -1,91 +1,72 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
-  },
-  "favicon": "/favicon.svg",
-  "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
-    "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
-    }
-  },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
-  },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
-    }
-  ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
-  }
+	"$schema": "https://mintlify.com/schema.json",
+	"name": "Langtrace AI Docs",
+	"logo": {
+		"dark": "/logo/dark.svg",
+		"light": "/logo/light.svg"
+	},
+	"favicon": "/favicon.svg",
+	"colors": {
+		"primary": "#EB712D",
+		"light": "#07C983",
+		"dark": "#EB712D",
+		"anchors": {
+			"from": "#EB712D",
+			"to": "#EB8F7B"
+		}
+	},
+	"topbarLinks": [
+		{
+			"name": "Support",
+			"url": "mailto:support@langtrace.ai"
+		}
+	],
+	"topbarCtaButton": {
+		"name": "Langtrace AI",
+		"url": "https://langtrace.ai"
+	},
+	"anchors": [
+		{
+			"name": "Community",
+			"icon": "slack",
+			"url": "https://langtrace.slack.com/"
+		},
+		{
+			"name": "Blog",
+			"icon": "newspaper",
+			"url": "https://langtrace.ai/blog"
+		},
+		{
+			"name": "Demo Playground",
+			"icon": "play",
+			"url": "https://langtrace.ai/demo"
+		}
+	],
+	"navigation": [
+		{
+			"group": "Get Started",
+			"pages": ["introduction", "quickstart", "concepts", "how-to-guides"]
+		},
+		{
+			"group": "Integrations",
+			"pages": ["integrations/vendors"]
+		},
+		{
+			"group": "Hosting",
+			"pages": [
+				"hosting/overview",
+				"hosting/docker-standalone",
+				"hosting/docker-compose"
+			]
+		},
+		{
+			"group": "Contact Us",
+			"pages": ["contact/contact-us"]
+		}
+	],
+	"footerSocials": {
+		"twitter": "https://twitter.com/langtraceai",
+		"github": "https://github.com/Scale3-Labs/langtrace",
+		"linkedin": "https://www.linkedin.com/company/Scale3"
+	}
 }
