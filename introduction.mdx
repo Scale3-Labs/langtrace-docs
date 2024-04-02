@@ -6,14 +6,14 @@ description: "Welcome to the Langtrace AI documentation"
 Using Langtrace open-source observability tool, you can simply collect and analyze traces to help you improve your LLM apps. Langtrace supports OpenTelemetry. You can choose to export the traces to Langtrace, or to your existing observability stack.
 
 <img
-	className="block dark:hidden"
-	src="/images/metrics-light.png"
-	alt="Hero Light"
+  className="block dark:hidden"
+  src="/images/metrics-light.png"
+  alt="Hero Light"
 />
 <img
-	className="hidden dark:block"
-	src="/images/metrics-dark.png"
-	alt="Hero Dark"
+  className="hidden dark:block"
+  src="/images/metrics-dark.png"
+  alt="Hero Dark"
 />
 
 We provide insights into the following 3 pillars of observability for your LLM apps:
@@ -30,10 +30,15 @@ The first step to using Langtrace is to import into your Typescript or Python pr
 
 #### Step 1: Generate an API key from the Langtrace AI dashboard.
 
-- Go to the [Langtrace AI dashboard](https://langtrace.ai/login)
-- Click on the `API Keys` tab
+- Go to the [Langtrace Cloud dashboard](https://langtrace.ai/projects)
+- Create a new project, be sure to provide a name and description
+  ![project](/images/SCR-20240402-kzzp-2.png)
+
+- Click on the Project name
 - Click on the `Generate API Key` button
-- Copy the generated API key
+  ![api](/images/SCR-20240402-lblq-2.png)
+
+- Copy the generated API key. You will need this key to initialize the SDK in your project.
 
 #### Step 2: Install the SDK on your project:
 
@@ -53,8 +58,11 @@ langtrace.init(api_key=LANGTRACE_API_KEY)
 
 </CodeGroup>
 
-#### Step 3: Review your traces on the Langtrace AI dashboard. 
-You can now view your traces on the [Langtrace AI dashboard](https://langtrace.ai/dashboard).
+#### Step 3: Review your traces on the Langtrace dashboard.
+
+You can now view your traces on the [Langtrace dashboard](https://langtrace.ai/projects).
+
+![traces](/images/trace.png)
 
 ## Start using Langtrace AI
 
@@ -91,4 +99,4 @@ We are working hard to add support for more languages.
 - **What languages does Langtrace AI support?**
   Langtrace AI currently supports Python and Typescript. We are adding support for more languages.
 - **Pricing**
-  Langtrace AI is free to use for up to 100,000 traces per month. For more traces, you can upgrade to a paid plan.
+  We are looking for feedback currently and it’s completely free to use as of today though this may change in the future.
