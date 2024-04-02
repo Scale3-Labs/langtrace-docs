@@ -1,0 +1,50 @@
+---
+title: "Overview"
+description: "You can self-host Langtrace to monitor your applications. This guide will help you set up Langtrace on your own infrastructure."
+---
+
+## Self-hosting Langtrace
+
+To run the Langtrace locally, you have to run three services:
+
+- Next.js app
+- Postgres database
+- Clickhouse database
+
+### Requirements
+
+#### For Docker and Docker Compose
+
+1. Docker is installed and running on your system. You can verify this by running:
+
+	 `docker info`
+2. Docker Compose is installed on your system. You can verify this by running:
+
+	 `docker-compose --version`
+
+#### For Standalone
+
+1. Clickhouse DB self hosted or managed service
+2. Postgres self hosted or managed service
+
+### Setup Guides
+
+<CardGroup cols={2}>
+	<Card title="Docker" icon="docker" href="/hosting/docker-standalone">
+		Run standalone instance of Langtrace docker container
+	</Card>
+	<Card
+		title="Docker Compose"
+		icon="container-storage"
+		href="/hosting/docker-compose"
+	>
+		Run Langtrace with all required databases using docker-compose
+	</Card>
+</CardGroup>
+
+### SDK Repositories
+
+- [Langtrace Typescript SDK](https://github.com/Scale3-Labs/langtrace-typescript-sdk)
+- [Langtrace Python SDK](https://github.com/Scale3-Labs/langtrace-python-sdk)
+- [Semantic Span Attributes](https://github.com/Scale3-Labs/langtrace-trace-attributes)
+
