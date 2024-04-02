@@ -28,7 +28,7 @@ You can find the docker-compose.yml file and related files in the langtrace repo
 
 Modify the `.env` file to suit your needs.
 
-#### Starting the servers
+#### Step 3: Starting the servers
 
 ```bash Bash
 docker compose up
@@ -61,59 +61,76 @@ docker compose down -v
 
 The following are some commands that may come handy during setup and debugging.
 
-<Expandable>
-  Connecting to postgres db ```bash docker exec -it langtrace-postgres psql
-  --dbname=langtrace --username=ltuser --password ```
-</Expandable>
+- Connecting to postgres db
 
-<details>
-  <summary>Connecting to clickhouse server</summary>
-  ```bash docker exec -it langtrace-clickhouse clickhouse-client ```
-</details>
+```bash Bash
+docker exec -it langtrace-postgres psql --dbname=langtrace --username=ltuser --password
+```
 
-<details>
-  <summary>Checking langtrace client app logs</summary>
-  ```bash docker logs langtrace ``` If you want to follow the logs ```bash docker
-  logs -f langtrace ```
-</details>
+- Connecting to clickhouse server
 
-<details>
-  <summary>Running prisma schema apply command</summary>
-  ```bash docker exec -it langtrace npm run create-tables ```
-</details>
+```bash Bash
+docker exec -it langtrace-clickhouse clickhouse-client
+```
 
-#### Common issues for local setup
+- Checking langtrace client app logs
 
-<details>
-  <summary>Table not found error OR Column not found error</summary>
-  Its likely that schema is not applied to the database or the schema is not in sync
-  with the database. To fix this, run the following command: ```bash docker exec
-  -it langtrace npm run create-tables ```
-</details>
+```bash Bash
+docker logs langtrace
+#If you want to follow the logs `bash docker
+docker  logs -f langtrace
+```
 
-<details>
-  <summary>Prisma schema not in sync with database</summary>
+- Running prisma schema apply command
+
+```bash Bash
+docker exec -it langtrace npm run create-tables
+```
+
+### Troubleshooting
+
+<AccordionGroup>
+
+{" "}
+
+<Accordion title="Table not found error OR Column not found error">
+  Its likely that schema is not applied to the database or the schema is not in
+  sync with the database. To fix this, run the following command: `bash docker
+  exec -it langtrace npm run create-tables `
+</Accordion>
+
+{" "}
+
+<Accordion title="Prisma schema not in sync with database">
   If you have made changes to the prisma schema and want to apply the changes to
-  the database, run the following command: ```bash docker exec -it langtrace npm
-  run create-tables ```
-</details>
+  the database, run the following command: `bash docker exec -it langtrace npm
+  run create-tables `
+</Accordion>
 
-<details>
-  <summary>Docker compose failing to setup with `Additional property required is not allowed` errors</summary>
-  Its likely that you are using an older version of docker-compose. Update docker-compose to the latest version.
-  
-  Certain docker compose schema used in this project are only supported in newer versions of docker-compose.
+{" "}
 
-Either you **update the docker compose version** OR **remove the depends_on property** that is causing the error.
+<Accordion title="Docker compose failing to setup with `Additional property required is not allowed` errors">
+  Its likely that you are using an older version of docker-compose. Update
+  docker-compose to the latest version. Certain docker compose schema used in
+  this project are only supported in newer versions of docker-compose. Either
+  you update the docker compose version OR remove the `depends_on property` that
+  is causing the error.
+</Accordion>
 
-</details>
-
-<details>
-  <summary>Clickhouse server not starting</summary>
+  <Accordion title="Clickhouse server not starting">
   If clickhouse server is not starting, it is likely that the port 8123 is already
   in use. You can change the port in the docker-compose file.
-</details>
+  </Accordion>
+</AccordionGroup>
+
+### Step 4: Sending traces to self-hosted Langtrace
 
 Install the langtrace SDK in your application by following the same instructions under the Langtrace Cloud section above for sending traces to your self hosted setup.
+
+### SDK Repositories
+
+- [Langtrace Typescript SDK](https://github.com/Scale3-Labs/langtrace-typescript-sdk)
+- [Langtrace Python SDK](https://github.com/Scale3-Labs/langtrace-python-sdk)
+- [Semantic Span Attributes](https://github.com/Scale3-Labs/langtrace-trace-attributes)
 
 ---
