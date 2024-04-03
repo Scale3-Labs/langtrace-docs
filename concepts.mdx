@@ -6,7 +6,15 @@ Exploring some of the key concepts to understand when using Langtrace AI for you
 
 ### Span
 
-A Span in LLM monitoring is a specific operation or task, like processing a request, within the system. It records the operation's start, end, and additional data to help in performance analysis and troubleshooting.
+A span represents a unit of work or operation. Spans are the building blocks of Traces. In OpenTelemetry, they include the following information:
+
+- Name
+- Parent span ID (empty for root spans)
+- Start and End Timestamps
+- Span Context
+- Attributes
+- Span Events
+- Span Status
 
 ### Trace
 
@@ -16,7 +24,7 @@ A Trace represents the entire journey of a request through the LLM system, compo
 
 ### Metric
 
-A Metric is a quantifiable measure used to evaluate the performance and effectiveness of an LLM. Common metrics include latency, accuracy, precision, recall, and F1 score for tasks like classification. Metrics provide objective criteria for assessing the model's capabilities and monitoring its performance over time.
+A Metric is a quantifiable measure used to evaluate the performance and effectiveness of an LLM. Common metrics include token usage, cost, latency and accuracy. Metrics provide objective criteria for assessing the application's accuracy, usage and performance over time.
 
 ![traces](/images/metrics.png)
 
@@ -28,12 +36,18 @@ A Project in monitoring terms is a logical grouping of traces that correspond to
 
 ### Dataset
 
-A Dataset refers to a structured collection of data used to train, test, or validate a Large Language Model (LLM). In the context of LLMs, datasets typically consist of text entries, but they can also include other data types like images or structured data, depending on the model's purpose. Datasets are crucial for developing and refining LLMs, as they provide the raw material on which these models learn and improve.
+A Dataset refers to a structured collection of data used to train, test, or validate a Large Language Model (LLM). Datasets are crucial for developing and refining LLMs, as they provide the raw material on which these models learn and improve. Langtrace will automatically surface the request and responses captured by the traces under the evaluation tab. You can choose to create a dataset and add specific request response pairs to it.
+
+`  
 
 ![traces](/images/dataset.png)
 
 ### Evaluation
 
-Evaluation in LLM monitoring is the process of assessing the model's performance and effectiveness. This involves using specific tasks or benchmarks to test the LLM's abilities, such as its accuracy, coherence, and relevance of generated text. Evaluation helps in understanding how well the model meets the desired outcomes and in identifying areas for improvement.
+Evaluation in LLM monitoring is the process of assessing the model's performance and effectiveness. Evaluation helps in understanding how well the model meets the desired outcomes and in identifying areas for improvement.
+In Langtrace, you can evaluate the accuracy of the responses in a couple of ways:
+- If you application collects feedback from users, you can pass the feedback score down to the traces using the Langtrace SDK.
+- You can manually evaluate the responses and provide a score from the evaluation tab.
+`
 
 ![traces](/images/evaluation.png)

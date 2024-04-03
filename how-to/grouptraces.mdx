@@ -1,62 +1,75 @@
 ---
-title: Group Spans as Traces
-description: With Langtrace root span - developers have the ability to group related operations together as a trace
+title: Group Related Operations
+description: The Langtrace SDK allows you to group related operations together using the `@with_langtrace_root_span` decorator for Python or `WithLangTraceRootSpan` for Typescript.
 ---
 
 ## How to group traces
 
-When you are using Langtrace AI, you can trace user id using the `@with_langtrace_root_span` decorator for Python or `WithLangTraceRootSpan` for Typescript.
-
-This function is designed to organize and relate different spans, in a hierarchical manner. When you're performing multiple operations that you want to monitor together as a unit, this function helps by establishing a "parent" (`LangtraceRootSpan` or whatever is passed to name) span.
+A typical application may have multiple operations that are related to each other. For example, in a RAG workflow, the user's input is embedded using a model, a semantic search is done on a VectorDB, and the results are again given back to the model to get a natural language response. In such cases, it is useful to group these operations together under a single root span. This allows you to see the entire flow of operations in a single trace.
 
 ## Installation
 
-Step 1: Install and initialize Langtrace AI SDK. Refer to the [installation guide](/quickstart) for more information.
+Step 1: Install and initialize Langtrace SDK. Refer to the [installation guide](/quickstart) for more information.
 
 <CodeGroup>
 
 ```typescript Typescript
-import { init } from "@langtrace-init/init";
-
-init({ api_key: LANGTRACE_API_KEY });
+// Must precede any llm module imports
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({ api_key: LANGTRACE_API_KEY });
 ```
 
 ```python Python
-from langtrace_python_sdk import langtrace # Must precede any llm module imports
-langtrace.init(api_key=<your_api_key>)
+# Must precede any llm module imports
+from langtrace_python_sdk import langtrace
+langtrace.init(api_key=LANGTRACE_API_KEY)
 ```
 
 </CodeGroup>
 
 ## Usage
 
-Step 2: Invoke the `with_langtrace_root_span` decorator (Python) or `WithLangTraceRootSpan` (Typescript) function. Example below:
+Step 2: Use the `with_langtrace_root_span` decorator (Python) or `WithLangTraceRootSpan` (Typescript) function. Example below:
 
 <CodeGroup>
 
 ```typescript Typescript
- *
- * @param fn  The function to be executed within the context of the root span
- * @param name Name of the root span
- * @param spanAttributes Attributes to be added to the root span
- * @param spanKind The kind of span to be created
- * @returns result of the function
- */
-export async function withLangTraceRootSpan<T> (
-  fn: () => Promise<T>,
-  name = 'LangtraceRootSpan',
-  spanKind: SpanKind = SpanKind.INTERNAL
-): Promise<T>
+import * as Langtrace from "@langtrase/typescript-sdk";
+
+export async function chatResponse (): Promise<void> {
+  await Langtrace.withLangTraceRootSpan(async () => {
+    const client = new ChromaClient()
+    const collection = await client.getCollection({
+      name: 'documentation',
+      embeddingFunction: embedder
+    })
+
+    const results = await collection.query({
+      nResults: 2,
+      queryTexts: ['How to setup Langtrace?']
+    })
+
+    const openaiclient = new OpenAI()
+    return openaiclient.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "system", content: `Respond in a natural language: ${results}` }],
+      stream: false,
+    });
+  })
+}
 ```
 
 ```python Python
-from langtrace_python_sdk.utils.with_root_span import with_langtrace_root_span
+from langtrace_python_sdk.utils.with_root_span import (
+    with_langtrace_root_span,
+    with_additional_attributes,
+)
 
 @with_langtrace_root_span()
 def example():
     response = client.chat.completions.create(
         model="gpt-4",
-        messages=[{"role": "user", "content": "Say this is a test three times"}],
+        messages=[{"role": "user", "content": "Hi, how to setup Langtrace?"}],
         stream=False,
     )
     return response

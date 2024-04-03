@@ -45,8 +45,8 @@
 				"quickstart",
 				"concepts",
 				"how-to-guides",
-				"how-to/traceuserfeedback",
-				"how-to/grouptraces"
+				"how-to/grouptraces",
+				"how-to/traceuserfeedback"
 			]
 		},
 		{
