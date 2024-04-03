@@ -1,74 +1,74 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Langtrace AI Docs",
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
-  },
-  "favicon": "/favicon.svg",
-  "colors": {
-    "primary": "#EB712D",
-    "light": "#07C983",
-    "dark": "#EB712D",
-    "anchors": {
-      "from": "#EB712D",
-      "to": "#EB8F7B"
-    }
-  },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:support@langtrace.ai"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Langtrace AI",
-    "url": "https://langtrace.ai"
-  },
-  "anchors": [
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "http://discord.langtrace.ai"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://langtrace.ai/blog"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "concepts",
-        "how-to-guides",
-        "how-to/traceuserfeedback",
-        "how-to/grouptraces"
-      ]
-    },
-    {
-      "group": "Integrations",
-      "pages": ["integrations/vendors"]
-    },
-    {
-      "group": "Hosting",
-      "pages": [
-        "hosting/overview",
-        "hosting/docker-standalone",
-        "hosting/docker-compose"
-      ]
-    },
-    {
-      "group": "Contact Us",
-      "pages": ["contact/contact-us"]
-    }
-  ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/langtrace_ai",
-    "github": "https://github.com/Scale3-Labs/langtrace",
-    "discord": "https://langtrace.slack.com/"
-  }
+	"$schema": "https://mintlify.com/schema.json",
+	"name": "Langtrace AI Docs",
+	"logo": {
+		"dark": "/logo/dark.svg",
+		"light": "/logo/light.svg"
+	},
+	"favicon": "/favicon.svg",
+	"colors": {
+		"primary": "#005FAF",
+		"light": "#07C983",
+		"dark": "#005FAF",
+		"anchors": {
+			"from": "#07C983",
+			"to": "#005FAF"
+		}
+	},
+	"topbarLinks": [
+		{
+			"name": "Support",
+			"url": "/contact/contact-us"
+		}
+	],
+	"topbarCtaButton": {
+		"name": "Langtrace AI",
+		"url": "https://langtrace.ai"
+	},
+	"anchors": [
+		{
+			"name": "Community",
+			"icon": "discord",
+			"url": "http://discord.langtrace.ai"
+		},
+		{
+			"name": "Blog",
+			"icon": "newspaper",
+			"url": "https://langtrace.ai/blog"
+		}
+	],
+	"navigation": [
+		{
+			"group": "Get Started",
+			"pages": [
+				"introduction",
+				"quickstart",
+				"concepts",
+				"how-to-guides",
+				"how-to/traceuserfeedback",
+				"how-to/grouptraces"
+			]
+		},
+		{
+			"group": "Integrations",
+			"pages": ["integrations/vendors"]
+		},
+		{
+			"group": "Hosting",
+			"pages": [
+				"hosting/overview",
+				"hosting/docker-standalone",
+				"hosting/docker-compose"
+			]
+		},
+		{
+			"group": "Contact Us",
+			"pages": ["contact/contact-us"]
+		}
+	],
+	"footerSocials": {
+		"twitter": "https://twitter.com/langtrace_ai",
+		"github": "https://github.com/Scale3-Labs/langtrace",
+		"discord": "https://discord.com/invite/EaSATwtr4t"
+	}
 }
