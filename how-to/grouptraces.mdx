@@ -1,0 +1,65 @@
+---
+title: Group Traces in a Span
+description: With Langtrace root span - developers have the ability to group related operations together as a trace
+---
+
+## How to group traces
+
+When you are using Langtrace AI, you can trace user id using the `@with_langtrace_root_span` decorator for Python or `WithLangTraceRootSpan` for Typescript.
+
+This function is designed to organize and relate different spans, in a hierarchical manner. When you're performing multiple operations that you want to monitor together as a unit, this function helps by establishing a "parent" (`LangtraceRootSpan` or whatever is passed to name) span.
+
+## Installation
+
+Step 1: Install and initialize Langtrace AI SDK. Refer to the [installation guide](/quickstart) for more information.
+
+<CodeGroup>
+
+```typescript Typescript
+import { init } from "@langtrace-init/init";
+
+init({ api_key: LANGTRACE_API_KEY });
+```
+
+```python Python
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
+langtrace.init(api_key=<your_api_key>)
+```
+
+</CodeGroup>
+
+## Usage
+
+Step 2: Invoke the `with_langtrace_root_span` decorator (Python) or `WithLangTraceRootSpan` (Typescript) function. Example below:
+
+<CodeGroup>
+
+```typescript Typescript
+ *
+ * @param fn  The function to be executed within the context of the root span
+ * @param name Name of the root span
+ * @param spanAttributes Attributes to be added to the root span
+ * @param spanKind The kind of span to be created
+ * @returns result of the function
+ */
+export async function withLangTraceRootSpan<T> (
+  fn: () => Promise<T>,
+  name = 'LangtraceRootSpan',
+  spanKind: SpanKind = SpanKind.INTERNAL
+): Promise<T>
+```
+
+```python Python
+from langtrace_python_sdk.utils.with_root_span import with_langtrace_root_span
+
+@with_langtrace_root_span()
+def example():
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": "Say this is a test three times"}],
+        stream=False,
+    )
+    return response
+```
+
+</CodeGroup>

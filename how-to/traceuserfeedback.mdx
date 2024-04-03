@@ -1,8 +1,11 @@
 ---
-title: How to Trace user id and feedback using Langtrace AI
+title: Trace User Feedback
+description: Gives the developer the ability to send the thumbs up and thumbs down given by the user of their application down to the SDK so we can surface it in the app under evaluation tab.
 ---
 
-When you are using Langtrace AI, you can trace user id and feedback using the `with_additional_attributes` function.
+## How to track user feedback
+
+When you are using Langtrace AI, you can trace both user id and feedback using the `with_additional_attributes` function.
 
 This function is designed to enhance the traces by adding custom attributes to the current context. These custom attributes provide extra details about the operations being performed, making it easier to analyze and understand their behavior.
 
@@ -13,7 +16,7 @@ Step 1: Install and initialize Langtrace AI SDK. Refer to the [installation guid
 <CodeGroup>
 
 ```typescript Typescript
-import { init } from "@langtrace-init/init";
+import * as Langtrace from "@langtrase/typescript-sdk";
 
 init({ api_key: LANGTRACE_API_KEY });
 ```
