@@ -1,0 +1,99 @@
+---
+title: Trace User Feedback
+description: Gives the developer the ability to send the thumbs up and thumbs down given by the user of their application down to the SDK so we can surface it in the app under evaluation tab.
+---
+
+## How to track user feedback
+
+When you are using Langtrace AI, you can trace both user id and feedback using the `with_additional_attributes` function.
+
+This function is designed to enhance the traces by adding custom attributes to the current context. These custom attributes provide extra details about the operations being performed, making it easier to analyze and understand their behavior.
+
+## Installation
+
+Step 1: Install and initialize Langtrace AI SDK. Refer to the [installation guide](/quickstart) for more information.
+
+<CodeGroup>
+
+```typescript Typescript
+import * as Langtrace from "@langtrase/typescript-sdk";
+
+init({ api_key: LANGTRACE_API_KEY });
+```
+
+```python Python
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
+langtrace.init(api_key=<your_api_key>)
+```
+
+</CodeGroup>
+
+## Usage
+
+Step 2: Invoke the `with_additional_attributes` function. Example below:
+
+<CodeGroup>
+
+```typescript Typescript
+/**
+ *
+ * @param fn function to be executed within the context with the custom attributes added to the current context
+ * @param attributes custom attributes to be added to the current context
+ * @returns result of the function
+ */
+export async function withAdditionalAttributes<T>(
+  fn: () => Promise<T>,
+  attributes: Partial<LLMSpanAttributes>
+): Promise<T>;
+
+async function apiCall1() {
+  return withAdditionalAttributes(
+    () => {
+      return client.chat.completions.create({
+        model: "gpt-4",
+        messages: [{ role: "user", content: "Say this is a test three times" }],
+        stream: false,
+      });
+    },
+    { "user.id": "1234", "user.feedback.rating": 1 }
+  );
+}
+
+async function chatCompletion() {
+  await apiCall1();
+}
+```
+
+```python Python
+from langtrace_python_sdk.utils.with_root_span import (
+    with_langtrace_root_span,
+    with_additional_attributes,
+)
+
+@with_additional_attributes({"user.id": "1234", "user.feedback.rating": 1})
+def api_call1():
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": "Say this is a test three times"}],
+        stream=False,
+    )
+    return response
+
+
+@with_additional_attributes({"user.id": "5678", "user.feedback.rating": -1})
+def api_call2():
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": "Say this is a test three times"}],
+        stream=False,
+    )
+    return response
+
+
+@with_langtrace_root_span()
+def chat_completion():
+   api_call1()
+   api_call2()
+```
+
+</CodeGroup>
