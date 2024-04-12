@@ -1,5 +1,5 @@
 ---
-title: Evaluate User Feedback
+title: Pass User Feedback
 description: The Langtrace SDK gives you the ability to pass user feedback from your application as scores for measuring accuracy.
 ---
 
@@ -18,7 +18,7 @@ Step 1: Install and initialize Langtrace SDK. Refer to the [installation guide](
 ```typescript Typescript
 // Must precede any llm module imports
 import * as Langtrace from "@langtrase/typescript-sdk";
-Langtrace.init({ api_key: '<LANGTRACE_API_KEY>' });
+Langtrace.init({ api_key: "<LANGTRACE_API_KEY>" });
 ```
 
 ```python Python
@@ -32,6 +32,7 @@ langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 ## Usage
 
 Step 2: See the example below to understand how to pass user feedback and user id. Make sure you use the following attributes:
+
 - `user.id`: A unique identifier for the user.
 - `user.feedback.rating`: A score from -1 to 1, where -1 is negative feedback, 0 is neutral, and 1 is positive feedback.
 

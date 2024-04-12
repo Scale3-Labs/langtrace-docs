@@ -46,12 +46,26 @@
 				"concepts",
 				"how-to-guides",
 				"how-to/grouptraces",
-				"how-to/traceuserfeedback"
+				"how-to/traceuserfeedback",
+				"how-to/evaluation"
 			]
 		},
 		{
-			"group": "Integrations",
-			"pages": ["integrations/vendors"]
+			"group": "Supported Traces",
+			"pages": ["supported-traces/vendors"]
+		},
+		{
+			"group": "Supported Frameworks",
+			"pages": [
+				"supported-frameworks/nextjs",
+				"supported-frameworks/fastapi",
+				"supported-frameworks/django",
+				"supported-frameworks/flask"
+			]
+		},
+		{
+			"group": "Supported Observability Tools",
+			"pages": ["supported-observability/signoz"]
 		},
 		{
 			"group": "Hosting",

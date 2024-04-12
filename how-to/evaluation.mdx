@@ -1,0 +1,56 @@
+---
+title: Evaluations
+description: Langtrace allows you to create tests and run evaluations on your traces to evaluate the accuracy, quality, and performance of your application.
+---
+
+## How to create tests
+
+To create a tests, create a project and go to the evaluation tab. Click on the `Create Test` button and provide the following details:
+
+- **Name**: A unique name for the test.
+- **Description**: A brief description of the test.
+- **Pick a Scale**: Choose the scale on which you want to evaluate the test. You can choose among the following options:
+  - **Binary**: Choose this option if you want to evaluate the test on a binary scale.
+  - **Rating**: Choose this option if you want to evaluate the test on a rating scale.
+
+![traces](/images/evaluation.png)
+
+## How to capture traces to a specific test
+
+To capture traces to a specific test, you need to pass the test ID to the Langtrace SDK using `@with_additional_attributes({ langtrace.testId: <testID> })`. The SDK will then capture the traces to the specific test. Here's an example on how you can do it:
+
+<CodeGroup>
+
+```python Python
+
+from langtrace_python_sdk.utils.with_root_span import (with_additional_attributes)
+
+@with_additional_attributes({ langtrace.testId: clux41i5700019ji629g7saci })
+def test_function():
+    response = client.chat.completions.create(
+        model='gpt-4',
+        messages=[{'role': 'user', 'content': 'Hello, how are you?'}],
+        stream=False,
+    )
+    return response
+```
+
+```typescript Typescript
+import * as Langtrace from "@langtrase/typescript-sdk";
+
+await Langtrace.withAdditionalAttributes(
+  async () => {
+    return await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: "Hello, how are you?" }],
+    });
+  },
+  { "langtrace.testId": clux41i5700019ji629g7saci }
+);
+```
+
+</CodeGroup>
+
+## Start Evaluating
+
+Once you have created a test and captured traces to it, you can start evaluating the test. Go to the evaluation tab and use the scale you picked while creating the test to evaluate the test. You can also provide feedback on the test and provide a score. The evaluation tab will show you the test results and the scores provided by the evaluators.

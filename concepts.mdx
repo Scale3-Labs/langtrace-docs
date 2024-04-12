@@ -4,9 +4,9 @@ title: Concepts
 
 Exploring some of the key concepts to understand when using Langtrace for your traces.
 
-### Span
+### [Span](https://opentelemetry.io/docs/concepts/signals/traces/#spans)
 
-A span represents a unit of work or operation. Spans are the building blocks of Traces. In OpenTelemetry, they include the following information:
+A [span](https://opentelemetry.io/docs/concepts/signals/traces/#spans) represents a unit of work or operation. Spans are the building blocks of Traces. In OpenTelemetry, they include the following information:
 
 - Name
 - Parent span ID (empty for root spans)
@@ -16,9 +16,9 @@ A span represents a unit of work or operation. Spans are the building blocks of 
 - Span Events
 - Span Status
 
-### Trace
+### [Trace](https://opentelemetry.io/docs/concepts/signals/traces/)
 
-A Trace represents the entire journey of a request through the LLM system, composed of multiple spans. It provides a complete picture of all operations involved in processing the request, aiding in system performance evaluation and issue identification.
+A [Trace](https://opentelemetry.io/docs/concepts/signals/traces/) represents the entire journey of a request through the LLM system, composed of multiple spans. It provides a complete picture of all operations involved in processing the request, aiding in system performance evaluation and issue identification.
 
 ![traces](/images/trace.png)
 
@@ -38,16 +38,16 @@ A Project in monitoring terms is a logical grouping of traces that correspond to
 
 A Dataset refers to a structured collection of data used to train, test, or validate a Large Language Model (LLM). Datasets are crucial for developing and refining LLMs, as they provide the raw material on which these models learn and improve. Langtrace will automatically surface the request and responses captured by the traces under the evaluation tab. You can choose to create a dataset and add specific request response pairs to it.
 
-`  
-
 ![traces](/images/dataset.png)
 
 ### Evaluation
 
 Evaluation in LLM monitoring is the process of assessing the model's performance and effectiveness. Evaluation helps in understanding how well the model meets the desired outcomes and in identifying areas for improvement.
 In Langtrace, you can evaluate the accuracy of the responses in a couple of ways:
+
 - If you application collects feedback from users, you can pass the feedback score down to the traces using the Langtrace SDK.
 - You can manually evaluate the responses and provide a score from the evaluation tab.
-`
+
+Langtrace also lets you create tests and evaluate the captured input-output pairs against the expected output. You can create tests and evaluate the responses against the expected output.
 
 ![traces](/images/evaluation.png)
