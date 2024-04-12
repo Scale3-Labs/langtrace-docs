@@ -3,27 +3,63 @@ title: "How to Guides"
 description: " Collection of guides to help you get started with Langtrace."
 ---
 
-## Tracing
+## Languages
 
-Quick start guide to tracing.
+<CardGroup cols={2}>
+  <Card title="Python SDK" icon="python" href="/quickstart">
+    Integrate with your Python project
+  </Card>
+  <Card title="Typescript SDK" icon="node-js" href="/quickstart">
+    Integrate with your Typescript project
+  </Card>
+</CardGroup>
 
-<AccordionGroup>
-  <Accordion title="Generate an API key for Langtrace Cloud">
-    [Follow these steps](quickstart) to generate an API key for Langtrace Cloud.
-  </Accordion>
-  <Accordion title="How to self-host Langtrace">
-    To self-host Langtrace follow the [self-hosting guide](hosting/overview).
-  </Accordion>
-  <Accordion title="Collect and pass User feedback">
-    To collect and pass user feedback, you can use the
-    `withAdditionalAttributes` function, follow the [user feedback
-    guide](how-to/traceuserfeedback).
-  </Accordion>
-  <Accordion title="Group related operations">
-    To group related operations, you can use the `WithLangTraceRootSpan`
-    function, follow this [guide](how-to/grouptraces).
-  </Accordion>
-  <Accordion title="Create and run evaluations">
-    To tests and run evaluations, follow this [guide](how-to/evaluation).
-  </Accordion>
-</AccordionGroup>
+## Frameworks
+
+<CardGroup cols={2}>
+  <Card href="/supported-frameworks/nextjs">
+    <img height="30" width="30" src="/images/nextjs-icon.svg" />
+    **NextJS** - Integrate with your NextJS project
+  </Card>
+  <Card href="/supported-frameworks/fastapi">
+    <img height="30" width="30" src="/images/fastapi-icon.svg" />
+    **FastAPI** - Integrate with your FastAPI project
+  </Card>
+  <Card href="/supported-frameworks/django">
+    <img height="30" width="30" src="/images/django-icon.svg" />
+    **Django** - Integrate with your Django project
+  </Card>
+  <Card href="/supported-frameworks/flask">
+    <img height="60" width="60" src="/images/flask-icon.svg" />
+    **Flask** - Integrate with your Flask project
+  </Card>
+</CardGroup>
+
+## Tracing features
+
+<CardGroup cols={2}>
+  <Card title="Generate API Key" icon="code" href="/quickstart">
+    Generate an API key for Langtrace Cloud
+  </Card>
+  <Card title="Run Evaluations" icon="chart-line" href="/features/evaluation">
+    How to create tests and run evaluations
+  </Card>
+  <Card
+    title="Pass User Feedback"
+    icon="thumbs-up"
+    href="/features/traceuserfeedback"
+  >
+    How to pass user feedback to Langtrace
+  </Card>
+  <Card title="Group Traces" icon="layer-group" href="/features/grouptraces">
+    How to group related operations
+  </Card>
+</CardGroup>
+
+## Self-hosting
+
+<CardGroup cols={2}>
+  <Card title="Self-host" icon="docker" href="/hosting/overview">
+    How to self-host Langtrace
+  </Card>
+</CardGroup>
