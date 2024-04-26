@@ -65,7 +65,7 @@
 		},
 		{
 			"group": "Supported Observability Tools",
-			"pages": ["supported-observability/signoz"]
+			"pages": ["supported-observability/signoz", "supported-observability/honeycomb"]
 		},
 		{
 			"group": "Hosting",
