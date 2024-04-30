@@ -4,6 +4,11 @@ sidebarTitle: Docker
 description: "Run Langtrace App using Docker"
 ---
 
+## Requirements
+
+1. Clickhouse DB self hosted or managed service
+2. Postgres self hosted or managed service
+
 ## Step 1: Clone the repository
 
 Clone the repository using the following command
@@ -19,7 +24,7 @@ Langtrace needs postgres and clickhouse to run. Update the Postgres and Clickhou
 
 <Note>
 	Make sure the Postgres and Clickhouse databases are running and accessible
-	from the Langtrace app.
+	from the Langtrace app. If you wish to run them using Docker, checkout the docker compose guide [here](./docker-compose).
 </Note>
 
 ## Step 3: Build the Docker image
@@ -37,16 +42,16 @@ docker build -t scale3labs/langtrace-client .
 Run the following command to start the Langtrace app
 
 ```bash
-docker run -d -p 3000:3000 --env-file .env --name langtrace scale3labs/langtrace-client /bin/sh -c "npm run create-tables && npm run dev"
+docker run -d -p 3000:3000 --env-file .env --name langtrace scale3labs/langtrace-client:latest /bin/sh -c "npm run create-tables && npm run dev"
 ```
 
 The Langtrace app will be available at `http://localhost:3000`
 
 <Tip>
-  If you wish to manually pull the specific version of the Docker image from docker hub, you can use the following command
+  If you wish to manually pull the specific [release](https://github.com/Scale3-Labs/langtrace/releases) version of the Docker image from docker hub, you can use the following command
 
 ```bash
-docker pull scale3labs/langtrace-client:latest
+docker pull scale3labs/langtrace-client:<Release Version>
 ```
 
 </Tip>
