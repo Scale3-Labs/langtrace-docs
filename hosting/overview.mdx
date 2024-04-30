@@ -11,40 +11,24 @@ To run the Langtrace locally, you have to run three services:
 - Postgres database
 - Clickhouse database
 
-### Requirements
-
-#### For Docker and Docker Compose
-
-1. Docker is installed and running on your system. You can verify this by running:
-
-	 `docker info`
-2. Docker Compose is installed on your system. You can verify this by running:
-
-	 `docker-compose --version`
-
-#### For Standalone
-
-1. Clickhouse DB self hosted or managed service
-2. Postgres self hosted or managed service
-
 ### Setup Guides
 
-<CardGroup cols={2}>
-	<Card title="Docker" icon="docker" href="/hosting/docker-standalone">
+<CardGroup cols={3}>
+	<Card
+		title="Docker"
+		icon="docker"
+		href="/hosting/hosting_options/docker-standalone"
+	>
 		Run standalone instance of Langtrace docker container
 	</Card>
 	<Card
 		title="Docker Compose"
 		icon="container-storage"
-		href="/hosting/docker-compose"
+		href="/hosting/hosting_options/docker-compose"
 	>
 		Run Langtrace with all required databases using docker-compose
 	</Card>
+	<Card title="Azure" icon="windows" href="/hosting/hosting_options/azure">
+		Run Langtrace on Azure AppService
+	</Card>
 </CardGroup>
-
-### SDK Repositories
-
-- [Langtrace Typescript SDK](https://github.com/Scale3-Labs/langtrace-typescript-sdk)
-- [Langtrace Python SDK](https://github.com/Scale3-Labs/langtrace-python-sdk)
-- [Semantic Span Attributes](https://github.com/Scale3-Labs/langtrace-trace-attributes)
-
