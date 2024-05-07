@@ -1,109 +1,115 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Langtrace AI Docs",
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
-  },
-  "favicon": "/favicon.svg",
-  "colors": {
-    "primary": "#005FAF",
-    "light": "#07C983",
-    "dark": "#005FAF",
-    "anchors": {
-      "from": "#07C983",
-      "to": "#005FAF"
-    }
-  },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "/contact/contact-us"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Langtrace AI",
-    "url": "https://langtrace.ai"
-  },
-  "anchors": [
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "http://discord.langtrace.ai"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://langtrace.ai/blog"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "concepts",
-        "how-to-guides",
-        "features/grouptraces",
-        "features/traceuserfeedback",
-        "features/evaluation"
-      ]
-    },
-    {
-      "group": "Supported Traces",
-      "pages": ["supported-traces/vendors"]
-    },
-    {
-      "group": "Supported Frameworks",
-      "pages": [
-        "supported-frameworks/nextjs",
-        "supported-frameworks/fastapi",
-        "supported-frameworks/django",
-        "supported-frameworks/flask"
-      ]
-    },
-    {
-      "group": "Supported Integrations",
-      "pages": [
-        {
-          "group": "Observability Tools",
-          "pages": [
-            "supported-integrations/observability-tools/signoz",
-            "supported-integrations/observability-tools/honeycomb"
-          ]
-        },
-        {
-          "group": "LLM Frameworks",
-          "pages": [
-            "supported-integrations/llm-frameworks/llamaindex",
-            "supported-integrations/llm-frameworks/langchain"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Hosting",
-      "pages": [
-        "hosting/overview",
-        {
-          "group": "Hosting Options",
-          "pages": [
-            "hosting/hosting_options/docker-standalone",
-            "hosting/hosting_options/docker-compose",
-            "hosting/hosting_options/azure"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Contact Us",
-      "pages": ["contact/contact-us"]
-    }
-  ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/langtrace_ai",
-    "github": "https://github.com/Scale3-Labs/langtrace",
-    "discord": "https://discord.com/invite/EaSATwtr4t"
-  }
+	"$schema": "https://mintlify.com/schema.json",
+	"name": "Langtrace AI Docs",
+	"logo": {
+		"dark": "/logo/dark.svg",
+		"light": "/logo/light.svg"
+	},
+	"favicon": "/favicon.svg",
+	"colors": {
+		"primary": "#005FAF",
+		"light": "#07C983",
+		"dark": "#005FAF",
+		"anchors": {
+			"from": "#07C983",
+			"to": "#005FAF"
+		}
+	},
+	"topbarLinks": [
+		{
+			"name": "Support",
+			"url": "/contact/contact-us"
+		}
+	],
+	"topbarCtaButton": {
+		"name": "Langtrace AI",
+		"url": "https://langtrace.ai"
+	},
+	"anchors": [
+		{
+			"name": "Community",
+			"icon": "discord",
+			"url": "http://discord.langtrace.ai"
+		},
+		{
+			"name": "Blog",
+			"icon": "newspaper",
+			"url": "https://langtrace.ai/blog?utm_source=langtrace-docs&utm_medium=anchor&utm_campaign=langtrace-docs"
+		},
+		{
+			"name": "Youtube",
+			"icon": "youtube",
+			"url": "https://www.youtube.com/channel/UCmqi7fUaU4kslkXl2qZFjNw?utm_source=langtrace-docs&utm_medium=anchor&utm_campaign=langtrace-docs"
+		}
+	],
+	"navigation": [
+		{
+			"group": "Get Started",
+			"pages": [
+				"introduction",
+				"quickstart",
+				"concepts",
+				"how-to-guides",
+				"features/grouptraces",
+				"features/traceuserfeedback",
+				"features/evaluation"
+			]
+		},
+		{
+			"group": "Supported Traces",
+			"pages": ["supported-traces/vendors"]
+		},
+		{
+			"group": "Supported Frameworks",
+			"pages": [
+				"supported-frameworks/nextjs",
+				"supported-frameworks/fastapi",
+				"supported-frameworks/django",
+				"supported-frameworks/flask"
+			]
+		},
+		{
+			"group": "Supported Integrations",
+			"pages": [
+				{
+					"group": "Observability Tools",
+					"pages": [
+						"supported-integrations/observability-tools/signoz",
+						"supported-integrations/observability-tools/honeycomb"
+					]
+				},
+				{
+					"group": "LLM Frameworks",
+					"pages": [
+						"supported-integrations/llm-frameworks/llamaindex",
+						"supported-integrations/llm-frameworks/langchain"
+					]
+				}
+			]
+		},
+		{
+			"group": "Hosting",
+			"pages": [
+				"hosting/overview",
+				{
+					"group": "Hosting Options",
+					"pages": [
+						"hosting/hosting_options/docker-standalone",
+						"hosting/hosting_options/docker-compose",
+						"hosting/hosting_options/azure"
+					]
+				}
+			]
+		},
+		{
+			"group": "Contact Us",
+			"pages": ["contact/contact-us"]
+		}
+	],
+	"footerSocials": {
+		"twitter": "https://twitter.com/langtrace_ai?utm_source=langtrace-docs&utm_medium=footer&utm_campaign=langtrace-docs",
+		"github": "https://github.com/Scale3-Labs/langtrace",
+		"discord": "https://discord.com/invite/EaSATwtr4t",
+		"youtube": "https://www.youtube.com/channel/UCmqi7fUaU4kslkXl2qZFjNw?utm_source=langtrace-docs&utm_medium=footer&utm_campaign=langtrace-docs"
+	}
 }
