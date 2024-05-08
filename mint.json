@@ -91,7 +91,8 @@
           "pages": [
             "hosting/hosting_options/docker-standalone",
             "hosting/hosting_options/docker-compose",
-            "hosting/hosting_options/azure"
+            "hosting/hosting_options/azure",
+            "hosting/hosting_options/railway"
           ]
         }
       ]
