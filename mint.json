@@ -87,21 +87,22 @@
 				}
 			]
 		},
-    {
-      "group": "Hosting",
-      "pages": [
-        "hosting/overview",
-        {
-          "group": "Hosting Options",
-          "pages": [
-            "hosting/hosting_options/docker-standalone",
-            "hosting/hosting_options/docker-compose",
-            "hosting/hosting_options/azure",
-            "hosting/hosting_options/railway"
-          ]
-        }
-      ]
-    },
+		{
+			"group": "Hosting",
+			"pages": [
+				"hosting/overview",
+				"hosting/using_local_setup",
+				{
+					"group": "Hosting Options",
+					"pages": [
+						"hosting/hosting_options/docker-standalone",
+						"hosting/hosting_options/docker-compose",
+						"hosting/hosting_options/azure",
+						"hosting/hosting_options/railway"
+					]
+				}
+			]
+		},
 		{
 			"group": "Contact Us",
 			"pages": ["contact/contact-us"]
