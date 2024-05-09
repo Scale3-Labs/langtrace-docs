@@ -1,0 +1,72 @@
+---
+title: Langtrace on Railway
+sidebarTitle: Railway
+description: Running Langtrace Client on Railway
+---
+
+## Requirements
+
+1. [Railway](https://railway.app/) account
+
+## Resources Created
+
+| Resource Type      | Comments                            |
+| ------------------ | ----------------------------------- |
+| Clickhouse Service | To store traces.                    |
+| Postgres Service   | For login and dataset related info. |
+| Langtrace Client   | Langtrace app with frontend.        |
+
+## Setup
+
+Setting up Langtrace on Railway is now effortless. Just follow these simple steps:
+
+### Step 1: Open the Railway Template
+
+- Navigate to the Langtrace GitHub repository and locate the “**_Deploy on Railway_**” button within the [README file](https://github.com/Scale3-Labs/langtrace?tab=readme-ov-file).
+  [![railway button](/images/hosting-deploy-on-railway-button.png)](https://railway.app/template/yZGbfC?referralCode=MA2S9H)
+- Clicking on this button will direct you to the Langtrace Railway template deployment page.
+  ![railway template](/images/hosting-railway-template.png)
+
+### Step 2. Deploy the Template
+
+- Click on the “_Deploy Now_” button.
+- Click “_Configure_” on `langtrace-client` service and add admin email and admin password and click “_Save Config_” **→** “_Deploy_”.
+  ![railway inputs](/images/hosting-railway-inputs.png)
+
+### Step 3. Access Langtrace
+
+- Once you start the deployment process, it may take around two minutes for Railway to bring up the services.
+
+  > If you want you can check the deploy logs of a particular service by clicking on the service and click “_View Logs_” under the Deployments tab.
+  > ![railway logs](/images/hosting-railway-view-logs.png)
+
+- Once all services are healthy, click on ‘langtrace-client’ service and open the URL to access the self-hosted Langtrace application.
+  ![railway url](/images/hosting-railway-url-instruction.png)
+
+Login to Langtrace using the previously supplied Admin email and password, and begin your journey for monitoring LLM apps by following the [quickstart guide](/quickstart).
+
+## Cleanup
+
+To cleanup the resources, click on _Settings_ --> _Danger Zone_ --> _Delete Project_.
+
+## Troubleshooting
+
+<AccordionGroup>
+	<Accordion title="Clickhouse service keeps restarting or crashing ">
+		This generally occurs due to low memory allocated to the clickhouse service.
+		You can increase the memory allocated to the clickhouse service. This may
+		require you to upgrade your Railway plan from the free tier.
+	</Accordion>
+	<Accordion title="Update Langtrace version">
+    Click on the `langtrace-client` service --> you should be in Deployments tab --> Select Redeploy in the option of the active deployment.
+
+    **OR**
+
+    Click on the `langtrace-client` service --> go to Settings tab -->
+    disconnect --> connect image --> change [source image](https://hub.docker.com/r/scale3labs/langtrace-client/tags) to any version of your choice --> Click Deploy
+    For example: `scale3labs/langtrace-client:1.3.1`
+    ![railway update langtrace](/images/hosting-railway-update-langtrace.png)
+
+  </Accordion>
+
+</AccordionGroup>
