@@ -1,0 +1,121 @@
+---
+title: Langtrace SDK Configuration
+sidebarTitle: SDK configuration
+description: Learn how to use Langtrace SDK for Self-Hosted Setup
+---
+
+Following are the parameters that you need to initialize the SDK:
+
+<CodeGroup>
+
+```python Python
+from langtrace_python_sdk import langtrace
+langtrace.init(
+  api_key="<YOUR API KEY>",
+  write_to_langtrace_cloud=True,
+  api_host="http://localhost:3000",
+)
+```
+
+```javascript Javascript
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+	api_key: "<YOUR API KEY>",
+	batch: false,
+	write_to_langtrace_cloud: true,
+	api_host: "http://localhost:3000",
+});
+```
+
+</CodeGroup>
+
+Here we are using `http://localhost:3000` as the API host. You can replace it with your own DNS or IP address.
+
+## Sample Code
+
+Following is a ready-to-run code snippet that you can use to test the SDK with your local setup:
+
+<Info>
+	Make Sure to pip or npm install the required packages before running the code.
+</Info>
+
+<CodeGroup>
+
+```python Python
+from langtrace_python_sdk import langtrace
+from langtrace_python_sdk.utils.with_root_span import with_langtrace_root_span
+
+from openai import OpenAI
+
+langtrace.init(
+    api_key="<YOUR API KEY>",
+    write_to_langtrace_cloud=True,
+    api_host="http://localhost:3000",
+)
+
+@with_langtrace_root_span()
+def example():
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "How many states of matter are there?"
+            }
+        ],
+    )
+    print(response.choices[0].message.content)
+
+example()
+```
+
+```javascript Javascript
+import * as Langtrace from "@langtrase/typescript-sdk";
+import OpenAI from "openai";
+Langtrace.init({
+	api_key: "<YOUR API KEY>",
+	batch: false,
+	api_host: "http://localhost:3000",
+	write_to_langtrace_cloud: true,
+	instrumentations: {
+		openai: OpenAI,
+	},
+});
+const openai = new OpenAI();
+
+async function example() {
+	const completion = await openai.chat.completions.create({
+		model: "gpt-3.5-turbo",
+		messages: [
+			{
+				role: "system",
+				content: "How many states of matter are there?",
+			},
+		],
+	});
+	console.log(completion.choices[0]);
+}
+
+example().then(() => {
+	console.log("done");
+});
+```
+
+</CodeGroup>
+
+Run the scripts as follows
+
+<CodeGroup>
+
+```python main.py
+export OPENAI_API_KEY="<YOUR OPENAI API KEY>"
+python main.py
+```
+
+```javascript main.js
+export OPENAI_API_KEY="<YOUR OPENAI API KEY>"
+node main.js
+```
+
+</CodeGroup>
