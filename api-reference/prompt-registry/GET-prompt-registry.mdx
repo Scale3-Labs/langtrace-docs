@@ -1,0 +1,260 @@
+---
+title: "GET Prompt from Registry"
+description: "This endpoint enables queries on the prompt registry. You can query for a specific prompt version or get the currently live prompt. Optionally also pass in variables to fill the prompt value variables with data"
+api: "GET /promptset"
+
+---
+
+<Note>You can find the `promptset_id` when you click on `Prompts` -> `<Your_Prompt_Registry>` -> `Prompt Registry ID`  </Note>
+
+<Warning> If no `version` is provided the `live` prompt in the registry is fetched. If there are no `live` prompts an `error` is thrown </Warning>
+
+A complete list of supported parameters for the `GET promptset` endpoint is provided below.
+  <ParamField query="promptset_id" type="string" required>
+   Id of the prompt registry. This can be found on the langtrace ui.
+  </ParamField>
+  <ParamField query="version" type="number" optional>
+   Prompt version to fetch from the prompt registry.
+  </ParamField>
+  <ParamField query="variables" type="object" optional>
+    Variables to replace in the prompt string. Usage is as follows: `variables.<variable_name>=<variable_value>&variables.<variable_name>=<variable_value>`...
+  </ParamField>
+
+<Accordion title="200 (OK) Response Object Schema" defaultOpen="false">
+    <ResponseField name="id" type="string" required>
+        Prompt registry id
+    </ResponseField>
+    <ResponseField name="name" type="string" required>
+        Prompt registry name
+    </ResponseField>
+    <ResponseField name="description" type="string" required>
+        Prompt registry description
+    </ResponseField>
+    <ResponseField name="projectId" type="string" required>
+        Id of the project this registry is associated to
+    </ResponseField>
+    <ResponseField name="prompts" type="Prompt[]">
+       <Expandable title="Prompt Object Properties" defaultOpen="false">
+        <ResponseField name="id" type="string" required>
+          Id of the prompt
+        </ResponseField>
+        <ResponseField name="value" type="string" required>
+          Prompt string
+        </ResponseField>
+        <ResponseField name="variables" type="string[]" required>
+          Variable names in the prompt value
+        </ResponseField>
+        <ResponseField name="model" type="string" required>
+          Name of the model being used
+        </ResponseField>
+        <ResponseField name="modelSettings" type="object" required>
+          Settings configured on the model
+        </ResponseField>
+        <ResponseField name="version" type="number" required>
+          Prompt version
+        </ResponseField>
+        <ResponseField name="live" type="boolean" required>
+          Indicates if the prompt is live. Only one prompt in the registry can be live
+        </ResponseField>
+        <ResponseField name="tags" type="string[]" required>
+          Tags associated with the prompt
+        </ResponseField>
+        <ResponseField name="spanId" type="string" required>
+          If this prompt was traced using the langtrace sdk this will contain the id of the span otherwise it will be null
+        </ResponseField>
+        <ResponseField name="note" type="string" required>
+          Notes associated with the prompt
+        </ResponseField>
+        <ResponseField name="createdAt" type="string" required>
+          ISO 8601 date-time string
+        </ResponseField>
+        <ResponseField name="updatedAt" type="string" required>
+          ISO 8601 date-time string
+        </ResponseField>
+        </Expandable>
+    </ResponseField>
+    <ResponseField name="createdAt" type="string" required>
+      ISO 8601 date-time string
+    </ResponseField>
+    <ResponseField name="updatedAt" type="string" required>
+      ISO 8601 date-time string
+    </ResponseField>
+</Accordion>
+<Accordion title="Error Response Object Schema">
+<ResponseField name="error" type="object">
+    <Expandable title="Error Object Properties"  defaultOpen="false">
+        <ResponseField name="message" type="string" required >
+            Error message
+        </ResponseField>
+    </Expandable>
+</ResponseField>
+</Accordion>
+
+<RequestExample>
+```bash cURL
+  curl --request GET \
+    --url https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot \
+    --header 'x-api-key: 5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f'
+```
+
+```python Python
+import requests
+
+url = "https://langtrace.ai/api/promptset"
+params = {
+    "promptsetid": "clw123ay10001v55p02lo1lmp",
+    "variables.name": "langtrace",
+    "variables.org": "chatbot"
+}
+headers = {
+    "x-api-key": "5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.text)
+```
+
+```javascript Javascript
+const url = "https://langtrace.ai/api/promptset";
+const params = new URLSearchParams({
+  promptsetid: "clw123ay10001v55p02lo1lmp",
+  "variables.name": "langtrace",
+  "variables.org": "chatbot"
+});
+
+const headers = {
+  "x-api-key": "5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f"
+};
+
+fetch(`${url}?${params}`, {
+  method: 'GET',
+  headers: headers
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+```php PHP
+<?php
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+    CURLOPT_URL => "https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_HTTPHEADER => [
+        "x-api-key: 5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f"
+    ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+    echo "cURL Error #:" . $err;
+} else {
+    echo $response;
+}
+?>
+```
+
+```go Go
+package main
+
+import (
+    "fmt"
+    "io/ioutil"
+    "net/http"
+)
+
+func main() {
+    url := "https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Add("x-api-key", "5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f")
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+    defer resp.Body.Close()
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println("Error reading response body:", err)
+        return
+    }
+    fmt.Println(string(body))
+}
+```
+```java Java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot"))
+            .header("x-api-key", "5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f")
+            .build();
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Sample 200 (OK) Response
+{
+  "id": "clw123ay10001v55p02lo1lmp",
+  "name": "Slack Chatbot ",
+  "description": "slack chatbot",
+  "projectId": "clw12223e0001eapng5a66f2u",
+  "createdAt": "2024-05-10T19:14:20.324Z",
+  "updatedAt": "2024-05-10T19:14:20.324Z",
+  "prompts": [
+    {
+      "id": "clw129y460001o8cgv2uksm3p",
+      "value": "You are a slack chatbot for company langtrace and org chatbot",
+      "variables": [
+        "name",
+        "org"
+      ],
+      "model": "gpt-3.5-turbo",
+      "modelSettings": {},
+      "version": 2,
+      "live": true,
+      "tags": [],
+      "spanId": null,
+      "note": "Slack chatbot prompt testing",
+      "promptsetId": "clw123ay10001v55p02lo1lmp",
+      "createdAt": "2024-05-10T19:19:30.293Z",
+      "updatedAt": "2024-05-10T19:19:30.293Z"
+    }
+  ]
+}
+```
+
+```json Sample Error Response
+{
+  "message": "Invalid api key unauthorized",
+}
+```
+</ResponseExample>

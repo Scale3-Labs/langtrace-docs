@@ -5,6 +5,16 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "api": {
+    "baseUrl": "https://langtrace.ai/api",
+    "auth": {
+      "method": "key",
+      "name": "x-api-key"
+    },
+    "playground": {
+      "mode": "hide"
+    }
+  },
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#005FAF",
@@ -52,7 +62,9 @@
     },
     {
       "group": "Supported Traces",
-      "pages": ["supported-traces/vendors"]
+      "pages": [
+        "supported-traces/vendors"
+      ]
     },
     {
       "group": "Supported Frameworks",
@@ -83,6 +95,19 @@
       ]
     },
     {
+      "group": "Api Reference",
+      "icon": "api",
+      "iconType": "light",
+      "pages": [
+        {
+          "group": "Prompt Registry APIs",
+          "pages": [
+            "api-reference/prompt-registry/GET-prompt-registry"
+          ]
+        }
+      ]
+    },
+    {
       "group": "Hosting",
       "pages": [
         "hosting/overview",
@@ -99,7 +124,9 @@
     },
     {
       "group": "Contact Us",
-      "pages": ["contact/contact-us"]
+      "pages": [
+        "contact/contact-us"
+      ]
     }
   ],
   "footerSocials": {
