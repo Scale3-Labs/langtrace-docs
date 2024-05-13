@@ -106,6 +106,10 @@
             "supported-integrations/llm-frameworks/llamaindex",
             "supported-integrations/llm-frameworks/langchain"
           ]
+        },
+        {
+          "group": "Vector Stores",
+          "pages": ["supported-integrations/vector-stores/chromadb"]
         }
       ]
     },
