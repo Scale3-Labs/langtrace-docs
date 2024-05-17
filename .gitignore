@@ -1,3 +1,5 @@
 .prettierignore
 .DS_Store
 .env
+.idea
+.venv
