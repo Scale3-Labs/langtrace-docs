@@ -1,6 +1,6 @@
 ---
-title: "Quickstart"
-description: "Start shipping traces to Langtrace Cloud under 5 minutes!"
+title: 'Quickstart'
+description: 'Start shipping traces to Langtrace Cloud under 5 minutes!'
 ---
 
 ### Langtrace Cloud ☁️
@@ -23,7 +23,7 @@ To use the managed SaaS version of Langtrace, follow the steps below:
   npm i @langtrase/typescript-sdk
 
 // Import it into your project. Must precede any llm module imports
-import * as Langtrace from '@langtrase/typescript-sdk'
+import \* as Langtrace from '@langtrase/typescript-sdk'
 
 Langtrace.init({ api_key: '<LANGTRACE_API_KEY>'})
 
@@ -43,6 +43,17 @@ langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 Congrats! You can now view your traces on Langtrace Cloud. 🚀
 
 ![traces](/images/trace.png)
+
+### Configure Langtrace
+
+| Parameter                  | Type                                | Default Value                 | Description                                                                    |
+| -------------------------- | ----------------------------------- | ----------------------------- | ------------------------------------------------------------------------------ |
+| `api_key`                  | `str`                               | `LANGTRACE_API_KEY` or `None` | The API key for authentication.                                                |
+| `batch`                    | `bool`                              | `True`                        | Whether to batch spans before sending them.                                    |
+| `write_spans_to_console`   | `bool`                              | `False`                       | Whether to write spans to the console.                                         |
+| `custom_remote_exporter`   | `Optional[Exporter]`                | `None`                        | Custom remote exporter. If `None`, a default `LangTraceExporter` will be used. |
+| `api_host`                 | `Optional[str]`                     | `https://langtrace.ai/`       | The API host for the remote exporter.                                          |
+| `disable_instrumentations` | `Optional[DisableInstrumentations]` | `None`                        |
 
 ### Langtrace Self-hosted 🏠
 
