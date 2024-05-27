@@ -31,7 +31,9 @@ langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 
 ## Usage
 
+
 Step 1: Use the `Langtrace.withLangTraceRootSpan` function to trace interaction which provides `spanId` and `traceId` for the interaction.
+<CodeGroup>
 ```typescript Typescript
 import { init } from '@langtrace-init/init'
 import { withLangTraceRootSpan } from '@langtrace-utils/instrumentation'
@@ -54,13 +56,48 @@ init({ write_spans_to_console: false})
   })
 ```
 
+```python Python
+from langtrace_python_sdk import langtrace, with_langtrace_root_span
+from openai import OpenAI
+from dotenv import find_dotenv, load_dotenv
+
+_ = load_dotenv(find_dotenv())
+
+langtrace.init()
+client = OpenAI()
+
+@with_langtrace_root_span()
+def main(spanId, traceId):
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "Talk like a pirate"},
+            {"role": "user", "content": "Tell me a story in 3 sentences or less."},
+        ],
+        stream=False,
+    )
+      print(response, spanId, traceId)
+      # Send spanId and traceId to your application client for user feedback
+
+main()
+
+```
+</CodeGroup>
+
+
 Step 2: Collect the `userScore` and `userId` from your application and pass it to `Langtrace.sendUserFeedback({userScore, userId, traceId, spanId})`function along with `traceId` and `spanId`.
 
+<CodeGroup>
   ```typescript Typescript
   import * as Langtrace from "@langtrase/typescript-sdk";
   await Langtrace.sendUserFeedback({spanId, traceId, userScore, userId});
   ```
 
+  ```python Python
+  from langtrace_python_sdk import send_user_feedback
+  send_user_feedback(spanId, traceId, userScore, userId)
+  ```
+</CodeGroup>
 ## Examples
 
 
