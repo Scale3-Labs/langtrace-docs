@@ -97,7 +97,10 @@
         },
         {
           "group": "Vector Stores",
-          "pages": ["supported-integrations/vector-stores/chromadb"]
+          "pages": [
+            "supported-integrations/vector-stores/chromadb", 
+            "supported-integrations/vector-stores/weaviate"
+          ]
         }
       ]
     },
