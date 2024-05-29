@@ -123,6 +123,7 @@
       "group": "Hosting",
       "pages": [
         "hosting/overview",
+        "hosting/using_local_setup",
         {
           "group": "Hosting Options",
           "pages": [
@@ -140,7 +141,7 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/langtrace_ai",
+    "twitter": "https://twitter.com/langtrace_ai?utm_source=langtrace-docs&utm_medium=footer&utm_campaign=langtrace-docs",
     "github": "https://github.com/Scale3-Labs/langtrace",
     "discord": "https://discord.com/invite/EaSATwtr4t",
     "youtube": "https://www.youtube.com/channel/UCmqi7fUaU4kslkXl2qZFjNw?utm_source=langtrace-docs&utm_medium=footer&utm_campaign=langtrace-docs"
