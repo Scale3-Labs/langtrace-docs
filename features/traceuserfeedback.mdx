@@ -94,8 +94,8 @@ Step 2: Collect the `userScore` and `userId` from your application and pass it t
   ```
 
   ```python Python
-  from langtrace_python_sdk import send_user_feedback
-  send_user_feedback(spanId, traceId, userScore, userId)
+  from langtrace_python_sdk import SendUserFeedback
+  SendUserFeedback.evaluate(spanId, traceId, userScore, userId)
   ```
 </CodeGroup>
 ## Examples
