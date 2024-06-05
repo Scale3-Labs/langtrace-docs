@@ -12,7 +12,6 @@ Following are the parameters that you need to initialize the SDK:
 from langtrace_python_sdk import langtrace
 langtrace.init(
   api_key="<YOUR API KEY>",
-  write_to_langtrace_cloud=True,
   api_host="http://localhost:3000",
 )
 ```
@@ -22,7 +21,6 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
 	api_key: "<YOUR API KEY>",
 	batch: false,
-	write_to_langtrace_cloud: true,
 	api_host: "http://localhost:3000",
 });
 ```
@@ -49,7 +47,6 @@ from openai import OpenAI
 
 langtrace.init(
     api_key="<YOUR API KEY>",
-    write_to_langtrace_cloud=True,
     api_host="http://localhost:3000",
 )
 
@@ -77,7 +74,6 @@ Langtrace.init({
 	api_key: "<YOUR API KEY>",
 	batch: false,
 	api_host: "http://localhost:3000",
-	write_to_langtrace_cloud: true,
 	instrumentations: {
 		openai: OpenAI,
 	},
