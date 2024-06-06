@@ -1,6 +1,6 @@
 ---
-title: Langtrace SDK Configuration
-sidebarTitle: SDK configuration
+title: Langtrace Self-Hosting Configuration
+sidebarTitle: Configuration
 description: Learn how to use Langtrace SDK for Self-Hosted Setup
 ---
 
@@ -12,7 +12,7 @@ Following are the parameters that you need to initialize the SDK:
 from langtrace_python_sdk import langtrace
 langtrace.init(
   api_key="<YOUR API KEY>",
-  api_host="http://localhost:3000",
+  api_host="http://localhost:3000/api/trace",
 )
 ```
 
@@ -21,13 +21,13 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
 	api_key: "<YOUR API KEY>",
 	batch: false,
-	api_host: "http://localhost:3000",
+	api_host: "http://localhost:3000/api/trace",
 });
 ```
 
 </CodeGroup>
 
-Here we are using `http://localhost:3000` as the API host. You can replace it with your own DNS or IP address.
+Here we are using `http://localhost:3000/api/trace` as the API host. You can replace it with your own DNS or IP address.
 
 ## Sample Code
 
@@ -47,7 +47,7 @@ from openai import OpenAI
 
 langtrace.init(
     api_key="<YOUR API KEY>",
-    api_host="http://localhost:3000",
+    api_host="http://localhost:3000/api/trace",
 )
 
 @with_langtrace_root_span()
@@ -73,7 +73,7 @@ import OpenAI from "openai";
 Langtrace.init({
 	api_key: "<YOUR API KEY>",
 	batch: false,
-	api_host: "http://localhost:3000",
+	api_host: "http://localhost:3000/api/trace",
 	instrumentations: {
 		openai: OpenAI,
 	},
