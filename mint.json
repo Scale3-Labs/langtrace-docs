@@ -71,6 +71,12 @@
         "concepts",
         "how-to-guides",
         "features/grouptraces",
+        {
+          "group": "Disable Tracing for Functions",
+          "pages": [
+            "features/disable_function_tracing_ts"
+          ]
+        },
         "features/traceuserfeedback",
         "features/evaluation",
         "features/faqs"
@@ -98,7 +104,7 @@
         {
           "group": "Vector Stores",
           "pages": [
-            "supported-integrations/vector-stores/chromadb", 
+            "supported-integrations/vector-stores/chromadb",
             "supported-integrations/vector-stores/weaviate"
           ]
         }
@@ -118,7 +124,9 @@
       "pages": [
         {
           "group": "Prompt Registry APIs",
-          "pages": ["api-reference/prompt-registry/GET-prompt-registry"]
+          "pages": [
+            "api-reference/prompt-registry/GET-prompt-registry"
+          ]
         }
       ]
     },
@@ -140,7 +148,9 @@
     },
     {
       "group": "Contact Us",
-      "pages": ["contact/contact-us"]
+      "pages": [
+        "contact/contact-us"
+      ]
     }
   ],
   "footerSocials": {
