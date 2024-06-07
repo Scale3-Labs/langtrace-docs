@@ -64,10 +64,11 @@ Congrats! You can now view your traces on Langtrace Cloud. 🚀
   | `batch`                    | `boolean`                           | `false`                       | Whether to batch spans before sending them.                                                                                                                                               |
   | `write_spans_to_console`   | `boolean`                           | `false`                       | Whether to write spans to the console.                                                                                                                                                    |
   | `custom_remote_exporter`   | `SpanExporter`                      | `undefined`                   | Custom remote exporter. If `undefined`, a default `LangTraceExporter` will be used.                                                                                                       |
-  | `api_host`                 | `string`                            | `https://langtrace.ai/`       | The API host for the remote exporter.                                                                                                                                                     |
+  | `api_host`                 | `string`                            | `https://langtrace.ai/`       | The API host for the remote exporter. For self hosted setups the url needs to be appended with `/api/trace`.                                                                                                                                                     |
   | `instrumentations`         | `{ [key in InstrumentationType]?: any }` | `undefined`                  | This is a required option for next.js applications. It is used to enable or disable instrumentations. ex `instrumentations: {openai: openai}` where the value is `import * as openai from 'openai'`. |
   | `disable_instrumentations` | `{all_except?: InstrumentationType[], only?: InstrumentationType[]}` | `{}` | You can pass an object to disable instrumentation for specific vendors, e.g., `{'only': ['openai']}` or `{'all_except': ['openai']}`.                                                     |
-
+  | `disable_tracing_for_methods` | `Partial<TracedMethods>` | `undefined` | You can pass an object to disable tracing for specific methods. ex `disable_tracing_for_methods: { openai: ['openai.chat.completion'] }`. Full list of methods can be found [here]() |
+  | `disable_latest_version_check` | `boolean` | `false` | Disable the latest version check. This disables the warning when the sdk version is outdated |
   </Tab>
 </Tabs>
 
