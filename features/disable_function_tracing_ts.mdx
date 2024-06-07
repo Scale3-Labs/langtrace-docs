@@ -2,14 +2,14 @@
 title: Typescript SDK
 ---
 
-You can disable tracing for specific functions per vendor by passing the `disable_tracing_for_functions` parameter in `Langtrace.init` function. The `object` should have the vendor name as the `key` and an `array` of **function names** as the `value`. See below on how you can disable funciton level tracing for specific vendors:
+You can disable tracing for specific functions per vendor by passing the `disable_tracing_for_functionss` parameter in `Langtrace.init` function. The `object` should have the vendor name as the `key` and an `array` of **function names** as the `value`. See below on how you can disable funciton level tracing for specific vendors:
 <CodeGroup>
 ``` typescript openai
 import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     openai: [ // All supported functions for openai
       'openai.chat.completion',
       'openai.embeddings.create',
@@ -25,7 +25,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     anthropic: ['anthropic.messages.create'] // All supported functions for anthropic
   }
 })
@@ -35,7 +35,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     llamaindex: [ // All supported functions for llamaindex
       'llamaindex.OpenAI.chat',
       'llamaindex.RetrieverQueryEngine.query',
@@ -53,7 +53,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     chromadb: [ // All supported functions for chromadb
       'chromadb.collection.add',
       'chromadb.collection.count',
@@ -72,7 +72,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     cohere: [ // All supported functions for cohere
       'cohere.chat',
       'cohere.chatStream',
@@ -90,7 +90,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     groq: ['groq.chat.completions.create'] // All supported functions for groq
   }
 })
@@ -101,7 +101,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     pinecone: [ // All supported functions for pinecone
       'pinecone.index.deleteAll',
       'pinecone.index.deleteMany',
@@ -117,7 +117,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     pg: ['pg.Client.query'] // All supported functions for pg
   }
 })
@@ -128,7 +128,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     qdrant: [ // All supported functions for qdrant
       'qdrantdb.count',
       'qdrantdb.delete',
@@ -153,7 +153,7 @@ import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
   write_spans_to_console: true,
   batch: false,
-  disable_tracing_for_function: {
+  disable_tracing_for_functions: {
     weaviate: [ // All supported functions for weaviate
       'batch.objectsBatcher.do',
       'batch.referencePayloadBuilder.do',
