@@ -15,19 +15,18 @@ pip install weaviate-client
 ```bash Typescript
 npm install weaviate-client --tag next
 ```
-
 </CodeGroup>
 
-<iframe
-	width="560"
-	height="315"
-	src="https://www.youtube.com/embed/qPhWr0A0t98?si=MaXu0Gq4xX6nTydF"
-	title="YouTube video player"
-	frameborder="0"
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-	referrerpolicy="strict-origin-when-cross-origin"
-	allowfullscreen
-></iframe>
+# Tutorial
+
+<div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', maxWidth: '100%', background: '#000', marginTop: '10px' }}>
+  <iframe
+    src="https://www.youtube.com/embed/qPhWr0A0t98"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+  ></iframe>
+</div>
 
 ## Setup
 
@@ -36,8 +35,9 @@ npm install weaviate-client --tag next
 ## Usage
 
 Here's a quick example of how to use Langtrace with Weaviate query methods:
+<CodeBlock>
 
-```python
+```python Python SDK
 import weaviate
 import weaviate.classes as wvc
 
@@ -76,5 +76,134 @@ def query_data_near_text():
     finally:
         client.close()  # Close client gracefully
 ```
+``` typescript Typescript SDK
+import * as Langtrace from '@langtrase/typescript-sdk'
+import weaviate, { ObjectsBatcher } from 'weaviate-ts-client'
+import fetch from 'node-fetch'
 
+Langtrace.init({ write_spans_to_console: true })
+
+const client = weaviate.client({
+  apiKey: { apiKey: process.env.WEAVIATE_API_KEY ?? '' },
+  host: process.env.WEAVIATE_HOST ?? '',
+  headers: { 'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY ?? '' }
+})
+// Add the schema
+const classObj = {
+  class: 'Question',
+  vectorizer: 'text2vec-openai', // If set to "none" you must always provide vectors yourself. Could be any other "text2vec-*" also.
+  moduleConfig: {
+    'text2vec-openai': {},
+    'generative-openai': {} // Ensure the `generative-openai` module is used for generative queries
+  }
+}
+
+async function addSchema (): Promise<void> {
+  await client.schema.classDeleter().withClassName('Question').do().then(async (_) => {
+    const res = await client.schema.classCreator().withClass(classObj).do()
+    console.log(JSON.stringify(res, null, 2))
+  })
+}
+
+// END Add the schema
+
+// Import data function
+async function getJsonData (): Promise<any> {
+  const file = await fetch('https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json')
+  return await file.json()
+}
+
+async function importQuestions (): Promise<void> {
+  // Get the questions directly from the URL
+  const data = await getJsonData()
+
+  // Prepare a batcher
+  let batcher: ObjectsBatcher = client.batch.objectsBatcher()
+  let counter = 0
+  const batchSize = 100
+
+  for (const question of data) {
+    // Construct an object with a class and properties 'answer' and 'question'
+    const obj = {
+      class: 'Question',
+      properties: {
+        answer: question.Answer,
+        question: question.Question,
+        category: question.Category
+      },
+      moduleConfig: { 'text2vec-transformers': { vectorizeClassName: true } }
+    }
+
+    // add the object to the batch queue
+    batcher = batcher.withObject(obj)
+
+    // When the batch counter reaches batchSize, push the objects to Weaviate
+    if (counter++ === batchSize) {
+      // flush the batch queue
+      await batcher.do()
+
+      // restart the batch queue
+      counter = 0
+      batcher = client.batch.objectsBatcher()
+    }
+  }
+
+  // Flush the remaining objects
+  await batcher.do()
+}
+
+export async function run (): Promise<void> {
+  await Langtrace.withLangTraceRootSpan(async () => {
+    await addSchema()
+    await importQuestions()
+    await nearTextQueryAggregate()
+    await nearTextWhereQueryWithFilter()
+    await nearTextQueryRaw()
+  })
+}
+
+async function nearTextQueryRaw (): Promise<any> {
+  const res = await client.graphql
+    .raw()
+    .withQuery('query { Get { Question { answer } } }')
+    .do()
+
+  console.log(JSON.stringify(res, null, 2))
+  return res
+}
+
+async function nearTextQueryAggregate (): Promise<any> {
+  const res = await client.graphql
+    .aggregate()
+    .withClassName('Question')
+    .withFields('category { count }')
+    .withLimit(2)
+    .do()
+
+  console.log(JSON.stringify(res, null, 2))
+  return res
+}
+async function nearTextWhereQueryWithFilter (): Promise<any> {
+  const res = await client.graphql
+    .get()
+    .withClassName('Question')
+    .withFields('question answer category')
+    .withNearText({ concepts: ['biology'] })
+    .withWhere({
+      path: ['category'],
+      operator: 'Equal',
+      valueText: 'ANIMALS'
+    })
+    .withLimit(2)
+    .do()
+
+  console.log(JSON.stringify(res, null, 2))
+  return res
+}
+
+void run().then(()=>{
+    console.log("Done")
+})
+```
+</CodeBlock>
 Want to see more supported methods? Checkout the sample code in the [Langtrace Weaviate Python Example](https://github.com/Scale3-Labs/langtrace-python-sdk/blob/main/src/examples/weaviate_example/query_text.py) and [Langtrace Weaviate Typescript Example](https://github.com/Scale3-Labs/langtrace-typescript-sdk/blob/main/src/examples/weaviate/basic.ts) repositories.
