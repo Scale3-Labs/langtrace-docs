@@ -34,48 +34,9 @@ npm install weaviate-client --tag next
 
 ## Usage
 
-Here's a quick example of how to use Langtrace with Weaviate query methods:
-<CodeBlock>
+Here's a quick example of how to use Langtrace with Weaviate:
 
-```python Python SDK
-import weaviate
-import weaviate.classes as wvc
-
-import langtrace_python_sdk.langtrace as langtrace
-from langtrace_python_sdk import with_langtrace_root_span
-
-WCS_DEMO_URL = "WEVIATE CLUSTER URL"
-WCS_DEMO_RO_KEY = "<WEAVIATE API KEY>"
-
-client = weaviate.connect_to_wcs(
-    cluster_url=WCS_DEMO_URL,
-    auth_credentials=weaviate.auth.AuthApiKey(WCS_DEMO_RO_KEY),
-    skip_init_checks=True,
-    headers={"X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"]},
-)
-
-langtrace.init(api_key="<API KEY>", batch=False)
-
-@with_langtrace_root_span()
-def query_data_near_text():
-    try:
-        questions = client.collections.get("Question")
-        response = questions.query.near_text(
-            query="biology",
-            limit=2,
-            distance=0.6,
-            return_properties=["category", "question", "answer"],
-            return_metadata=wvc.query.MetadataQuery(
-                score=True, explain_score=True, distance=True
-            ),
-        )
-
-        for each_obj in response.objects:
-            print(each_obj.properties)
-
-    finally:
-        client.close()  # Close client gracefully
-```
+<CodeGroup>
 ``` typescript Typescript SDK
 import * as Langtrace from '@langtrase/typescript-sdk'
 import weaviate, { ObjectsBatcher } from 'weaviate-ts-client'
@@ -205,5 +166,46 @@ void run().then(()=>{
     console.log("Done")
 })
 ```
-</CodeBlock>
+
+```python Python SDK
+import weaviate
+import weaviate.classes as wvc
+
+import langtrace_python_sdk.langtrace as langtrace
+from langtrace_python_sdk import with_langtrace_root_span
+
+WCS_DEMO_URL = "WEVIATE CLUSTER URL"
+WCS_DEMO_RO_KEY = "<WEAVIATE API KEY>"
+
+client = weaviate.connect_to_wcs(
+    cluster_url=WCS_DEMO_URL,
+    auth_credentials=weaviate.auth.AuthApiKey(WCS_DEMO_RO_KEY),
+    skip_init_checks=True,
+    headers={"X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"]},
+)
+
+langtrace.init(api_key="<API KEY>", batch=False)
+
+@with_langtrace_root_span()
+def query_data_near_text():
+    try:
+        questions = client.collections.get("Question")
+        response = questions.query.near_text(
+            query="biology",
+            limit=2,
+            distance=0.6,
+            return_properties=["category", "question", "answer"],
+            return_metadata=wvc.query.MetadataQuery(
+                score=True, explain_score=True, distance=True
+            ),
+        )
+
+        for each_obj in response.objects:
+            print(each_obj.properties)
+
+    finally:
+        client.close()  # Close client gracefully
+```
+
+</CodeGroup>
 Want to see more supported methods? Checkout the sample code in the [Langtrace Weaviate Python Example](https://github.com/Scale3-Labs/langtrace-python-sdk/blob/main/src/examples/weaviate_example/query_text.py) and [Langtrace Weaviate Typescript Example](https://github.com/Scale3-Labs/langtrace-typescript-sdk/blob/main/src/examples/weaviate/basic.ts) repositories.
