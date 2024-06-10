@@ -36,13 +36,12 @@ langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 Step 1: Use the `Langtrace.withLangTraceRootSpan` function to trace interaction which provides `spanId` and `traceId` for the interaction.
 <CodeGroup>
 ```typescript Typescript
-import { init } from '@langtrace-init/init'
-import { withLangTraceRootSpan } from '@langtrace-utils/instrumentation'
+import * as Langtrace from '@langtrase/typescript-sdk'
 import OpenAI from 'openai'
 
-init({ write_spans_to_console: false})
+Langtrace.init({ write_spans_to_console: false})
   const openai = new OpenAI()
-  await withLangTraceRootSpan(async (spanId, traceId) => {
+  await Langtrace.withLangTraceRootSpan(async (spanId, traceId) => {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [

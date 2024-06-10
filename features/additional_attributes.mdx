@@ -11,8 +11,8 @@ Langtrace.init({
   write_spans_to_console: true,
 })
 const openai = new OpenAI()
-await Langtrace.withAdditionalAttributes(async () => {
-  const response = await openai.chat.completions.create({
+const response = await Langtrace.withAdditionalAttributes(async () => {
+  return await openai.chat.completions.create({
     model: 'gpt-4',
     messages: [
       { role: 'system', content: 'Talk like a pirate' },
