@@ -1,0 +1,40 @@
+---
+title: Trace Specific Vendors
+---
+
+You can disable tracing for any supported vendors by passing the `disable_instrumentations` parameter in `Langtrace.init` function. There are two ways to disable tracing for vendors. Either set `all_except` to disable all vendors except the ones specified or set `only` to disable only the vendors specified.
+
+<Warning>Only one of `all_except` and `only` can be set in the `disable_instrumentations` object. Setting both of them will throw an error </Warning>
+
+1. Disable tracing for all vendors except the ones specified.
+
+<CodeGroup>
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  write_spans_to_console: true,
+  disable_instrumentations: { all_except: ['openai'] } // Disable all vendors except openai
+})
+```
+``` python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(disable_instrumentations={"all_except": ['openai'] }) # Disable all vendors except openai
+```
+</CodeGroup>
+
+2. Disable tracing for only the vendors specified.
+
+<CodeGroup>
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  write_spans_to_console: true,
+  disable_instrumentations: { only: ['openai'] } // Disable only openai
+})
+```
+``` python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(only={"only": ['openai'] }) # Disable only openai
+```
+</CodeGroup>
+
