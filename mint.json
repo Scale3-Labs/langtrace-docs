@@ -68,18 +68,19 @@
       "pages": [
         "introduction",
         "quickstart",
-        "concepts",
         "how-to-guides",
-        "features/grouptraces",
-        {
-          "group": "Disable Tracing for Functions",
-          "pages": [
-            "features/disable_function_tracing_ts"
-          ]
-        },
-        "features/traceuserfeedback",
-        "features/evaluation",
+        "concepts",
         "features/faqs"
+      ]
+    },
+    {
+      "group": "Features",
+      "pages": [
+        "features/grouptraces",
+        "features/disable_vendor_instrumentation",
+        "features/disable_function_tracing",
+        "features/traceuserfeedback",
+        "features/evaluation"
       ]
     },
     {
