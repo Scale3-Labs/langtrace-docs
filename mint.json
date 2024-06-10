@@ -80,6 +80,7 @@
         "features/disable_vendor_instrumentation",
         "features/disable_function_tracing",
         "features/traceuserfeedback",
+        "features/export_traces",
         "features/evaluation"
       ]
     },
