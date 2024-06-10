@@ -1,0 +1,27 @@
+---
+title: Add Additional Attributes to Traces
+description: Learn how to add additional attributes to traces in Langtrace You can add additional attributes to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` function. This will add the specified attributes to the trace spans.
+---
+
+<CodeGroup>
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+import OpenAI from 'openai'
+Langtrace.init({
+  write_spans_to_console: true,
+})
+const openai = new OpenAI()
+await Langtrace.withAdditionalAttributes(async () => {
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages: [
+      { role: 'system', content: 'Talk like a pirate' },
+      { role: 'user', content: 'Tell me a story in 3 sentences or less.' }
+    ],
+    stream: false
+  })
+
+  console.info(response)
+}, { user_id: 1234, request_id: "randomId" }) // Add additional attributes to the trace spans can be any key value pair
+```
+</CodeGroup>

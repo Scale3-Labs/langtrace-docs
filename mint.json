@@ -64,7 +64,7 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Getting Started",
       "pages": [
         "introduction",
         "quickstart",
@@ -80,6 +80,7 @@
         "features/disable_vendor_instrumentation",
         "features/disable_function_tracing",
         "features/traceuserfeedback",
+        "features/additional_attributes",
         "features/evaluation"
       ]
     },
