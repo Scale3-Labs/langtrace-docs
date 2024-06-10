@@ -41,6 +41,7 @@ import OpenAI from 'openai'
 
 Langtrace.init({ write_spans_to_console: false})
   const openai = new OpenAI()
+export const run = async ()=>{
   await Langtrace.withLangTraceRootSpan(async (spanId, traceId) => {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -54,6 +55,7 @@ Langtrace.init({ write_spans_to_console: false})
     console.info(response, spanId, traceId)
     //Send spanId and traceId to your application client for user feedback
   })
+}
 ```
 
 ```python Python

@@ -31,7 +31,7 @@ import { ChromaClient, OpenAIEmbeddingFunction } from 'chromadb'
 
 Langtrace.init({ write_spans_to_console: true})
 
-export async function basic (): Promise<void> {
+export async function run (): Promise<void> {
   await Langtrace.withLangTraceRootSpan(async () => {
     const client = new ChromaClient()
     const embedder = new OpenAIEmbeddingFunction({ openai_api_key: process.env.OPENAI_API_KEY as string })
@@ -56,7 +56,7 @@ export async function basic (): Promise<void> {
     console.info(results)
   })
 }
-
+void run().then(()=>console.log('done'))
 ```
 
 - [Python Notebook](https://github.com/Scale3-Labs/langtrace-docs/blob/main/langtrace-examples/chroma-example/chroma-starter.py.ipynb)

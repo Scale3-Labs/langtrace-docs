@@ -152,7 +152,7 @@ async function importQuestions (): Promise<void> {
   await batcher.do()
 }
 
-export async function basic (): Promise<void> {
+export async function run (): Promise<void> {
   await Langtrace.withLangTraceRootSpan(async () => {
     await addSchema()
     await importQuestions()
@@ -201,6 +201,9 @@ async function nearTextWhereQueryWithFilter (): Promise<any> {
   return res
 }
 
+void run().then(()=>{
+    console.log("Done")
+})
 ```
 </CodeBlock>
 Want to see more supported methods? Checkout the sample code in the [Langtrace Weaviate Python Example](https://github.com/Scale3-Labs/langtrace-python-sdk/blob/main/src/examples/weaviate_example/query_text.py) and [Langtrace Weaviate Typescript Example](https://github.com/Scale3-Labs/langtrace-typescript-sdk/blob/main/src/examples/weaviate/basic.ts) repositories.
