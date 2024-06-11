@@ -4,6 +4,31 @@ sidebarTitle: Configuration
 description: Learn how to use Langtrace SDK for Self-Hosted Setup
 ---
 
+Install the dependencies
+
+<CodeGroup>
+
+```python Python
+pip install langtrace-python-sdk openai
+```
+
+```javascript Javascript
+npm i @langtrase/typescript-sdk openai
+```
+
+</CodeGroup>
+
+For `typescript`, add a `package.json` as follows:
+
+```json
+{
+	"dependencies": {
+		"@langtrase/typescript-sdk": "^3.3.2",
+		"openai": "^4.50.0"
+	}
+}
+```
+
 Following are the parameters that you need to initialize the SDK:
 
 <CodeGroup>
@@ -115,3 +140,8 @@ node main.js
 ```
 
 </CodeGroup>
+
+<Note>
+	For Typescript to work, you will have to add the following line in
+	`package.json` file. ```json "type": "module" ```
+</Note>
