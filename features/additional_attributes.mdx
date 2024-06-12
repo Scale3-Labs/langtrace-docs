@@ -3,6 +3,12 @@ title: Add Additional Attributes to Traces
 description: Learn how to add additional attributes to traces in Langtrace You can add additional attributes to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` or `inject_additional_attributes` function. This will add the specified attributes to the trace spans.
 ---
 
+<Warning>
+  {' '}
+  `with_additional_attributes` Decorator will be deprecated in the future. Please
+  use `inject_additional_attributes` function instead.
+</Warning>
+
 <CodeGroup>
 ```typescript Typescript SDK
 import * as Langtrace from "@langtrase/typescript-sdk";
