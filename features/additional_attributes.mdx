@@ -1,6 +1,6 @@
 ---
 title: Add Additional Attributes to Traces
-description: Learn how to add additional attributes to traces in Langtrace You can add additional attributes to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` function. This will add the specified attributes to the trace spans.
+description: Learn how to add additional attributes to traces in Langtrace You can add additional attributes to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` or `inject_additional_attributes` function. This will add the specified attributes to the trace spans.
 ---
 
 <CodeGroup>
@@ -27,7 +27,28 @@ export const run = async ()=>{
 run().then(()=>console.log('done'))
 ```
 
-```python Python SDK
+```python Python SDK - Function Based
+from langtrace_python_sdk import inject_additional_attributes
+
+def do_llm_stuff(name=""):
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": "Say this is a test three times"}],
+        stream=False,
+    )
+    return response
+
+
+def main():
+  response = inject_additional_attributes(lambda: do_llm_stuff(name="llm"), {'user.id': 'userId'})
+
+  # if the function do not take arguments then this syntax will work
+  response = inject_additional_attributes(do_llm_stuff, {'user.id': 'userId'})
+
+main()
+```
+
+```python Python SDK - Decorator Based
 from langtrace_python_sdk import langtrace, with_additional_attributes
 from openai import OpenAI
 
@@ -35,6 +56,7 @@ langtrace.init(write_spans_to_console=True)
 
 openai = new OpenAI()
 
+# will be deprecated in the future.
 @with_additional_attributes({'user_id': 1234, 'request_id': 'random_id'})
 def run():
   response = openai.chat.completions.create(
@@ -48,5 +70,5 @@ def run():
     return response
 run()
 ```
-</CodeGroup>
 
+</CodeGroup>
