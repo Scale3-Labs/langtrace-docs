@@ -1,0 +1,87 @@
+---
+title: "Elastic APM"
+description: "Langtrace and Elastic APM Integration Guide"
+---
+
+## Overview
+
+Elastic APM is a powerful solution for monitoring the performance of your applications. This guide focuses on integrating Langtrace AI with Elastic APM for distributed tracing. By leveraging Elastic's capabilities, you can analyze and visualize trace data from Langtrace AI.
+
+## Prerequisites
+
+Before you begin, ensure you have the following:
+
+- An [Elastic](https://elastic.co/) account
+- A [Langtrace AI](http://langtrace.ai/) account
+
+## Setup
+
+### Generate Elastic APM API Token
+
+To generate the Elastic APM API token:
+
+- Login to your [Elastic](https://cloud.elastic.co/) deployment then click Observability
+- Navigate to the Integrations tab then APM
+
+![Elastic](/images/elasticapm1.png)
+
+- Select OpenTelemetry then set the following environment variables in your terminal:
+
+```bash
+export OTEL_SERVICE_NAME=your-elastic-service
+export OTEL_RESOURCE_ATTRIBUTES=service.name=your-elastic-service
+export OTEL_EXPORTER_OTLP_ENDPOINT="<https://your-elastic-apm-endpoint:443>"
+export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer%20your-elastic-apm-token"
+export OTEL_EXPORTER_OTLP_PROTOCOL=oltp
+```
+
+Replace the following values:
+
+- `your_elastic_apm_token` with your actual Elastic APM API token.
+- `your_elastic_apm_endpoint` with your endpoint values.
+- `your-app-name` with your application/service name.
+- `your-elastic-service` with your service name.
+
+### Install the Instrumentation Library
+
+If you haven't already, install the latest release of the Elastic OpenTelemetry Python package:
+
+```bash
+pip install elastic-apm[opentelemetry]
+opentelemetry-bootstrap -a install
+```
+
+### **Running the Application**
+
+With the environment variables set, run your application with OpenTelemetry instrumentation. Use the following command:
+
+```
+opentelemetry-instrument python main.py
+```
+
+### **Verifying the Setup**
+
+Once the application is running, you should see the output of your query printed to the console. Additionally, you should see traces in your Elastic APM dashboard corresponding to the operations performed in your script. This integration is made possible due to Langtrace's support for OpenTelemetry, which enables seamless tracing and observability.
+
+![Elastic](/images/elasticapm2.png)
+
+**Troubleshooting**
+
+• **Traces not visible in Elastic APM**: Ensure that all required environment variables are set correctly. Double-check the variable names and values.
+
+• **Missing Libraries**: Verify that all necessary libraries are installed. You can reinstall the required packages using the following commands:
+
+```bash
+pip install opentelemetry-distro[otlp]
+opentelemetry-bootstrap -a install
+```
+
+**Additional Resources**
+
+• [Elastic APM Documentation](https://www.elastic.co/guide/en/apm/get-started/current/quick-start-overview.html)
+
+• [Elastic Observability Documentation](https://www.elastic.co/guide/en/observability/current/index.html)
+
+• [Langtrace AI Documentation](https://docs.langtrace.ai/)
+
+• [Elastic Community](https://discuss.elastic.co/)
