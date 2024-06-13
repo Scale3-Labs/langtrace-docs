@@ -1,0 +1,28 @@
+---
+title: Annotations
+description: Langtrace allows you to create tests and manually annotate your traces to evaluate the performance and create datasets for running evaluations.
+---
+
+## How to create tests
+
+To create a tests, create a project and go to the Annotations tab. Click on the `Create Test` button and provide the following details:
+
+- **Name**: A unique name for the test.
+- **Description**: A brief description of the test.
+- **Pick a Scale**: Choose the scale on which you want to evaluate the test. You can choose among the following options:
+  - **Binary**: Choose this option if you want to evaluate the test on a binary scale.
+  - **Rating**: Choose this option if you want to evaluate the test on a rating scale.
+
+![traces](/images/annotation-1.png)
+
+## Start Annotating
+
+Once you have created a test and captured traces to it, you can start annotating the captured traces. Go to the Annotations tab and use the scale you picked while creating the test to annotate the test. The chart at the top will show you how the scores are trending over time.
+
+![traces](/images/annotation-2.png)
+
+## Add to Dataset
+
+Once annotated or while annotating, you can add the traces to a dataset. This will allow you to run evaluations on the dataset and get insights into the performance of your application. To add traces to a dataset, click on the checkbox button on the first column of each row and click on the `Add to Dataset` button.
+
+![traces](/images/annotation-3.png)

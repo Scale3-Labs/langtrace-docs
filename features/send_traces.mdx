@@ -1,10 +1,16 @@
 ---
-title: Exporting Traces
-sidebarTitle: Exporting Traces
+title: Sending Traces
+sidebarTitle: Sending Traces
 ---
-<Warning> Using the `custom_remote_exporter` or `api_host` option with a custom url will cause majority of the langtrace features to not work and should only be used if **Langtrace** is being used only to **capture** and **export** traces </Warning>
 
-Traces are exported to Langtrace Cloud by default. You can export traces to a custom endpoint by either using a custom exporter or setting the api_host option.
+<Warning>
+  {" "}
+  Using the `custom_remote_exporter` or `api_host` option with a custom url will
+  cause majority of the langtrace features to not work and should only be used if
+  **Langtrace** is being used only to **capture** and **send** traces{" "}
+</Warning>
+
+Traces are sent to Langtrace Cloud by default. You can send traces to a custom endpoint by either using a custom exporter or setting the api_host option.
 The simplest way to export traces to a custom endpoint is to set the `api_host` parameter in the `Langtrace.init` function. This will allow you to export traces to a custom endpoint.
 
 <CodeGroup>
@@ -25,6 +31,7 @@ langtrace.init(
 )
 # Your application code here
 ```
+
 </CodeGroup>
 
 This can also be done by passing a custom exporter to the `custom_remote_exporter` parameter in the `Langtrace.init` function. The `custom_remote_exporter` option will take precedence over the `api_host` option.
@@ -46,41 +53,48 @@ Langtrace.init({
 
 ```typescript custom_exporter.ts
 // CustomExporter.ts
-import { SpanExporter, ReadableSpan } from '@opentelemetry/sdk-trace-base'
-import axios from 'axios'
+import { SpanExporter, ReadableSpan } from "@opentelemetry/sdk-trace-base";
+import axios from "axios";
 
 export class CustomExporter implements SpanExporter {
-  private readonly apiHost: string
+  private readonly apiHost: string;
 
-  constructor (apiHost: string) {
-    this.apiHost = apiHost
+  constructor(apiHost: string) {
+    this.apiHost = apiHost;
   }
 
-  async export (spans: ReadableSpan[], resultCallback: (result: any) => void): Promise<void> {
-    const data = spans.map(span => ({
+  async export(
+    spans: ReadableSpan[],
+    resultCallback: (result: any) => void
+  ): Promise<void> {
+    const data = spans.map((span) => ({
       traceId: span.spanContext().traceId,
       spanId: span.spanContext().spanId,
       name: span.name,
       startTime: span.startTime,
       endTime: span.endTime,
-      attributes: span.attributes
-    }))
+      attributes: span.attributes,
+    }));
 
-    const headers = { 'Content-Type': 'application/json' }
+    const headers = { "Content-Type": "application/json" };
 
     try {
-      const response = await axios.post(this.apiHost, data, { headers })
-      resultCallback({ code: response.status === 200 ? 0 : 1 })
+      const response = await axios.post(this.apiHost, data, { headers });
+      resultCallback({ code: response.status === 200 ? 0 : 1 });
     } catch (error: any) {
-      resultCallback({ code: 1, error: new Error(`Failed to export spans: ${error.message}`) })
+      resultCallback({
+        code: 1,
+        error: new Error(`Failed to export spans: ${error.message}`),
+      });
     }
   }
 
-  async shutdown (): Promise<void> {
-    return await Promise.resolve()
+  async shutdown(): Promise<void> {
+    return await Promise.resolve();
   }
 }
 ```
+
 </CodeGroup>
 </Tab>
 <Tab title="Python SDK">
@@ -90,11 +104,13 @@ from langtrace_python_sdk import langtrace
 from custom_exporter import CustomExporter
 
 langtrace.init(
-  write_spans_to_console=True,
-  custom_remote_exporter=CustomExporter("https://example.com/")
+write_spans_to_console=True,
+custom_remote_exporter=CustomExporter("https://example.com/")
 )
+
 # Your application code here
-```
+
+````
 
 ```python custom_exporter.py
 # custom_exporter.py
@@ -135,7 +151,8 @@ class CustomExporter(SpanExporter):
 
     def shutdown(self) -> None:
         pass
-```
+````
+
 </CodeGroup>
 </Tab>
 </Tabs>

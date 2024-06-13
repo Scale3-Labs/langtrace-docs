@@ -80,13 +80,15 @@
 		{
 			"group": "SDK Features",
 			"pages": [
-				"features/grouptraces",
-				"features/disable_vendor_instrumentation",
-				"features/disable_function_tracing",
-				"features/traceuserfeedback",
-				"features/export_traces",
 				"features/additional_attributes",
-				"features/evaluation"
+				"features/annotations",
+				"features/disable_function_tracing",
+				"features/disable_vendor_instrumentation",
+				"features/evaluations",
+				"features/compare-evaluations",
+				"features/grouptraces",
+				"features/send_traces",
+				"features/traceuserfeedback"
 			]
 		},
 		{
