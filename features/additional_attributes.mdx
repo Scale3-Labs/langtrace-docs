@@ -4,11 +4,7 @@ sidebarTitle: Additional Attributes
 description: You can add additional attributes to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` or `inject_additional_attributes` function. This will add the specified attributes to the trace spans.
 ---
 
-<Warning>
-	{" "}
-	`with_additional_attributes` Decorator will be deprecated in the future. Please
-	use `inject_additional_attributes` function instead.
-</Warning>
+You can add additional attributes to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` for typescript or `inject_additional_attributes` function for python. This will add the specified attributes to the trace spans. Make sure to pass the attributes as a key-value pair to the function.
 
 <CodeGroup>
 ```typescript Typescript SDK
@@ -76,5 +72,11 @@ def run():
     return response
 run()
 ```
+
+<Warning>
+  {" "}
+  DO NOT USE this the Python decorator - `with_additional_attributes`. It will be
+  deprecated soon. Please use `inject_additional_attributes` function instead.
+</Warning>
 
 </CodeGroup>
