@@ -8,6 +8,8 @@ description: The Langtrace SDK allows you to group related operations together u
 
 A typical application may have multiple operations that are related to each other. For example, in a RAG workflow, the user's input is embedded using a model, a semantic search is done on a VectorDB, and the results are again given back to the model to get a natural language response. In such cases, it is useful to group these operations together under a single root span. This allows you to see the entire flow of operations in a single trace.
 
+![Group Traces](/images/grouptraces.png)
+
 ## Installation
 
 Step 1: Install and initialize Langtrace SDK. Refer to the [installation guide](/quickstart) for more information.
@@ -37,43 +39,61 @@ Step 2: Use the `with_langtrace_root_span` decorator (Python) or `WithLangTraceR
 ```typescript Typescript
 import * as Langtrace from "@langtrase/typescript-sdk";
 
-export async function chatResponse (): Promise<void> {
-  await Langtrace.withLangTraceRootSpan(async () => {
-    const client = new ChromaClient()
-    const collection = await client.getCollection({
-      name: 'documentation',
-      embeddingFunction: embedder
-    })
+export async function chatResponse(): Promise<void> {
+	await Langtrace.withLangTraceRootSpan(async () => {
+		const client = new ChromaClient();
+		const collection = await client.getCollection({
+			name: "documentation",
+			embeddingFunction: embedder,
+		});
 
-    const results = await collection.query({
-      nResults: 2,
-      queryTexts: ['How to setup Langtrace?']
-    })
+		const results = await collection.query({
+			nResults: 2,
+			queryTexts: ["How to setup Langtrace?"],
+		});
 
-    const openaiclient = new OpenAI()
-    return openaiclient.chat.completions.create({
-      model: "gpt-4",
-      messages: [{ role: "system", content: `Respond in a natural language: ${results}` }],
-      stream: false,
-    });
-  })
+		const openaiclient = new OpenAI();
+		return openaiclient.chat.completions.create({
+			model: "gpt-4",
+			messages: [
+				{
+					role: "system",
+					content: `Respond in a natural language: ${results}`,
+				},
+			],
+			stream: false,
+		});
+	});
 }
 ```
 
 ```python Python
-from langtrace_python_sdk.utils.with_root_span import (
-    with_langtrace_root_span,
-    with_additional_attributes,
-)
+import chromadb
+from langtrace_python_sdk import langtrace
+from langtrace_python_sdk.utils.with_root_span import with_langtrace_root_span
+from openai import OpenAI
+
+langtrace.init()
 
 @with_langtrace_root_span()
 def example():
-    response = client.chat.completions.create(
+
+    client = chromadb.HttpClient()
+    collection = client.get_collection("sample_collection")
+    results = collection.query(
+        query_texts=['How to setup Langtrace?'],
+        n_results=2,
+    )
+    openai_client = OpenAI()
+    response = openai_client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": "Hi, how to setup Langtrace?"}],
         stream=False,
     )
-    return response
+    print(response.choices[0].message.content)
+
+example()
+
 ```
 
 </CodeGroup>
