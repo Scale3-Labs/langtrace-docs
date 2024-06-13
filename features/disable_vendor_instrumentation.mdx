@@ -7,7 +7,7 @@ You can disable tracing for any supported vendors by passing the `disable_instru
 <Warning>
   Only one of `all_except` and `only` can be set in the
   `disable_instrumentations` object. Setting both of them will throw an
-  error{" "}
+  error{' '}
 </Warning>
 
 1. Disable tracing for all vendors except the ones specified.
@@ -38,6 +38,6 @@ Langtrace.init({
 ```
 ``` python Python SDK
 from langtrace_python_sdk import langtrace
-langtrace.init(only={"only": ['openai'] }) # Disable only openai
+langtrace.init({"only": ['openai'] }) # Disable only openai
 ```
 </CodeGroup>
