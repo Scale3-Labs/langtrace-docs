@@ -1,9 +1,13 @@
 ---
-title: Typescript SDK
-sidebarTitle: Disable Tracing For Functions
+title: Disable Tracing For Functions
+sidebarTitle: Disable Function Tracing
+description: You can disable tracing for specific functions per vendor by passing the `disable_tracing_for_functionss` parameter in `Langtrace.init` function. The `object` should have the vendor name as the `key` and an `array` of **function names** as the `value`.
 ---
 
-You can disable tracing for specific functions per vendor by passing the `disable_tracing_for_functionss` parameter in `Langtrace.init` function. The `object` should have the vendor name as the `key` and an `array` of **function names** as the `value`. See below on how you can disable funciton level tracing for specific vendors:
+## Disable Tracing In Typescript
+
+See below on how you can disable funciton level tracing for specific vendors:
+
 <CodeGroup>
 ``` typescript openai
 import * as Langtrace from "@langtrase/typescript-sdk";
@@ -21,163 +25,168 @@ Langtrace.init({
 })
 ```
 
-``` typescript anthropic
+```typescript anthropic
 import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    anthropic: ['anthropic.messages.create'] // All supported functions for anthropic
-  }
-})
-```
-``` typescript llamaindex
-import * as Langtrace from "@langtrase/typescript-sdk";
-Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    llamaindex: [ // All supported functions for llamaindex
-      'llamaindex.OpenAI.chat',
-      'llamaindex.RetrieverQueryEngine.query',
-      'llamaindex.VectorIndexRetriever.retrieve',
-      'llamaindex.SimpleVectorStore.query',
-      'llamaindex.RetrieverQueryEngine.retrieve'
-    ]
-  }
-})
-
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		anthropic: ["anthropic.messages.create"], // All supported functions for anthropic
+	},
+});
 ```
 
-``` typescript chromadb
+```typescript llamaindex
 import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    chromadb: [ // All supported functions for chromadb
-      'chromadb.collection.add',
-      'chromadb.collection.count',
-      'chromadb.collection.delete',
-      'chromadb.collection.modify',
-      'chromadb.collection.peek',
-      'chromadb.collection.query',
-      'chromadb.collection.update'
-    ]
-  }
-})
-
-```
-``` typescript cohere
-import * as Langtrace from "@langtrase/typescript-sdk";
-Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    cohere: [ // All supported functions for cohere
-      'cohere.chat',
-      'cohere.chatStream',
-      'cohere.embed',
-      'cohere.embedJobs.create',
-      'cohere.rerank'
-    ]
-  }
-})
-
-
-```
-``` typescript groq
-import * as Langtrace from "@langtrase/typescript-sdk";
-Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    groq: ['groq.chat.completions.create'] // All supported functions for groq
-  }
-})
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		llamaindex: [
+			// All supported functions for llamaindex
+			"llamaindex.OpenAI.chat",
+			"llamaindex.RetrieverQueryEngine.query",
+			"llamaindex.VectorIndexRetriever.retrieve",
+			"llamaindex.SimpleVectorStore.query",
+			"llamaindex.RetrieverQueryEngine.retrieve",
+		],
+	},
+});
 ```
 
-``` typescript pinecone
+```typescript chromadb
 import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    pinecone: [ // All supported functions for pinecone
-      'pinecone.index.deleteAll',
-      'pinecone.index.deleteMany',
-      'pinecone.index.deleteOne',
-      'pinecone.index.query',
-      'pinecone.index.upsert'
-    ]
-  }
-})
-```
-``` typescript pg
-import * as Langtrace from "@langtrase/typescript-sdk";
-Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    pg: ['pg.Client.query'] // All supported functions for pg
-  }
-})
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		chromadb: [
+			// All supported functions for chromadb
+			"chromadb.collection.add",
+			"chromadb.collection.count",
+			"chromadb.collection.delete",
+			"chromadb.collection.modify",
+			"chromadb.collection.peek",
+			"chromadb.collection.query",
+			"chromadb.collection.update",
+		],
+	},
+});
 ```
 
-``` typescript qdrant
+```typescript cohere
 import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    qdrant: [ // All supported functions for qdrant
-      'qdrantdb.count',
-      'qdrantdb.delete',
-      'qdrantdb.discover',
-      'qdrantdb.discover_batch',
-      'qdrantdb.get_collection',
-      'qdrantdb.get_collections',
-      'qdrantdb.recommend',
-      'qdrantdb.recommend_batch',
-      'qdrantdb.retrieve',
-      'qdrantdb.search',
-      'qdrantdb.search_batch',
-      'qdrantdb.update_collection',
-      'qdrantdb.update_vectors',
-      'qdrantdb.upsert'
-    ]
-  }
-})
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		cohere: [
+			// All supported functions for cohere
+			"cohere.chat",
+			"cohere.chatStream",
+			"cohere.embed",
+			"cohere.embedJobs.create",
+			"cohere.rerank",
+		],
+	},
+});
 ```
-``` typescript weaviate
+
+```typescript groq
 import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
-  write_spans_to_console: true,
-  batch: false,
-  disable_tracing_for_functions: {
-    weaviate: [ // All supported functions for weaviate
-      'batch.objectsBatcher.do',
-      'batch.referencePayloadBuilder.do',
-      'batch.referencesBatcher.do',
-      'graphql.aggregate.do',
-      'graphql.explore.do',
-      'graphql.get.do',
-      'graphql.raw.do',
-      'schema.classCreator.do',
-      'schema.classDeleter.do',
-      'schema.classGetter.do',
-      'schema.propertyCreator.do',
-      'schema.shardsGetter.do',
-      'schema.shardsUpdater.do',
-      'schema.tenantExists.do',
-      'schema.tenantsCreator.do',
-      'schema.tenantsGetter.do',
-      'schema.tenantsUpdater.do'
-    ]
-  }
-})
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		groq: ["groq.chat.completions.create"], // All supported functions for groq
+	},
+});
 ```
+
+```typescript pinecone
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		pinecone: [
+			// All supported functions for pinecone
+			"pinecone.index.deleteAll",
+			"pinecone.index.deleteMany",
+			"pinecone.index.deleteOne",
+			"pinecone.index.query",
+			"pinecone.index.upsert",
+		],
+	},
+});
+```
+
+```typescript pg
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		pg: ["pg.Client.query"], // All supported functions for pg
+	},
+});
+```
+
+```typescript qdrant
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		qdrant: [
+			// All supported functions for qdrant
+			"qdrantdb.count",
+			"qdrantdb.delete",
+			"qdrantdb.discover",
+			"qdrantdb.discover_batch",
+			"qdrantdb.get_collection",
+			"qdrantdb.get_collections",
+			"qdrantdb.recommend",
+			"qdrantdb.recommend_batch",
+			"qdrantdb.retrieve",
+			"qdrantdb.search",
+			"qdrantdb.search_batch",
+			"qdrantdb.update_collection",
+			"qdrantdb.update_vectors",
+			"qdrantdb.upsert",
+		],
+	},
+});
+```
+
+```typescript weaviate
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+	write_spans_to_console: true,
+	batch: false,
+	disable_tracing_for_functions: {
+		weaviate: [
+			// All supported functions for weaviate
+			"batch.objectsBatcher.do",
+			"batch.referencePayloadBuilder.do",
+			"batch.referencesBatcher.do",
+			"graphql.aggregate.do",
+			"graphql.explore.do",
+			"graphql.get.do",
+			"graphql.raw.do",
+			"schema.classCreator.do",
+			"schema.classDeleter.do",
+			"schema.classGetter.do",
+			"schema.propertyCreator.do",
+			"schema.shardsGetter.do",
+			"schema.shardsUpdater.do",
+			"schema.tenantExists.do",
+			"schema.tenantsCreator.do",
+			"schema.tenantsGetter.do",
+			"schema.tenantsUpdater.do",
+		],
+	},
+});
+```
+
 </CodeGroup>
-
-
-
