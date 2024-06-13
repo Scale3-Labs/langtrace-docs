@@ -11,13 +11,14 @@ Inspect provides many built-in components, including facilities for prompt engin
 
 In order to run evaluations, you need to have a dataset that has been annotated with Langtrace. To annotate a dataset, you can follow the steps in the [Annotate & Measure](/features/annotations) guide. Once you have an annotated dataset, follow the steps below to run evaluations.
 
-1. Install Inspect AI
+1. Install Langtrace SDK & Inspect AI
 
 ```
+pip install langtrace-python-sdk
 pip install inspect-ai
 ```
 
-2. Make sure you add the LANGTRACE_API_KEY to your environment variables as shown below:
+2. Make sure you add the LANGTRACE_API_KEY to your environment variables as shown below. **Note**: If you don't have an API key, you can generate one by following the steps in the [Generate API Key](/quickstart) guide.
 
 ```bash
 export LANGTRACE_API_KEY=<your-api-key

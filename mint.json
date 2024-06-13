@@ -81,6 +81,7 @@
 			"group": "SDK Features",
 			"pages": [
 				"features/additional_attributes",
+				"features/attach_user_id",
 				"features/annotations",
 				"features/disable_function_tracing",
 				"features/disable_vendor_instrumentation",
