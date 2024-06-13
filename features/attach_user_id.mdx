@@ -4,11 +4,9 @@ sidebarTitle: Attach User Id
 description: Learn how to attach user ids to traces in Langtrace. You can use the `withAdditionalAttributes` or `inject_additional_attributes` function to pass user ids. This can inturn be used within Langtrace for filtering and grouping traces.
 ---
 
-<Warning>
-	{" "}
-	`with_additional_attributes` Decorator will be deprecated in the future. Please
-	use `inject_additional_attributes` function instead.
-</Warning>
+You can attach user ids to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` for typescript or `inject_additional_attributes` function for python. This will add the specified attributes to the trace spans. Make sure to pass the user id as a key-value pair to the function.
+
+The key should be `user_id` and the value should be the user id. User ids should be unique for each user.
 
 <CodeGroup>
 ```typescript Typescript SDK
@@ -62,11 +60,6 @@ langtrace.init(write_spans_to_console=True)
 
 openai = new OpenAI()
 
-<Warning>
-	{" "}
-	DO NOT USE this option. `with_additional_attributes` will be deprecated soon. Please
-	use `inject_additional_attributes` function instead.
-</Warning>
 @with_additional_attributes({'user_id': 1234, 'request_id': 'random_id'})
 def run():
   response = openai.chat.completions.create(
@@ -83,6 +76,12 @@ run()
 
 </CodeGroup>
 
-Now, you can filter and group traces based on the user id. This can be useful for debugging and monitoring purposes. 
+<Warning>
+  {" "}
+  DO NOT USE this the Python decorator - `with_additional_attributes`. It will be
+  deprecated soon. Please use `inject_additional_attributes` function instead.
+</Warning>
+
+Now, you can filter and group traces based on the user id. This can be useful for debugging and monitoring purposes.
 
 ![userid](/images/pass_user_id.png)
