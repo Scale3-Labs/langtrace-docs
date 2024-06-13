@@ -1,0 +1,101 @@
+---
+title: Evaluations
+description: Langtrace allows you run evaluations on annotated datasets aswell as your own datasets and get insights on the performance of your application.
+---
+
+## How to run evaluations
+
+Langtrace relies on [Inspect AI](https://ukgovernmentbeis.github.io/inspect_ai/), an Open Source framework for large language model evaluations created by the [UK AI Safety Institute](https://www.gov.uk/government/news/ai-safety-institute-releases-new-ai-safety-evaluations-platform). You can run evaluations on annotated datasets as well as your own datasets.
+
+Inspect provides many built-in components, including facilities for prompt engineering, tool usage, multi-turn dialog, and model graded evaluations. Extensions to Inspect (e.g. to support new elicitation and scoring techniques) can be provided by other Python packages.
+
+In order to run evaluations, you need to have a dataset that has been annotated with Langtrace. To annotate a dataset, you can follow the steps in the [Annotate & Measure](/features/annotations) guide. Once you have an annotated dataset, follow the steps below to run evaluations.
+
+1. Install Inspect AI
+
+```
+pip install inspect-ai
+```
+
+2. Make sure you add the LANGTRACE_API_KEY to your environment variables as shown below:
+
+```bash
+export LANGTRACE_API_KEY=<your-api-key
+```
+
+3. Copy the dataset ID from Langtrace and replace `<datasetId>` in the script below
+
+![evaluations](/images/evaluations-1.png)
+
+4. Write a simple evaluation script and save it in a file called `example_eval.py`
+
+```python
+from inspect_ai import Task, task
+from inspect_ai.dataset import csv_dataset
+from inspect_ai.scorer import model_graded_qa
+from inspect_ai.solver import chain_of_thought, self_critique
+
+@task
+def example_eval():
+    return Task(
+        dataset=csv_dataset("langtracefs://<datasetId>"),
+        plan=[
+            chain_of_thought(),
+            self_critique()
+        ],
+        scorer=model_graded_qa()
+    )
+
+```
+
+5. Run the evaluation script
+
+```bash
+inspect eval example_eval.py --model openai/gpt-3.5-turbo --log-dir langtracefs://<datasetId>
+```
+
+6. If you want to run evaluations on your own datasets, you can set up your evaluation script as shown below:
+
+```python
+from inspect_ai import Task, task
+from inspect_ai.dataset import csv_dataset
+from inspect_ai.scorer import model_graded_qa
+from inspect_ai.solver import chain_of_thought, self_critique
+
+@task
+def example_eval():
+    return Task(
+        dataset=csv_dataset("./path/to/your/dataset.csv"),
+        plan=[
+            chain_of_thought(),
+            self_critique()
+        ],
+        scorer=model_graded_qa()
+    )
+
+```
+
+7. And, run the evaluation script by simply passing `langtracefs://` to the `--log-dir` flag.
+
+```bash
+inspect eval example_eval.py --model openai/gpt-3.5-turbo --log-dir langtracefs://
+```
+
+8. Now, go to the Evaluations tab in the Langtrace dashboard to view the evaluation results.
+
+![evaluations](/images/evaluations-2.png)
+
+![evaluations](/images/evaluations-3.png)
+
+9. Additionally, inspect has a built-in web interface that you can use to view the evaluation results. It works inside VSCode as well as on the browser. You can access the web interface by running the following command:
+
+```bash
+inspect view --log-dir langtracefs://<datasetId>
+```
+
+![evaluations](/images/inspect-view.png)
+
+<Tip>
+  You can read more about Inspect AI and its capabilities in the [Inspect AI
+  documentation](https://ukgovernmentbeis.github.io/inspect_ai/).
+</Tip>
