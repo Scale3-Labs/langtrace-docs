@@ -24,6 +24,12 @@ pip install inspect-ai
 export LANGTRACE_API_KEY=<your-api-key
 ```
 
+**Note**: If you are self-hosting, set the LANGTRACE_API_HOST environment variable to the URL of your Langtrace instance.
+
+```bash
+export LANGTRACE_API_HOST=<your-langtrace-instance-url>
+```
+
 3. Copy the dataset ID from Langtrace and replace `<datasetId>` in the script below
 
 ![evaluations](/images/evaluations-1.png)
@@ -55,7 +61,15 @@ def example_eval():
 inspect eval example_eval.py --model openai/gpt-3.5-turbo --log-dir langtracefs://<datasetId>
 ```
 
-6. If you want to run evaluations on your own datasets, you can set up your evaluation script as shown below:
+6. Additionally, you can also configure the `--log-dir` as an environment variable as shown below:
+
+```bash
+INSPECT_LOG_DIR=langtracefs://<datasetId>
+```
+
+Additional options for configuring your environment can be found in the [Inspect AI documentation](https://ukgovernmentbeis.github.io/inspect_ai/workflow.html#sec-workflow-configuration).
+
+7. If you want to run evaluations on your own datasets, you can set up your evaluation script as shown below:
 
 ```python
 from inspect_ai import Task, task
@@ -76,19 +90,19 @@ def example_eval():
 
 ```
 
-7. And, run the evaluation script by simply passing `langtracefs://` to the `--log-dir` flag.
+8. And, run the evaluation script by simply passing `langtracefs://` to the `--log-dir` flag.
 
 ```bash
 inspect eval example_eval.py --model openai/gpt-3.5-turbo --log-dir langtracefs://
 ```
 
-8. Now, go to the Evaluations tab in the Langtrace dashboard to view the evaluation results.
+9. Now, go to the Evaluations tab in the Langtrace dashboard to view the evaluation results.
 
 ![evaluations](/images/evaluations-2.png)
 
 ![evaluations](/images/evaluations-3.png)
 
-9. Additionally, inspect has a built-in web interface that you can use to view the evaluation results. It works inside VSCode as well as on the browser. You can access the web interface by running the following command:
+10. Additionally, inspect has a built-in web interface that you can use to view the evaluation results. It works inside VSCode as well as on the browser. You can access the web interface by running the following command:
 
 ```bash
 inspect view --log-dir langtracefs://<datasetId>
