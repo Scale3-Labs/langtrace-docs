@@ -111,7 +111,8 @@
 					"pages": [
 						"supported-integrations/llm-frameworks/llamaindex",
 						"supported-integrations/llm-frameworks/langchain",
-						"supported-integrations/llm-frameworks/crewai"
+						"supported-integrations/llm-frameworks/crewai",
+						"supported-integrations/llm-frameworks/dspy"
 					]
 				},
 				{
