@@ -89,7 +89,8 @@
 				"features/compare-evaluations",
 				"features/grouptraces",
 				"features/send_traces",
-				"features/traceuserfeedback"
+				"features/traceuserfeedback",
+				"features/manage_prompts"
 			]
 		},
 		{
