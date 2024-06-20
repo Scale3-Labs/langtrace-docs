@@ -90,7 +90,8 @@
 				"features/grouptraces",
 				"features/send_traces",
 				"features/traceuserfeedback",
-				"features/manage_prompts"
+				"features/manage_prompts",
+				"features/playground"
 			]
 		},
 		{
