@@ -69,7 +69,7 @@ langtrace.init()
 client = OpenAI()
 
 @with_langtrace_root_span()
-def main(spanId, traceId):
+def main(span_id, trace_id):
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
@@ -78,8 +78,8 @@ def main(spanId, traceId):
         ],
         stream=False,
     )
-      print(response, spanId, traceId)
-      # Send spanId and traceId to your application client for user feedback
+      print(response, span_id, trace_id)
+      # Send span_id and trace_id to your application client for user feedback
 
 main()
 
