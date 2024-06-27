@@ -1,0 +1,85 @@
+---
+title: Attach Prompt IDs and Versions to Traces
+sidebarTitle: Attach Prompt Id / Version
+description: Learn how to attach prompt ids and prompt versions to traces in Langtrace. You can use the `withAdditionalAttributes` or `inject_additional_attributes` function to pass prompt ids / versions. This can inturn be used within Langtrace for filtering and grouping traces.
+---
+
+You can attach prompt ids and prompt versions to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` for typescript or `inject_additional_attributes` function for python. This will add the specified attributes to the trace spans. Make sure to pass the prompt id or prompt versions as a key-value pair to the function.
+
+The keys are `prompt_id` and `prompt_version` and the values should be the prompt id and version respectively.
+
+<CodeGroup>
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+import OpenAI from 'openai'
+Langtrace.init({
+  write_spans_to_console: true,
+})
+const openai = new OpenAI()
+export const run = async ()=>{
+    const response = await Langtrace.withAdditionalAttributes(async () => {
+      return await openai.chat.completions.create({
+        model: 'gpt-4',
+        messages: [
+          { role: 'system', content: 'Talk like a pirate' },
+          { role: 'user', content: 'Tell me a story in 3 sentences or less.' }
+        ],
+        stream: false
+      })
+    }, { prompt_id: "prompt1234", prompt_version: "1" })
+}
+run().then(() => console.log('done'))
+```
+
+```python Python SDK - Function Based
+from langtrace_python_sdk import inject_additional_attributes
+
+def do_llm_stuff(name=""):
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": "Say this is a test three times"}],
+        stream=False,
+    )
+    return response
+
+
+def main():
+  response = inject_additional_attributes(lambda: do_llm_stuff(name="llm"), {'prompt_id': 'promptid1234', 'prompt_version': '1'})
+
+  # if the function do not take arguments then this syntax will work
+  response = inject_additional_attributes(do_llm_stuff, {'prompt_id': 'promptid1234', 'prompt_version': '1'})
+
+main()
+```
+
+```python Python SDK - Decorator Based
+from langtrace_python_sdk import langtrace, with_additional_attributes
+from openai import OpenAI
+
+langtrace.init(write_spans_to_console=True)
+
+openai = new OpenAI()
+
+@with_additional_attributes({'prompt_id': '1234', 'prompt_version': '1'})
+def run():
+  response = openai.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "Talk like a pirate"},
+            {"role": "user", "content": "Tell me a story in 3 sentences or less."},
+        ],
+        stream=True,
+    )
+    return response
+run()
+```
+
+</CodeGroup>
+
+<Warning>
+  {" "}
+  DO NOT USE this the Python decorator - `with_additional_attributes`. It will be
+  deprecated soon. Please use `inject_additional_attributes` function instead.
+</Warning>
+
+Now, you can filter and group traces based on the prompt id. This can be useful for debugging and monitoring purposes.
