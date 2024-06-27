@@ -1,0 +1,71 @@
+---
+title: Langtrace on Kubernetes
+sidebarTitle: Kubernetes
+description: Setup langtrace using helm chart
+---
+
+> Github Repo: [langtrace-helm-chart](https://github.com/Scale3-Labs/langtrace-helm-chart)<br />
+
+## Requirements
+
+1. Access to Kubernetes cluster
+2. Helm installed (installation [steps](https://helm.sh/docs/intro/install/))
+3. kubectl installed (installation [steps](https://kubernetes.io/docs/tasks/tools/install-kubectl/))
+
+## Quick Start
+
+```bash
+helm repo add langtrace https://scale3labs.github.io/langtrace-helm-chart
+helm install langtrace langtrace/langtrace
+```
+
+<Warning>
+	Make sure you are in the right namespace context before running the helm
+	install.
+</Warning>
+
+## Configuration
+
+By default helm chart will spin up following services:
+
+- Langtrace App
+- Postgres DB with persistent volume
+- CLickhouse DB with persistent volume
+
+> If you wish to reuse an existing Postgres or Clickhouse instance, you can just set `enabled` to false and update the connection details in the `env` section in the `values.yaml` file.
+
+### Configuration options
+
+| Parameter                        | Description                | Default                       |
+| -------------------------------- | -------------------------- | ----------------------------- |
+| `langtraceApp.image`             | Langtrace image repository | `scale3labs/langtrace-client` |
+| `langtraceApp.langtrace_release` | Langtrace image tag        | `latest`                      |
+| `langtraceApp.replicaCount`      | Number of replicas         | `1`                           |
+
+Explore more configuration options in the [values.yaml](https://github.com/Scale3-Labs/langtrace-helm-chart/blob/main/charts/langtrace/values.yaml).
+
+## Operations
+
+### Upgrade the chart
+
+```bash
+helm upgrade langtrace langtrace/langtrace
+```
+
+### Refresh the repository
+
+```bash
+helm repo update langtrace
+```
+
+### Search of the chart version
+
+```bash
+helm search repo langtrace
+```
+
+## Uninstall
+
+```bash
+helm uninstall langtrace
+```

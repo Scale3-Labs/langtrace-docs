@@ -10,9 +10,9 @@ Chroma is a AI-native open-source vector database focused on developer productiv
 	height="315"
 	src="https://www.youtube.com/embed/DFgngVQ3hUM?si=Jr2LhsTAY7bR4Uh1"
 	title="YouTube video player"
-	frameborder="0"
+	frameBorder="0"
 	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-	referrerpolicy="strict-origin-when-cross-origin"
+	referrerPolicy="strict-origin-when-cross-origin"
 	allowFullScreen
 ></iframe>
 
@@ -36,38 +36,41 @@ yarn install chromadb chromadb-default-embed
 ## Usage
 
 Here's a quick example of how to use Langtrace with LlamaIndex:
+
 ```typescript Typescript SDK
-import * as Langtrace from '@langtrase/typescript-sdk';
-import { ChromaClient, OpenAIEmbeddingFunction } from 'chromadb'
+import * as Langtrace from "@langtrase/typescript-sdk";
+import { ChromaClient, OpenAIEmbeddingFunction } from "chromadb";
 
-Langtrace.init({ write_spans_to_console: true})
+Langtrace.init({ write_spans_to_console: true });
 
-export async function run (): Promise<void> {
-  await Langtrace.withLangTraceRootSpan(async () => {
-    const client = new ChromaClient()
-    const embedder = new OpenAIEmbeddingFunction({ openai_api_key: process.env.OPENAI_API_KEY as string })
-    console.info('Creating collection')
-    const collection = await client.getOrCreateCollection({
-      name: 'test_collection',
-      embeddingFunction: embedder
-    })
+export async function run(): Promise<void> {
+	await Langtrace.withLangTraceRootSpan(async () => {
+		const client = new ChromaClient();
+		const embedder = new OpenAIEmbeddingFunction({
+			openai_api_key: process.env.OPENAI_API_KEY as string,
+		});
+		console.info("Creating collection");
+		const collection = await client.getOrCreateCollection({
+			name: "test_collection",
+			embeddingFunction: embedder,
+		});
 
-    console.info('Adding documents')
-    await collection.add({
-      ids: ['id1', 'id2'],
-      metadatas: [{ source: 'my_source' }, { source: 'my_source' }],
-      documents: ['This is a document', 'This is another document']
-    })
-    console.info('Querying documents')
-    const results = await collection.query({
-      nResults: 2,
-      queryTexts: ['This is a query document']
-    })
+		console.info("Adding documents");
+		await collection.add({
+			ids: ["id1", "id2"],
+			metadatas: [{ source: "my_source" }, { source: "my_source" }],
+			documents: ["This is a document", "This is another document"],
+		});
+		console.info("Querying documents");
+		const results = await collection.query({
+			nResults: 2,
+			queryTexts: ["This is a query document"],
+		});
 
-    console.info(results)
-  })
+		console.info(results);
+	});
 }
-void run().then(()=>console.log('done'))
+void run().then(() => console.log("done"));
 ```
 
 - [Python Notebook](https://github.com/Scale3-Labs/langtrace-docs/blob/main/langtrace-examples/chroma-example/chroma-starter.py.ipynb)
