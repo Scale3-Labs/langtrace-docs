@@ -142,6 +142,10 @@
 				{
 					"group": "Prompt Registry APIs",
 					"pages": ["api-reference/prompt-registry/GET-prompt-registry"]
+				}, 
+				{
+					"group": "Project APIs",
+					"pages": ["api-reference/project/POST-project"]
 				}
 			]
 		},
