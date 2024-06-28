@@ -1,0 +1,160 @@
+---
+title: Langtrace SDK Features
+---
+
+While Langtrace Cloud is the default destination for your traces, there are scenarios where you might need to send traces to a custom endpoint. This could be for testing, using an on-premises solution, or integrating with other systems. This guide covers two methods to achieve this: using the `api_host` parameter and implementing a custom exporter.
+
+## Choosing a Method
+
+- Use the `api_host` parameter for quick setup with a different endpoint.
+- Use `custom_remote_exporter` for more control over the export process, such as custom formatting or additional processing of spans before sending.
+
+<Warning>
+  {" "}
+  Using the `custom_remote_exporter` or `api_host` option with a custom url will
+  cause majority of the langtrace features to not work and should only be used if
+  **Langtrace** is being used only to **capture** and **send** traces{" "}
+</Warning>
+
+### API Host Example
+
+<CodeGroup>
+```python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(
+  write_spans_to_console=True,
+  api_host="https://example.com/"
+)
+```
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  write_spans_to_console: true,
+  api_host: "https://example.com/",
+});
+```
+
+</CodeGroup>
+
+This can also be done by passing a custom exporter to the `custom_remote_exporter` parameter in the `Langtrace.init` function. The `custom_remote_exporter` option will take precedence over the `api_host` option.
+
+### Custom Exporter Example
+
+<Tabs>
+<Tab title="Typescript SDK">
+<CodeGroup>
+```typescript init.ts
+import * as Langtrace from "@langtrase/typescript-sdk";
+import { CustomExporter } from './custom_exporter'
+Langtrace.init({
+  write_spans_to_console: true,
+  custom_remote_exporter: new CustomExporter("https://example.com/")
+})
+// Your application code here
+```
+
+```typescript custom_exporter.ts
+// CustomExporter.ts
+import { SpanExporter, ReadableSpan } from "@opentelemetry/sdk-trace-base";
+import axios from "axios";
+
+export class CustomExporter implements SpanExporter {
+  private readonly apiHost: string;
+
+  constructor(apiHost: string) {
+    this.apiHost = apiHost;
+  }
+
+  async export(
+    spans: ReadableSpan[],
+    resultCallback: (result: any) => void
+  ): Promise<void> {
+    const data = spans.map((span) => ({
+      traceId: span.spanContext().traceId,
+      spanId: span.spanContext().spanId,
+      name: span.name,
+      startTime: span.startTime,
+      endTime: span.endTime,
+      attributes: span.attributes,
+    }));
+
+    const headers = { "Content-Type": "application/json" };
+
+    try {
+      const response = await axios.post(this.apiHost, data, { headers });
+      resultCallback({ code: response.status === 200 ? 0 : 1 });
+    } catch (error: any) {
+      resultCallback({
+        code: 1,
+        error: new Error(`Failed to export spans: ${error.message}`),
+      });
+    }
+  }
+
+  async shutdown(): Promise<void> {
+    return await Promise.resolve();
+  }
+}
+```
+
+</CodeGroup>
+</Tab>
+<Tab title="Python SDK">
+<CodeGroup>
+```python init.py
+from langtrace_python_sdk import langtrace
+from custom_exporter import CustomExporter
+
+langtrace.init(
+write_spans_to_console=True,
+custom_remote_exporter=CustomExporter("https://example.com/")
+)
+
+# Your application code here
+
+````
+
+```python custom_exporter.py
+# custom_exporter.py
+import json
+import typing
+import requests
+from opentelemetry.sdk.trace.export import ReadableSpan, SpanExporter, SpanExportResult
+
+class CustomExporter(SpanExporter):
+    def __init__(self, api_host: str) -> None:
+        self.api_host = api_host
+
+    def export(self, spans: typing.Sequence[ReadableSpan]) -> SpanExportResult:
+        data = [
+            {
+                "traceId": span.get_span_context().trace_id,
+                "spanId": span.get_span_context().span_id,
+                "name": span.name,
+                "startTime": span.start_time,
+                "endTime": span.end_time,
+                "attributes": span.attributes,
+            }
+            for span in spans
+        ]
+
+        try:
+            response = requests.post(
+                url=self.api_host,
+                data=json.dumps(data),
+                headers={"Content-Type": "application/json"},
+                timeout=20,
+            )
+
+            return SpanExportResult.SUCCESS if response.ok else SpanExportResult.FAILURE
+
+        except requests.RequestException:
+            return SpanExportResult.FAILURE
+
+    def shutdown(self) -> None:
+        pass
+````
+
+</CodeGroup>
+</Tab>
+</Tabs>

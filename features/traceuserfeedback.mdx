@@ -3,15 +3,23 @@ title: Pass User Feedback
 sidebarTitle: Passing User Feedback
 description: The Langtrace SDK gives you the ability to pass user feedback from your application as scores for measuring accuracy.
 ---
+## Understanding User Feedback
 
-## How to pass user feedback
+User feedback is crucial for improving the performance and accuracy of your LLM applications. It provides direct insights into user satisfaction and helps identify areas for improvement.
+
+### Types of Feedback
+- Binary feedback (thumbs up/down)
+- Numeric ratings (e.g., 1-5 stars)
+- Textual feedback
+
+
+## How to Pass User Feedback
 
 When you are using Langtrace, you can pass both user id and user feedback using the `Langtrace.withLangTraceRootSpan` function for typescript or `with_langtrace_root_span` decorator in python.
 
 This helps with understanding usage patterns and measure the accuracy of your application from your user's perspective.
 
-## Installation
-
+### Installation
 Install and initialize Langtrace SDK. Refer to the [installation guide](/quickstart) for more information.
 
 <CodeGroup>
@@ -30,7 +38,7 @@ langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 
 </CodeGroup>
 
-## Usage
+### Implementing User Feedback
 
 Use the `Langtrace.withLangTraceRootSpan` function to trace interaction which provides `spanId` and `traceId` for the interaction.
 <CodeGroup>
@@ -94,7 +102,9 @@ main()
 ```
 </CodeGroup>
 
-## Examples
+# Example user score
+
+    Collect the `userScore` and `userId` from your application and pass it to `Langtrace.sendUserFeedback({userScore, userId, traceId, spanId})`function along with `traceId` and `spanId`.
 
 <CodeGroup>
   ```typescript Typescript
@@ -107,3 +117,13 @@ main()
   SendUserFeedback.evaluate(spanId, traceId, userScore, userId)
   ```
 </CodeGroup>
+
+
+## Best Practices
+1. Keep feedback collection simple and non-intrusive
+2. Clearly communicate how feedback will be used
+3. Act on feedback to improve your application
+4. Regularly analyze feedback trends
+
+### Privacy Considerations
+When collecting user feedback, ensure you're complying with relevant data protection regulations. Always inform users about data collection and obtain necessary consents.
