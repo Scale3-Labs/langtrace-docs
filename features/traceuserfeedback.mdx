@@ -41,19 +41,19 @@ langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 
 ### Implementing User Feedback
 
-<Steps>
-  <Step title="">
   Use the `Langtrace.withLangTraceRootSpan` function to trace interaction which provides `spanId` and `traceId` for the interaction.
-    These are instructions or content that only pertain to the first step.
+  
 
     <CodeGroup>
 ```typescript Typescript
-import * as Langtrace from '@langtrase/typescript-sdk'
-import OpenAI from 'openai'
+import * as Langtrace from '@langtrace/typescript-sdk';
+import OpenAI from 'openai';
 
-Langtrace.init({ write_spans_to_console: false})
-  const openai = new OpenAI()
-export const run = async ()=>{
+// Initialize Langtrace SDK
+Langtrace.init({ write_spans_to_console: false });
+
+// Function to handle OpenAI interaction and user feedback
+export const run = async () => {
   await Langtrace.withLangTraceRootSpan(async (spanId, traceId) => {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -62,26 +62,31 @@ export const run = async ()=>{
         { role: 'user', content: 'Tell me a story in 3 sentences or less.' }
       ],
       stream: false
-    })
+    });
 
-    console.info(response, spanId, traceId)
-    //Send spanId and traceId to your application client for user feedback
-  })
+    console.info(response, spanId, traceId);
+    // Collect user feedback
+    const userScore = 5; // Example user score
+    const userId = 'user123'; // Example user ID
+    await Langtrace.sendUserFeedback({ spanId, traceId, userScore, userId });
+  });
 }
 ```
 
 ```python Python
-from langtrace_python_sdk import langtrace, with_langtrace_root_span
+from langtrace_python_sdk import langtrace, with_langtrace_root_span, SendUserFeedback
 from openai import OpenAI
 from dotenv import find_dotenv, load_dotenv
 
+# Load environment variables
 _ = load_dotenv(find_dotenv())
 
+# Initialize Langtrace SDK
 langtrace.init()
 client = OpenAI()
 
 @with_langtrace_root_span()
-def main(spanId, traceId):
+def main(span_id, trace_id):
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
@@ -90,15 +95,18 @@ def main(spanId, traceId):
         ],
         stream=False,
     )
-      print(response, spanId, traceId)
-      # Send spanId and traceId to your application client for user feedback
+    print(response, span_id, trace_id)
+    # Collect user feedback
+    userScore = 5  # Example user score
+    userId = 'user123'  # Example user ID
+    SendUserFeedback.evaluate(span_id, trace_id, userScore, userId)
 
 main()
-
 ```
 </CodeGroup>
-  </Step>
-  <Step title="">
+
+# Example user score
+
     Collect the `userScore` and `userId` from your application and pass it to `Langtrace.sendUserFeedback({userScore, userId, traceId, spanId})`function along with `traceId` and `spanId`.
 <CodeGroup>
   ```typescript Typescript
@@ -112,310 +120,6 @@ main()
   ```
 </CodeGroup>
 
-
-  </Step>
-</Steps>
-
-
-
-
-### Examples
-
-
-<AccordionGroup>
-  <Accordion title="Typescript (Next.js) Streaming">
-  <CodeGroup>
-```typescript app/chat/page.tsx
-/**
- * Prerequisites:
- * npm i react-loader-spinner react-markdown` to install the dependencies.
- * npx shadcn-ui@latest init` && `npx shadcn-ui@latest add button input container` to install the UI components.
- */
-//app//chat/page.tsx
-'use client';
-
-import React, { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { TailSpin } from 'react-loader-spinner';
-import ReactMarkdown from 'react-markdown';
-
-const PLACEHOLDERS = [
-  {
-    title: 'How can I bake chocolate chip cookies?',
-    description: 'Ask me anything about baking chocolate chip cookies',
-  },
-];
-
-function Container({
-  children,
-  className = '',
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        'mx-4 h-full lg:mx-auto lg:w-full lg:max-w-screen-2xl',
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-}
-
-export default function ChatPage() {
-  const [question, setQuestion] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const messageEndRef = useRef<HTMLDivElement | null>(null);
-  const [messages, setMessages] = useState<{ role: string, content: string, spanId: string | null, traceId: string | null }[]>([]);
-
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-    setMessages((prev) => [...prev, { role: 'user', content: question, spanId: null, traceId: null}]);
-    setQuestion("");
-
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      body: JSON.stringify({ question }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (response.body) {
-      const reader = response.body
-        .pipeThrough(new TextDecoderStream())
-        .getReader();
-
-      let fullMessage = '';
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        if (value) {
-          fullMessage += value.split('\n').map((v: string) => ((v.split(':')[1]))).filter((v) => v !== undefined).join('').replace(/"/g, '');
-          setMessages((prev) => {
-            const updatedMessages = [...prev];
-            if (updatedMessages[updatedMessages.length - 1]?.role === 'assistant') {
-              updatedMessages[updatedMessages.length - 1].content = fullMessage;
-            } else {
-              updatedMessages.push({ role: 'assistant', content: fullMessage, spanId: response.headers.get('spanId'), traceId: response.headers.get('traceId')});
-            }
-            return updatedMessages;
-          });
-        }
-      }
-    }
-    setIsLoading(false);
-  }
-
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setQuestion(event.target.value);
-  }
-
-  function handlePlaceholder(placeholder: { title: string, description: string }) {
-    setQuestion(placeholder.title);
-  }
-
-  const handleFeedback = async (messageIndex: number, feedback: 1 | -1) => {
-    const message = messages[messageIndex];
-    await fetch('/api/feedback', {
-      method: 'POST',
-      body: JSON.stringify({
-        spanId: message.spanId,
-        traceId: message.traceId,
-        userId: 'user123',
-        userScore: feedback,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-  };
-
-  useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <Container className='p-24 flex flex-col justify-center'>
-        <h1
-          className='text-2xl'
-          style={{ textAlign: 'center', marginBottom: '20px' }}
-        >
-          Daily Tasks Assistant
-        </h1>
-
-        <div className='max-h-[600px] overflow-y-auto mt-[10px]'>
-          <div className='flex flex-col gap-4 pr-2 [&_ol]:flex [&_ol]:flex-col [&_ol]:gap-2'>
-            {messages.map((m, index) => (
-              <div className='flex flex-col gap-1' key={index}>
-                <div className='flex items-center gap-2'>
-                  {m.role === 'user' ? (
-                    <div><b>User:</b> <ReactMarkdown>{m.content}</ReactMarkdown></div>
-                  ) : (
-                    <div><b>Assistant:</b> <ReactMarkdown>{m.content}</ReactMarkdown></div>
-                  )}
-                </div>
-                {m.role === 'assistant' && (
-                  <div className='flex gap-2'>
-                    <Button onClick={() => handleFeedback(index, 1)} variant={'outline'}>👍</Button>
-                    <Button onClick={() => handleFeedback(index, -1)} variant={'outline'}>👎</Button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          <div ref={messageEndRef} />
-        </div>
-
-        {!messages.length && (
-          <div className='grid grid-cols-2 gap-4'>
-            {PLACEHOLDERS.map((placeholder, idx) => (
-              <Button
-                key={idx}
-                onClick={() => handlePlaceholder(placeholder)}
-                variant={'outline'}
-                className='col-span-1 flex h-full flex-col items-start justify-center rounded-md border p-4'
-              >
-                <h1>{placeholder.title}</h1>
-                <div className='text-muted-foreground'>{placeholder.description}</div>
-              </Button>
-            ))}
-          </div>
-        )}
-
-        <div
-          className='relative bottom-0 my-8 flex min-h-[50px] w-full items-center'
-        >
-          <Input
-            value={question}
-            onChange={handleInputChange}
-            autoFocus
-            className='absolute top-0 h-full w-full'
-            placeholder='Ask a question..'
-          />
-          <Button
-            className='absolute right-0 mr-4 h-8'
-            variant={'default'}
-            size={'icon'}
-            onClick={handleSubmit}
-            disabled={isLoading}
-            type='submit'
-          >
-            {isLoading ? (
-              <TailSpin color='#00BFFF' height={20} width={20} />
-            ) : (
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                className='text-white dark:text-black'
-              >
-                <path
-                  d='M7 11L12 6L17 11M12 18V7'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                ></path>
-              </svg>
-            )}
-          </Button>
-        </div>
-      </Container>
-    </div>
-  );
-}
-```
-```typescript app/api/feedback/route.ts
-//app/api/feedback/route.ts
-import { NextResponse, NextRequest } from 'next/server';
-import * as Langtrace from '@langtrase/typescript-sdk';
-import * as openai from 'openai';
-
-Langtrace.init({
-  instrumentations: {
-    openai: openai,
-  },
-  api_key: "<LANGTRACE_API_KEY>"
-});
-
-export async function POST(req: NextRequest) {
-  try {
-    const {spanId, traceId,userScore, userId} = await req.json();
-    await Langtrace.sendUserFeedback({spanId, traceId, userScore, userId});
-    return NextResponse.json({
-      success: true,
-    });
-  } catch (err) {
-    return NextResponse.json({
-      error: err,
-    });
-  }
-}
-```
-```typescript app/api/chat/route.ts
-//app/api/chat/route.ts
-import OpenAIInit from '@/app/clients/openai';
-import { NextResponse, NextRequest } from 'next/server';
-import * as Langtrace from '@langtrase/typescript-sdk';
-import * as openai from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
-
-Langtrace.init({
-  instrumentations: {
-    openai: openai,
-  },
-  api_key: "<LANGTRACE_API_KEY>"
-});
-
-export async function POST(req: NextRequest) {
-  try {
-    const {question} = await req.json();
-    const response = await Langtrace.withLangTraceRootSpan(async (spanId: string, traceId: string)=>{
-
-      const openai = OpenAIInit();
-      const completion = await openai.chat.completions.create({
-        model: 'gpt-4-1106-preview',
-        messages:
-        [
-          {
-            role: 'system',
-            content: "You are a friendly AI assistant that helps you with your daily tasks."
-          },
-          {
-            role: 'user',
-            content: question
-          }
-        ],
-        stream: true,
-      });
-      // Convert the response into a friendly text-stream
-      const stream = OpenAIStream(completion);
-      // Respond with the stream
-      return new StreamingTextResponse(stream, {headers: {spanId, traceId}});
-    })
-    return response;
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({
-      error: err,
-    });
-  }
-}
-```
-</CodeGroup>
-  </Accordion>
-</AccordionGroup>
 
 ## Best Practices
 1. Keep feedback collection simple and non-intrusive

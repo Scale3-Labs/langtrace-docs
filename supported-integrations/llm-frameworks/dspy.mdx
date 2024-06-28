@@ -13,10 +13,35 @@ Langtrace has first class support for DSPy, allowing you to capture traces from 
 2. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
 3. Run your DSPy pipeline or agent and view the traces in Langtrace.
 
-
 ## Traces
+
 ![traces](/images/dspy-traces.png)
 
-
 ## Logs
+
 ![traces](/images/dspy-logs.png)
+
+## Troubleshooting
+
+### Missing LLM Calls in Traces
+
+If you're not seeing LLM calls in your Langtrace traces when using DSPy, consider the following:
+
+<Accordion title="DSPy Caching">
+  DSPy implements caching of LLM calls by default. This means that repeated identical calls to the language model will not trigger new API requests, and consequently, won't generate new traces in Langtrace.
+
+To ensure you're seeing all LLM calls:
+
+1. **Disable caching**: If you need to trace every call for debugging purposes, you can disable DSPy's caching mechanism. Refer to the [DSPy documentation](https://dspy-docs.vercel.app/docs/faqs#deployment-or-reproducibility-concerns) for instructions on how to disable caching.
+
+2. **Vary your inputs**: If you're testing, make sure to use different inputs for each run to avoid hitting the cache.
+
+3. **Clear the cache**: If you need to re-run the same inputs, consider clearing DSPy's cache between runs.
+
+4. **Check your DSPy configuration**: Ensure that your DSPy setup is correctly configured to use the LLM provider you expect.
+
+If you continue to experience issues after considering these points, please contact our support team for further assistance.
+
+Remember to always use caching judiciously in production environments to balance between comprehensive tracing and optimal performance.
+
+</Accordion>
