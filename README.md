@@ -6,10 +6,7 @@ Welcome to the official documentation repository for Langtrace. We welcome contr
 
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
-- [Contributing Guidelines](#contributing-guidelines)
 - [Submitting Changes](#submitting-changes)
-- [Code of Conduct](#code-of-conduct)
-- [License](#license)
 
 ## Introduction
 
@@ -29,7 +26,7 @@ To contribute to the documentation, follow these steps:
    git checkout -b feature-branch
    ```
 
-### Making Changes
+### Submitting Changes
 
 1. Make your changes to the docs.
 2. Test your changes thoroughly.
