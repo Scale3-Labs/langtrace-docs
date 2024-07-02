@@ -60,6 +60,11 @@ def example_eval():
 ```bash
 inspect eval example_eval.py --model openai/gpt-3.5-turbo --log-dir langtracefs://<datasetId>
 ```
+**Note**: In order to run the command above you will need to add your OPENAI API Key to the environment variables like so:
+```bash
+export OPENAI_API_KEY=<your_openai_api_key>
+```
+You have the option to utilize alternative language model providers through Inspect AI by simply adjusting the model argument, should you prefer not to use OPEN AI.
 
 6. Additionally, you can also configure the `--log-dir` as an environment variable as shown below:
 
