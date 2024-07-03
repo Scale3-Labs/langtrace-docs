@@ -62,7 +62,8 @@ export const run = async () => {
     });
 
     console.info(response, spanId, traceId);
-    // Collect user feedback
+    // Send traceId and spanId to your client
+    // Collect user feedback (This is likely going to be another route in your application) For this example, we are sending the feedback immediately after the interaction
     const userScore = 5; // Example user score
     const userId = 'user123'; // Example user ID
     await Langtrace.sendUserFeedback({ spanId, traceId, userScore, userId });
@@ -93,7 +94,8 @@ def main(span_id, trace_id):
         stream=False,
     )
     print(response, span_id, trace_id)
-    # Collect user feedback
+    # Send traceId and spanId to your client
+    # Collect user feedback (This is likely going to be another route in your application) For this example, we are sending the feedback immediately after the interaction
     userScore = 5  # Example user score
     userId = 'user123'  # Example user ID
     SendUserFeedback.evaluate(span_id, trace_id, userScore, userId)

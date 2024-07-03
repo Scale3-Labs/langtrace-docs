@@ -1,15 +1,7 @@
 ---
 title: "NextJS"
-description: "Langtrace can be easily integrated with NextJS applications with the help of the Langtrace SDK."
+description: "Langtrace can be easily integrated with NextJS applications with just two steps."
 ---
-
-## Overview
-
-NextJS is a popular React framework that allows developers to build static and server-rendered applications. Langtrace can be easily integrated with NextJS applications with the help of the Langtrace SDK.
-
-## Steps
-
-Follow the steps below to integrate Langtrace with your NextJS application:
 
 <Note>
   Langtrace can be initialized only in the server-side code of NextJS
@@ -18,139 +10,269 @@ Follow the steps below to integrate Langtrace with your NextJS application:
   pages.
 </Note>
 
-- Update the next.config.(m)js file to include opentelemetry:
+# Get Started
+<Steps>
+  <Step title="First Step">
+    Update the next.config.(m)js file.
+        ```typescript next.config.(m)js
+    const nextConfig = {
+      webpack: (config, { isServer }) => {
+        config.module.rules.push({
+          test: /\.node$/,
+          loader: "node-loader",
+        });
+        if (isServer) {
+          config.ignoreWarnings = [{ module: /opentelemetry/ }];
+        }
+        return config;
+      },
+    };
+    ```
+  </Step>
+  <Step title="Second Step">
+    Initialize langtrace in your API routes like so:. Replace `<API_KEY>` with your Langtrace API key.
+   <CodeGroup>
+  ```typescript App Router
+  // api/chat/route.ts
+  import { NextResponse, NextRequest } from 'next/server';
+  import * as Langtrace from '@langtrase/typescript-sdk';
+  import * as openai from 'openai';
+  import { OpenAI } from 'openai';
 
-```js
-const nextConfig = {
-  webpack: (config, { isServer }) => {
-    config.module.rules.push({
-      test: /\.node$/,
-      loader: "node-loader",
-    });
-    if (isServer) {
-      config.ignoreWarnings = [{ module: /opentelemetry/ }];
+  Langtrace.init({instrumentations: {openai}, api_key: '<API_KEY>'});
+
+  export async function GET(req: NextRequest) {
+    try {
+      const openAi = new OpenAI()
+      const response = await openAi.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
+          {
+            role: 'user',
+            content: "What do sharks eat?",
+          },
+        ],
+      })
+      return NextResponse.json({response: response.choices[0]})
+    } catch (err) {
+      return NextResponse.json({
+        error: err,
+      });
     }
-    return config;
-  },
-};
-module.exports = nextConfig;
-```
+  }
+  ```
 
-- Install the Langtrace SDK and initialize it in your APIs:
+  ```typescript Pages Router
+  // pages/api/chat.ts
+  import { NextApiRequest, NextApiResponse } from 'next';
+  import * as Langtrace from '@langtrase/typescript-sdk';
+  import * as openai from 'openai';
+  import { OpenAI } from 'openai';
 
-```typescript Typescript
-import * as Langtrace from "@langtrase/typescript-sdk"; // Ensure this import precedes any LLM module imports
+  Langtrace.init({instrumentations: {openai}, api_key: '<API_KEY>'});
 
-/**
- * Ensure you have OPENAI_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
- */
-Langtrace.init({
-  api_key: "<LANGTRACE_API_KEY>",
-  instrumentations: {
-    openai: OpenAI,
-    // other llm instrumentations
-  },
-});
-```
+  export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    try {
+      const openAi = new OpenAI();
+      const response = await openAi.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
+          {
+            role: 'user',
+            content: "What do sharks eat?",
+          },
+        ],
+      });
+      res.status(200).json({ response: response.choices[0] });
+    } catch (err: any) {
+      res.status(500).json({
+        error: err.message,
+      });
+    }
+  }
+  ```
+   </CodeGroup>
+  </Step>
+</Steps>
 
-Frameworks that call other instrumentations need to be manually instrumented. Lamaindex example below
 
-```typescript Typescript
-Langtrace.init({
-  api_key: "<LANGTRACE_API_KEY>",
-  instrumentations: {
-    llamaindex: llamaindex,
-    openai: openai.OpenAI,
-  },
-});
-```
+## Instrumentations
 
-## Examples for different LLMs, VectorDBs and Frameworks
+Langtrace supports instrumentations for different LLMs, VectorDBs and Frameworks. The instrumentations object is a key-value pair where the key is the name of the LLM, VectorDB or Framework and the value is the imported module.
 
-- **Anthropic**:
+<Note>
+You can instrument multiple vendors in your application. For example, you can instrument OpenAI and LlamaIndex in the same application. See **LlamaIndex** instrumentation for an example.
+</Note>
 
-```typescript Typescript
-import * as Langtrace from "@langtrase/typescript-sdk";
-import * as anthropic from "@anthropic-ai/sdk";
-/**
- * Ensure you have ANTHROPIC_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
- */
-Langtrace.init({
-  instrumentations: {
-    anthropic: anthropic,
-  },
-});
-```
+**See initalization for all supported instrumentations below**
 
-- **OpenAI**:
+Replace `<API_KEY>` with your Langtrace API key.
+<AccordionGroup>
+  <Accordion title="LlamaIndex">
+    ```typescript
+  import * as Langtrace from '@langtrase/typescript-sdk';
+  import * as llamaindex from 'llamaindex';
+  import * as openai from 'openai';
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      llamaindex: llamaindex,
+      openai: openai,
+    },
+  });
+    ```
+  </Accordion>
 
-```typescript Typescript
-import * as Langtrace from "@langtrase/typescript-sdk";
-import * as openai from "openai";
-/**
- * Ensure you have OPENAI_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
- */
-Langtrace.init({
-  instrumentations: {
-    openai: openai,
-  },
-});
-```
+  <Accordion title="Anthropic">
+    ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as anthropic from "@anthropic-ai/sdk";
+  /**
+   * Ensure you have ANTHROPIC_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
+   */
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      anthropic: anthropic,
+    },
+  });
+  ```
+  </Accordion>
 
-- **Llamaindex**:
+  <Accordion title="OpenAI">
+  ```typescript Typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as openai from "openai";
+  /**
+   * Ensure you have OPENAI_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
+   */
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      openai: openai,
+    },
+  });
+  ```
+  </Accordion>
+  <Accordion title="Pinecone">
+  ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as pinecone from "@pinecone-database/pinecone";
+  import * as openai from "openai";
 
-```typescript Typescript
-import * as Langtrace from "@langtrase/typescript-sdk";
-import * as llamaindex from "llamaindex";
-import * as openai from "openai";
-/**
- * Ensure you have OPENAI_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
- */
-Langtrace.init({
-  instrumentations: {
-    llamaindex: llamaindex,
-    openai: openai,
-  },
-});
-```
+  /**
+   * Ensure you have PINECONE_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
+   */
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      pinecone: pinecone,
+      openai: openai,
+    },
+  });
+  ```
+  </Accordion>
+  <Accordion title="ChromaDB">
+  ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as chroma from "chromadb";
+  import * as openai from "openai";
+  /**
+   * Ensure you have installed chromadb
+   * Make sure you have pipx installed.
+   * python3 -m venv ./app/api/chroma/chromaenv
+   * source ./app/api/chroma/chromaenv/bin/activate
+   * pipx install chromadb
+   * chroma run --path ./app/api/chroma/db
+   * Ensure you have OPENAI_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
+   */
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      openai: openai,
+      chromadb: chroma,
+    },
+  });
+  ```
+  </Accordion>
+  <Accordion title="Cohere">
+  ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as cohere from 'cohere-ai'
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      cohere: cohere
+    },
+  });
+  ```
+  </Accordion>
 
-- **Pinecone**:
+  <Accordion title="groq">
+  ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as groq from 'groq-sdk'
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      groq: groq
+    },
+  });
+  ```
+  </Accordion>
 
-```typescript Typescript
-import * as Langtrace from "@langtrase/typescript-sdk";
-import * as pinecone from "@pinecone-database/pinecone";
-import * as openai from "openai";
+  <Accordion title="pg">
+  ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as pg from 'pg'
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      pg: pg
+    },
+  });
+  ```
+  </Accordion>
 
-/**
- * Ensure you have PINECONE_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
- */
-Langtrace.init({
-  instrumentations: {
-    pinecone: pinecone,
-    openai: openai,
-  },
-});
-```
+  <Accordion title="qdrant">
+  ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as qdrant from '@qdrant/js-client-rest'
+  /**
+ * To run qdrant locally using docker.
+ * 1. docker pull qdrant/qdrant
+ * 2. docker run -p 6333:6333 -p 6334:6334 \
+      -v $(pwd)/qdrant_storage:/qdrant/storage:z \
+      qdrant/qdrant
+**/
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      qdrant: qdrant
+    },
+  });
+    ```
+  </Accordion>
 
-- **ChromaDB**:
+  <Accordion title="weaviate">
+  ```typescript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  import * as weaviate from 'weaviate-ts-client'
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      weaviate: weaviate
+    },
+  });
+    ```
+  </Accordion>
 
-```typescript Typescript
-import * as Langtrace from "@langtrase/typescript-sdk";
-import * as chroma from "chromadb";
-import * as openai from "openai";
-/**
- * Ensure you have installed chromadb
- * Make sure you have pipx installed.
- * python3 -m venv ./app/api/chroma/chromaenv
- * source ./app/api/chroma/chromaenv/bin/activate
- * pipx install chromadb
- * chroma run --path ./app/api/chroma/db
- * Ensure you have OPENAI_API_KEY in your environment variables and LANGTRACE_API_KEY in your environment variables
- */
-Langtrace.init({
-  instrumentations: {
-    openai: openai,
-    chromadb: chroma,
-  },
-});
-```
+</AccordionGroup>
