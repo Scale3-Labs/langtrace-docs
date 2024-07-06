@@ -110,6 +110,10 @@
           ]
         },
         {
+          "group": "LLM Tools",
+          "pages": ["supported-integrations/llm-tools/ollama"]
+        },
+        {
           "group": "Vector Stores",
           "pages": [
             "supported-integrations/vector-stores/chromadb",
@@ -131,9 +135,9 @@
       "group": "API Reference",
       "pages": [
         {
-					"group": "Project APIs",
-					"pages": ["api-reference/project/POST-project"]
-				},
+          "group": "Project APIs",
+          "pages": ["api-reference/project/POST-project"]
+        },
         {
           "group": "Prompt Registry APIs",
           "pages": ["api-reference/prompt-registry/GET-prompt-registry"]
