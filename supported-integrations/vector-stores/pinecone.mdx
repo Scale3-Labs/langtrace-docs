@@ -1,48 +1,67 @@
 ---
 title: "Pinecone"
-description: "Pinecone is an open source vector database."
+description: "Pinecone is a vector database that enables fast, accurate vector search for building AI applications. "
 ---
 
 [Pinecone](https://www.pinecone.io/) is a AI-native open-source vector database.
 
-Getting Started with LangTrace and Pinecone
-1.  Setup LangTrace and PineCone
-    .Sign-up for a free account on LangTrace.
-    .Create a Project and generate an API Key
-    .Note: you will also sign up and get an API key from Pinecone if you haven't done so already
-
-2. Install packages and setup environment
-<CodeGroup>
-    ```
-    .pip install -U langtrace-python-sdk pinecone-client
-   ```
-   </CodeGroup>
-
 ## Setup
 
 1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+
+
+2. Install packages and setup environment
 <CodeGroup>
-    ``` pip install -U langtrace-python-sdk pinecone-client
-```
-```
+    ````bash Python
+    pip install -U langtrace-python-sdk pinecone-client
+   ````
+   ````bash Typescript
+   npm install @pinecone-database/pinecone-client
+   ````
+
+   </CodeGroup>
+
+## Usage
+Here's a quick example of how to use Langtrace with pinecone:
+
+<CodeGroup>
+````bash Python
 import os
 os.environ['LANGTRACE_API_KEY'] = "YOUR LANGTRACE_API_KEY"
 os.environ['PINECONE_API_KEY'] = "YOUR PINECONE_API_KEY"
- ```
+ ````
+ ````bash Typescript
+ import { init as langtraceInit } from 'langtrase/typescript-sdk';
+import { PineconeClient, ServerlessSpec } from '@pinecone-database/pinecone-client';
+
+const langtraceApiKey = "YOUR_LANGTRACE_API_KEY";
+const pineconeApiKey = "YOUR_PINECONE_API_KEY";
+ ````
 </CodeGroup>
 
-## Usage
-3. Imports
+
+ Imports
 <CodeGroup>
+    ````bash Python
     from langtrace_python_sdk import langtrace # Must precede any llm module imports
 langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
+````
+````bash Typescript
+ langtraceInit({
+  apiKey: langtraceApiKey,
+});
 
+// Step 3: Initialize Pinecone client
+const pinecone = new PineconeClient({
+  apiKey: pineconeApiKey,
+});
+
+````
     </CodeGroup>
 
-Here's a quick example of how to use Langtrace with pinecone:
+Create an Index and upsert some data in Pinecone
 <CodeGroup>
-     ```
-4. Create an Index and upsert some data in Pinecone
+     ```bash Python
 pc.create_index(
     name="index",
     dimension=8, # Replace with your model dimensions
@@ -62,6 +81,32 @@ index.upsert(
   ]
 )
  ```
+ ````bash Typescript
+
+// Step 4: Create an Index and upsert some data in Pinecone
+(async () => {
+  await pinecone.createIndex({
+    name: "index",
+    dimension: 8, // Replace with your model dimensions
+    metric: "euclidean", // Replace with your model metric
+    spec: new ServerlessSpec({
+      cloud: "aws",
+      region: "us-east-1",
+    }),
+  });
+
+  const index = pinecone.Index("index");
+
+  await index.upsert({
+    vectors: [
+      { id: "A", values: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] },
+      { id: "B", values: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2] },
+      { id: "C", values: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] },
+      { id: "D", values: [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4] },
+    ],
+  });
+})();
+ ````
 </CodeGroup>
 
 Want to see more supported methods? Checkout the sample code in the [Langtrace Pinecone Python Example](https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/vector-db/pinecone/starter.ipynb) repositories.
