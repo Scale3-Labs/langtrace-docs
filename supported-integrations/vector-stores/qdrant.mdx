@@ -1,0 +1,58 @@
+Getting Started with LangTrace and Qdrant
+
+### 1. Setup LangTrace and Qdrant
+
+Sign-up for a free account on LangTrace.
+Create a Project and generate an API Key
+
+### 2. Install packages and setup environment
+
+`pip install -U langtrace-python-sdk qdrant-client`
+
+```
+import os
+os.environ['LANGTRACE_API_KEY'] = 'YOUR_LANGTRACE_API_KEY'
+```
+
+### 3. Imports
+
+````from langtrace_python_sdk import langtrace # Must precede any llm module imports
+langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
+
+from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import PointStruct```
+client = QdrantClient(":memory:")
+````
+
+### 4. Create a collection, upsert some data and make a query using Qdrant
+
+```client.create_collection(
+collection_name="test_collection",
+vectors_config=VectorParams(size=4, distance=Distance.DOT),
+)
+operation_info = client.upsert(
+    collection_name="test_collection",
+    wait=True,
+    points=[
+        PointStruct(id=1, vector=[0.05, 0.61, 0.76, 0.74], payload={"city": "Berlin"}),
+        PointStruct(id=2, vector=[0.19, 0.81, 0.75, 0.11], payload={"city": "London"}),
+        PointStruct(id=3, vector=[0.36, 0.55, 0.47, 0.94], payload={"city": "Moscow"}),
+        PointStruct(id=4, vector=[0.18, 0.01, 0.85, 0.80], payload={"city": "New York"}),
+        PointStruct(id=5, vector=[0.24, 0.18, 0.22, 0.44], payload={"city": "Beijing"}),
+        PointStruct(id=6, vector=[0.35, 0.08, 0.11, 0.44], payload={"city": "Mumbai"}),
+    ],
+)
+print(operation_info)
+```
+
+```
+search_result = client.search(
+    collection_name="test_collection", query_vector=[0.2, 0.1, 0.9, 0.7], limit=3
+)
+print(search_result)
+```
+
+```
+- [Python Notebook](https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/vector-db/qdrant/starter.ipynb)
+```
