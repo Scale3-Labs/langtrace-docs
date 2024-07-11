@@ -1,0 +1,117 @@
+---
+title: "Qdrant"
+description: "Langtrace can be seamlessly integrated with Qdrant, a high-performance vector database. This integration allows you to trace and monitor your vector search operations, providing valuable insights into your AI application's performance and behavior.
+"
+---
+
+## Table of Contents
+
+1. [Prerequisites](#prerequisites)
+2. [Installation](#installation)
+3. [Basic Setup](#basic-setup)
+4. [Tracing Qdrant Operations](#tracing-qdrant-operations)
+5. [Best Practices](#best-practices)
+6. [Troubleshooting](#troubleshooting)
+
+## Prerequisites
+
+Before integrating Langtrace with Qdrant, ensure you have the following:
+
+- Qdrant client library installed
+- Langtrace Python SDK installed
+
+## Installation
+
+If you haven't already installed the required libraries, you can do so using pip:
+
+```bash
+pip install qdrant-client langtrace-python-sdk
+```
+
+## Basic Setup
+
+To start using Langtrace with Qdrant, you need to initialize both clients:
+
+```python
+from langtrace_python_sdk import langtrace, with_langtrace_root_span
+from qdrant_client import QdrantClient
+
+# Initialize Qdrant client
+qdrant_client = QdrantClient("localhost", port=6333)
+
+# Initialize Langtrace
+langtrace.init(api_key='your_langtrace_api_key_here')
+```
+
+## Tracing Qdrant Operations
+
+Langtrace allows you to trace various Qdrant operations. Here are some common operations and how to trace them:
+
+### Adding Points to a Collection
+
+```python
+@with_langtrace_root_span("add_points")
+def add_points_to_collection(collection_name, points):
+    qdrant_client.upsert(
+        collection_name=collection_name,
+        points=points
+    )
+```
+
+### Searching in a Collection
+
+```python
+@with_langtrace_root_span("search")
+def search_collection(collection_name, query_vector, limit=10):
+    return qdrant_client.search(
+        collection_name=collection_name,
+        query_vector=query_vector,
+        limit=limit
+    )
+```
+
+### Creating a Collection
+
+```python
+@with_langtrace_root_span("create_collection")
+def create_collection(collection_name, vector_size):
+    qdrant_client.recreate_collection(
+        collection_name=collection_name,
+        vectors_config=models.VectorParams(size=vector_size, distance=models.Distance.COSINE)
+    )
+```
+
+## Best Practices
+
+1. **Meaningful Span Names**: Choose descriptive names for your spans to easily identify operations in the Langtrace dashboard.
+
+2. **Error Handling**: Wrap your Qdrant operations in try-except blocks to capture and trace errors:
+
+   ```python
+   @with_langtrace_root_span("qdrant_operation")
+   def qdrant_operation():
+       try:
+           # Qdrant operation here
+           pass
+       except Exception as e:
+           add_attribute_to_current_span("error", str(e))
+           raise
+   ```
+
+3. **Performance Monitoring**: Use Langtrace to monitor the performance of your Qdrant operations over time. This can help you identify slow queries or other bottlenecks in your application.
+
+## Troubleshooting
+
+If you encounter issues with Langtrace and Qdrant integration, consider the following:
+
+1. **Check Connectivity**: Ensure that both Qdrant and Langtrace servers are accessible from your application.
+
+2. **Verify API Keys**: Double-check that you're using the correct Langtrace API key.
+
+3. **Update Libraries**: Ensure you're using the latest versions of both the Qdrant client and Langtrace SDK.
+
+For more assistance, refer to the [Langtrace documentation](https://docs.langtrace.ai) or [Qdrant documentation](https://qdrant.tech/documentation/), or reach out to the respective support channels.
+
+---
+
+By integrating Langtrace with Qdrant, you gain powerful observability capabilities for your vector search operations. This integration allows you to optimize performance, troubleshoot issues, and gain insights into your AI application's behavior. Happy tracing!
