@@ -1,0 +1,130 @@
+---
+title: "Qdrant"
+description: "Qdrant is an open-source, high-performance vector database that enables fast and accurate vector similarity search for building AI applications.. "
+---
+
+[Qdrant](https://qdrant.tech//) Qdrant is an open-source vector database.
+
+## Setup
+
+1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+
+
+2. Install packages and setup environment
+<CodeGroup>
+    ````bash Python
+    pip install -U langtrace-python-sdk qdrant-client
+   ````
+{/*    ````bash Typescript */}
+{/*    npm install @pinecone-database/pinecone-client */}
+{/*    ```` */}
+
+   </CodeGroup>
+
+## Usage
+Here's a quick example of how to use Langtrace with Qdrant:
+
+<CodeGroup>
+````bash Python
+
+import os
+os.environ['LANGTRACE_API_KEY'] = 'YOUR_LANGTRACE_API_KEY'
+````
+{/*  ````bash Typescript */}
+{/*  import { init as langtraceInit } from 'langtrase/typescript-sdk'; */}
+{/* import { PineconeClient, ServerlessSpec } from '@pinecone-database/pinecone-client'; */}
+
+{/* const langtraceApiKey = "YOUR_LANGTRACE_API_KEY"; */}
+{/* const pineconeApiKey = "YOUR_PINECONE_API_KEY"; */}
+{/*  ```` */}
+</CodeGroup>
+
+
+ Imports
+<CodeGroup>
+    ````bash Python
+    from langtrace_python_sdk import langtrace # Must precede any llm module imports
+langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
+
+from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import PointStruct
+client = QdrantClient(":memory:")
+````
+{/* ````bash Typescript */}
+{/*  langtraceInit({ */}
+{/*   apiKey: langtraceApiKey, */}
+{/* }); */}
+
+{/* // Step 3: Initialize Pinecone client */}
+{/* const pinecone = new PineconeClient({ */}
+{/*   apiKey: pineconeApiKey, */}
+{/* }); */}
+
+{/* ```` */}
+    </CodeGroup>
+
+Create an Index and upsert some data in Qdrant
+<CodeGroup>
+     ```bash Python
+# ===== define collection =====
+client.create_collection(
+    collection_name="test_collection",
+    vectors_config=VectorParams(size=4, distance=Distance.DOT),
+)
+# ===== insert some data =====
+
+operation_info = client.upsert(
+    collection_name="test_collection",
+    wait=True,
+    points=[
+        PointStruct(id=1, vector=[0.05, 0.61, 0.76, 0.74], payload={"city": "Berlin"}),
+        PointStruct(id=2, vector=[0.19, 0.81, 0.75, 0.11], payload={"city": "London"}),
+        PointStruct(id=3, vector=[0.36, 0.55, 0.47, 0.94], payload={"city": "Moscow"}),
+        PointStruct(id=4, vector=[0.18, 0.01, 0.85, 0.80], payload={"city": "New York"}),
+        PointStruct(id=5, vector=[0.24, 0.18, 0.22, 0.44], payload={"city": "Beijing"}),
+        PointStruct(id=6, vector=[0.35, 0.08, 0.11, 0.44], payload={"city": "Mumbai"}),
+    ],
+)
+
+print(operation_info)
+# ===== run a query =====
+search_result = client.search(
+    collection_name="test_collection", query_vector=[0.2, 0.1, 0.9, 0.7], limit=3
+)
+
+print(search_result)
+
+ ```
+{/*  ````bash Typescript */}
+
+{/* // Step 4: Create an Index and upsert some data in Pinecone */}
+{/* (async () => { */}
+{/*   await pinecone.createIndex({ */}
+{/*     name: "index", */}
+{/*     dimension: 8, // Replace with your model dimensions */}
+{/*     metric: "euclidean", // Replace with your model metric */}
+{/*     spec: new ServerlessSpec({ */}
+{/*       cloud: "aws", */}
+{/*       region: "us-east-1", */}
+{/*     }), */}
+{/*   }); */}
+
+{/*   const index = pinecone.Index("index"); */}
+
+{/*   await index.upsert({ */}
+{/*     vectors: [ */}
+{/*       { id: "A", values: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] }, */}
+{/*       { id: "B", values: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2] }, */}
+{/*       { id: "C", values: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] }, */}
+{/*       { id: "D", values: [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4] }, */}
+{/*     ], */}
+{/*   }); */}
+{/* })(); */}
+{/*  ```` */}
+</CodeGroup>
+
+Want to see more supported methods? Checkout the sample code in the
+ [Langtrace Pinecone Python Example](https://github.com/Scale3-Labs/langtrace-recipes/tree/main/integrations/vector-db/qdrant) repositories.
+<img src="./images/qdrant.png" alt="You can now view your
+ langtrace-qdrant_client traces on the Langtrace dashboard" />
