@@ -60,17 +60,17 @@
     {
       "group": "Tracing",
       "pages": [
-        "Tracing/tracingoverview",
+        "tracing/tracingoverview",
         {
-          "group": "tracing",
+          "group": "Tracing",
           "pages": [
-            "Tracing/send_traces",
-            "Tracing/grouptraces",
-            "Tracing/traceuserfeedback",
-            "Tracing/attach_user_id",
-            "Tracing/additional_attributes",
-            "Tracing/disable_function_tracing",
-            "Tracing/disable_vendor_instrumentation"
+            "tracing/send_traces",
+            "tracing/grouptraces",
+            "tracing/traceuserfeedback",
+            "tracing/attach_user_id",
+            "tracing/additional_attributes",
+            "tracing/disable_function_tracing",
+            "tracing/disable_vendor_instrumentation"
           ]
         }
       ]
