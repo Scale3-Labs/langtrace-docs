@@ -20,8 +20,8 @@ helm install langtrace langtrace/langtrace
 ```
 
 <Warning>
-	Make sure you are in the right namespace context before running the helm
-	install.
+  Make sure you are in the right namespace context before running the helm
+  install.
 </Warning>
 
 ## Configuration
@@ -33,6 +33,14 @@ By default helm chart will spin up following services:
 - CLickhouse DB with persistent volume
 
 > If you wish to reuse an existing Postgres or Clickhouse instance, you can just set `enabled` to false and update the connection details in the `env` section in the `values.yaml` file.
+
+### Authentication Configuration
+
+Langtrace supports multiple authentication methods. To configure authentication for your Kubernetes deployment:
+
+Edit the values.yaml file in your Helm chart.
+Under the langtraceApp.env section, add the necessary environment variables for your chosen authentication method(s).
+For detailed instructions on authentication options and required variables, refer to our [Authentication Options](/hosting/auth) guide.
 
 ### Configuration options
 
