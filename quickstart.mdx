@@ -21,25 +21,32 @@ To use the managed SaaS version of Langtrace, follow the steps below:
   ```typescript Typescript
   // Install the SDK
   npm i @langtrase/typescript-sdk
-
-// Import it into your project. Must precede any llm module imports
-import \* as Langtrace from '@langtrase/typescript-sdk'
-
-Langtrace.init({ api_key: '<LANGTRACE_API_KEY>'})
-
 ````
 
 ```python Python
 # Install the SDK
 pip install langtrace-python-sdk
-
-# Import it into your project
-from langtrace_python_sdk import langtrace # Must precede any llm module imports
-langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 ````
 
 </CodeGroup>
 
+5. Initialize the Langtrace SDK with the API key you generated in the step 3. The code for setting up the SDK is shown below:
+
+<CodeGroup>
+  ```typescript Typescript
+// Import it into your project. Must precede any llm module imports
+import \* as Langtrace from '@langtrase/typescript-sdk'
+
+Langtrace.init({ api_key: '<LANGTRACE_API_KEY>'})
+````
+```python Python
+# Import it into your project
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
+
+langtrace.init(api_key = '<LANGTRACE_API_KEY>')
+````
+
+</CodeGroup>
 Congrats! You can now view your traces on Langtrace Cloud. 🚀
 
 ![traces](/images/trace.png)
