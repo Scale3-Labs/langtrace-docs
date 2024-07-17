@@ -5,14 +5,14 @@ description: Running Langtrace Client on Railway
 ---
 
 <iframe
-	width="560"
-	height="315"
-	src="https://www.youtube.com/embed/btlHaZgJOuY?utm_source=langtrace-docs&utm_medium=azure-hosting&utm_campaign=langtrace"
-	title="YouTube video player"
-	frameBorder="0"
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-	referrerPolicy="strict-origin-when-cross-origin"
-	allowFullScreen
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/btlHaZgJOuY?utm_source=langtrace-docs&utm_medium=azure-hosting&utm_campaign=langtrace"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerPolicy="strict-origin-when-cross-origin"
+  allowFullScreen
 ></iframe>
 
 ## Requirements
@@ -38,13 +38,24 @@ Setting up Langtrace on Railway is now effortless. Just follow these simple step
 - Clicking on this button will direct you to the Langtrace Railway template deployment page.
   ![railway template](/images/hosting-railway-template.png)
 
-### Step 2. Deploy the Template
+### Step 2: Configure Authentication
+
+When deploying the template, you'll need to set up authentication for your Langtrace instance:
+
+- Click "_Configure_" on the `langtrace-client` service.
+- Add the following authentication-related environment variables:
+  - `ADMIN_EMAIL`: Your desired admin email
+  - `ADMIN_PASSWORD`: Your desired admin password
+- For additional authentication methods (e.g., Google OAuth, Azure AD), you can add the necessary environment variables here as well. Refer to our [Authentication](/hosting/auth) guide for detailed instructions on configuring other authentication methods.
+- Click "_Save Config_" **→** "_Deploy_".
+
+### Step 3. Deploy the Template
 
 - Click on the “_Deploy Now_” button.
 - Click “_Configure_” on `langtrace-client` service and add admin email and admin password and click “_Save Config_” **→** “_Deploy_”.
   ![railway inputs](/images/hosting-railway-inputs.png)
 
-### Step 3. Access Langtrace
+### Step 4. Access Langtrace
 
 - Once you start the deployment process, it may take around two minutes for Railway to bring up the services.
 

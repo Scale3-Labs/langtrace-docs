@@ -152,6 +152,7 @@
       "pages": [
         "hosting/overview",
         "hosting/using_local_setup",
+        "hosting/auth",
         {
           "group": "Hosting Options",
           "pages": [

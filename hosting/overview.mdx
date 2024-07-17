@@ -5,7 +5,7 @@ description: "You can self-host Langtrace to monitor your applications. This gui
 
 ## Self-hosting Langtrace
 
-To run the Langtrace locally, you have to run three services:
+To run Langtrace locally, you have to run three services:
 
 - Next.js app
 - Postgres database
@@ -13,38 +13,42 @@ To run the Langtrace locally, you have to run three services:
 
 ### Configure Langtrace SDK
 
-To configure the Langtrace SDK for self-hosted setups checkout the guide [here](/hosting/using_local_setup).
+To configure the Langtrace SDK for self-hosted setups, checkout the guide [here](/hosting/using_local_setup).
+
+### Authentication Setup
+
+Langtrace supports multiple authentication methods, including Admin Password, Google OAuth, and Azure AD OAuth. For detailed instructions on configuring authentication for your self-hosted setup, refer to our [Authentication](/hosting/auth) guide.
 
 ### Setup Guides
 
 > Video Guide Playlist for Langtrace Setups [here](https://www.youtube.com/playlist?list=PL1oUBNzZiq8cfdHvJJ5YN5qO4P_6uA6CP).
 
 <CardGroup cols={2}>
-	<Card
-		title="Docker"
-		icon="docker"
-		href="/hosting/hosting_options/docker-standalone"
-	>
-		Run standalone instance of Langtrace docker container
-	</Card>
-	<Card
-		title="Docker Compose"
-		icon="container-storage"
-		href="/hosting/hosting_options/docker-compose"
-	>
-		Run Langtrace with all required databases using docker-compose
-	</Card>
-	<Card
-		title="Kubernetes"
-		icon="dharmachakra"
-		href="/hosting/hosting_options/kubernetes"
-	>
-		Run Langtrace on Kubernetes using Helm Chart
-	</Card>
-	<Card title="Azure" icon="windows" href="/hosting/hosting_options/azure">
-		Run Langtrace on Azure AppService
-	</Card>
-	<Card title="Railway" icon="train" href="/hosting/hosting_options/railway">
-		Run Langtrace on Railway with a single click!
-	</Card>
+  <Card
+    title="Docker"
+    icon="docker"
+    href="/hosting/hosting_options/docker-standalone"
+  >
+    Run standalone instance of Langtrace docker container
+  </Card>
+  <Card
+    title="Docker Compose"
+    icon="container-storage"
+    href="/hosting/hosting_options/docker-compose"
+  >
+    Run Langtrace with all required databases using docker-compose
+  </Card>
+  <Card
+    title="Kubernetes"
+    icon="dharmachakra"
+    href="/hosting/hosting_options/kubernetes"
+  >
+    Run Langtrace on Kubernetes using Helm Chart
+  </Card>
+  <Card title="Azure" icon="windows" href="/hosting/hosting_options/azure">
+    Run Langtrace on Azure AppService
+  </Card>
+  <Card title="Railway" icon="train" href="/hosting/hosting_options/railway">
+    Run Langtrace on Railway with a single click!
+  </Card>
 </CardGroup>

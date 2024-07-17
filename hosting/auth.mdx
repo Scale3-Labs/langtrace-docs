@@ -1,0 +1,156 @@
+---
+title: "Authentication"
+description: "Configure various authentication methods for your self-hosted Langtrace setup using NextAuth.js."
+---
+
+## Overview
+
+Langtrace uses [NextAuth.js](https://next-auth.js.org/), a complete open-source authentication solution for Next.js applications. NextAuth.js provides a secure and flexible framework for handling various authentication methods, including OAuth providers and custom credentials.
+
+We support multiple authentication methods to accommodate different organizational needs:
+
+1. [Admin Password Login (custom credentials)](#admin-password-login)
+2. [Google OAuth](#google-oauth)
+3. [Azure AD OAuth](#azure-ad-oauth)
+
+You can enable one or more of these methods by configuring the appropriate environment variables. Thanks to NextAuth.js, no code changes are required to switch between these authentication options.
+
+## General Configuration
+
+Regardless of the chosen authentication method(s), the following NextAuth.js-related environment variables are required:
+
+```bash
+NEXTAUTH_SECRET="your_generated_secret_key"
+NEXTAUTH_URL="https://your-app-url.com"
+```
+
+- `NEXTAUTH_SECRET`: A secure random string used by NextAuth.js to encrypt tokens and sign/encrypt cookies.
+- `NEXTAUTH_URL`: The public URL of your application, used by NextAuth.js for callback URLs and links.
+
+<CardGroup cols={3}>
+  <Card title="Admin Login" icon="user-lock" href="#admin-password-login">
+    Set up a single administrator account
+  </Card>
+  <Card title="Google OAuth" icon="google" href="#google-oauth">
+    Allow users to log in with their Google accounts
+  </Card>
+  <Card title="Azure AD OAuth" icon="microsoft" href="#azure-ad-oauth">
+    Enable login via Microsoft Azure Active Directory
+  </Card>
+</CardGroup>
+
+### Admin Password Login
+
+This method allows a single administrator account to log in using an email and password.
+
+```bash
+ADMIN_EMAIL="your_admin_email@example.com"
+ADMIN_PASSWORD="your_secure_admin_password"
+NEXT_PUBLIC_ENABLE_ADMIN_LOGIN="true"
+```
+
+Set `NEXT_PUBLIC_ENABLE_ADMIN_LOGIN` to `true` to enable this method.
+
+#### Adding More Users
+
+When using password authentication:
+
+- Log in to the application using the admin account (configured with `ADMIN_EMAIL` and `ADMIN_PASSWORD`).
+- Once logged in as admin, you will have access to the user management interface.
+- Use this interface to invite additional users to the system.
+
+<Note>
+  Only the admin account can invite new users. Regular users cannot create
+  additional accounts.
+</Note>
+This approach allows you to maintain control over user access while still enabling
+multiple users to access your Langtrace instance.
+
+### Google OAuth
+
+Allows users to log in using their Google accounts. This method uses OAuth 2.0.
+
+```bash
+GOOGLE_CLIENT_ID="your_google_client_id"
+GOOGLE_CLIENT_SECRET="your_google_client_secret"
+```
+
+To obtain these credentials:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Create a new project or select an existing one
+3. Enable the Google+ API
+4. Create OAuth 2.0 credentials (OAuth client ID)
+5. Set the authorized redirect URIs. For local development, use:
+   `http://localhost:3000/api/auth/callback/google`
+   For production, use your actual domain:
+   `https://your-app-domain.com/api/auth/callback/google`
+6. Note the client ID and client secret
+
+   For more information, refer to the official [Google documentation](https://support.google.com/cloud/answer/6158849?hl=en).
+
+<Note>
+  When setting up for local development, make sure to add
+  `http://localhost:3000` to the list of "Authorized JavaScript origins" in your
+  Google Cloud Console project settings.
+</Note>
+
+### Azure AD OAuth
+
+Enables login via Microsoft Azure Active Directory, suitable for organizations using Microsoft 365 or Azure AD.
+
+```bash
+AZURE_AD_CLIENT_ID="your_azure_ad_client_id"
+AZURE_AD_CLIENT_SECRET="your_azure_ad_client_secret"
+AZURE_AD_TENANT_ID="your_azure_ad_tenant_id"
+```
+
+To obtain these credentials:
+
+1. Sign in to the Azure portal
+2. Register a new application in your Azure AD tenant
+3. Note the Application (client) ID and Directory (tenant) ID
+4. Create a new client secret
+5. Set the redirect URI to `your-app-url/api/auth/callback/azure-ad`
+   Note the client ID, client secret, and tenant ID
+   For more information, refer to the official Microsoft documentation.
+
+## Enabling Authentication Methods
+
+To enable a specific login method:
+
+- Set the corresponding environment variables as described above.
+- Ensure `NEXTAUTH_SECRET` and `NEXTAUTH_URL` are properly configured.
+- Restart your application for the changes to take effect.
+
+The application will automatically enable the login methods for which valid credentials are provided. You can enable multiple methods simultaneously by setting the environment variables for each desired method.
+
+## User Management
+
+- **Admin Account**: Created automatically on first login using the provided `ADMIN_EMAIL` and `ADMIN_PASSWORD`.
+- **OAuth Users**: New user accounts are automatically created in the database when users first log in via Google or Azure AD.
+
+## Important Notes
+
+- The system uses a Prisma adapter, which automatically handles user creation and management in the database.
+- Google and Azure AD logins allow for automatic account linking if a user with the same email already exists in the database.
+
+## Additional Providers
+
+<Note>
+  Need another provider? Langtrace uses [Auth.js](https://authjs.dev/) (formerly
+  NextAuth.js), which integrates with [many
+  providers](https://authjs.dev/getting-started/providers). Add a [feature
+  request on GitHub](https://github.com/Scale3-Labs/langtrace/issues/new) if you
+  want us to add support for a specific provider.
+</Note>
+
+Langtrace currently supports Admin Password Login, Google OAuth, and Azure AD OAuth out of the box. However, thanks to the flexibility of Auth.js, it's possible to extend this to include many other authentication providers.
+
+If you need support for a provider that's not currently included:
+
+1. Check the [Auth.js providers list](https://authjs.dev/getting-started/providers) to see if your desired provider is supported.
+2. If it's supported by Auth.js but not yet implemented in Langtrace, please submit a feature request on our GitHub repository.
+3. Our team will review the request and consider adding support for the provider in future updates.
+
+We're always looking to improve Langtrace and make it more versatile for our users' needs. Your feedback and requests help us prioritize development efforts.
