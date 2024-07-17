@@ -62,7 +62,7 @@
       "pages": [
         "Tracing/tracingoverview",
         {
-          "group": "Tracing",
+          "group": "tracing",
           "pages": [
             "Tracing/send_traces",
             "Tracing/grouptraces",
