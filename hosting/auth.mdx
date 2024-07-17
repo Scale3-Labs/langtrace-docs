@@ -51,6 +51,21 @@ NEXT_PUBLIC_ENABLE_ADMIN_LOGIN="true"
 
 Set `NEXT_PUBLIC_ENABLE_ADMIN_LOGIN` to `true` to enable this method.
 
+#### Adding More Users
+
+When using password authentication:
+
+- Log in to the application using the admin account (configured with `ADMIN_EMAIL` and `ADMIN_PASSWORD`).
+- Once logged in as admin, you will have access to the user management interface.
+- Use this interface to invite additional users to the system.
+
+<Note>
+  Only the admin account can invite new users. Regular users cannot create
+  additional accounts.
+</Note>
+This approach allows you to maintain control over user access while still enabling
+multiple users to access your Langtrace instance.
+
 ### Google OAuth
 
 Allows users to log in using their Google accounts. This method uses OAuth 2.0.
@@ -62,13 +77,23 @@ GOOGLE_CLIENT_SECRET="your_google_client_secret"
 
 To obtain these credentials:
 
-1. Go to the Google Cloud Console
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
 2. Create a new project or select an existing one
 3. Enable the Google+ API
 4. Create OAuth 2.0 credentials (OAuth client ID)
-5. Set the authorized redirect URI to `your-app-url/api/auth/callback/google`
+5. Set the authorized redirect URIs. For local development, use:
+   `http://localhost:3000/api/auth/callback/google`
+   For production, use your actual domain:
+   `https://your-app-domain.com/api/auth/callback/google`
 6. Note the client ID and client secret
-   For more information, refer to the official Google documentation.
+
+   For more information, refer to the official [Google documentation](https://support.google.com/cloud/answer/6158849?hl=en).
+
+<Note>
+  When setting up for local development, make sure to add
+  `http://localhost:3000` to the list of "Authorized JavaScript origins" in your
+  Google Cloud Console project settings.
+</Note>
 
 ### Azure AD OAuth
 
