@@ -77,7 +77,7 @@
     },
     {
       "group": "Prompting",
-      "pages": ["features/manage_prompts", "features/playground"]
+      "pages": ["features/manage_prompts", "features/manage_zod_schema", "features/playground"]
     },
     {
       "group": "Evaluations & Testing",
