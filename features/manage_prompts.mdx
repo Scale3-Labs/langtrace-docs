@@ -8,7 +8,7 @@ description: Langtrace lets you store and version prompts, making it easy to man
 
 Step 1: Create a new project in Langtrace and go to the Prompts tab. Click on the "Create Prompt" button to create a new prompt. 
 
-You can define variables like `{name}` and `{version}` in your prompt. These variables can be dynamically filled in when you use the prompt in your application using the SDK.
+You can define variables like `${name}` and `${version}` in your prompt. These variables can be dynamically filled in when you use the prompt in your application using the SDK.
 
 ![Create Prompt](/images/prompt_1.png)
 
@@ -22,20 +22,79 @@ Step 3: Use the prompt in your application by fetching it using the SDK. You can
 
 ```python Python
 // Must precede any llm module imports
+import json
 from langtrace_python_sdk import get_prompt_from_registry
 
-prompt = get_prompt_from_registry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+response = get_prompt_from_registry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+
+prompt = response['value']
+# for json prompts (ex: tool calling)
+# prompt = json.loads(prompt)
+print(prompt)
 ```
 
 ```typescript Typescript
 # Must precede any llm module imports
 import { getPromptFromRegistry } from '@langtrase/typescript-sdk' 
 
-const prompt = await getPromptFromRegistry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+const response = await getPromptFromRegistry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+
+prompt = response['value']
+# for json prompts (ex: tool calling)
+# prompt = json.loads(prompt)
+print(prompt)
 ```
 
 </CodeGroup>
 
 Step 4: You can also fetch a specific version of the prompt by passing the version number in the options. And you can get the "Prompt Registry ID" from the Langtrace UI.
+
+Step 5: If you are using zod or json schema, you can validate the prompt using the schema. This will ensure that the prompt is in the correct format before using it in your application.
+
+<CodeGroup>
+
+```python Python
+// Must precede any llm module imports
+import json
+from jsonschema import validate
+from langtrace_python_sdk import get_prompt_from_registry
+
+# Describe what kind of json you expect.
+schema = {
+    "type" : "object",
+    "properties" : {
+        "description" : {"type" : "string"},
+        "status" : {"type" : "boolean"},
+        "value_a" : {"type" : "number"},
+        "value_b" : {"type" : "number"},
+    },
+}
+
+response = get_prompt_from_registry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+
+# parse the json prompt
+prompt = json.loads(response['value'])
+
+# Validate will raise exception if given json is not
+# what is described in schema.
+validate(instance=my_json, schema=schema)
+
+```
+
+```typescript Typescript
+# Must precede any llm module imports
+import { getPromptFromRegistry } from '@langtrase/typescript-sdk';
+import { zodToJsonSchema } from "zod-to-json-schema";
+
+const response = await getPromptFromRegistry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+
+// parse the json prompt
+const prompt = json.loads(response['value'])
+
+// extract the json schema from the zod schema
+const parsedPrompt = zodToJsonSchema(prompt)
+```
+
+</CodeGroup>
 
 That's it! You have successfully created and versioned a prompt in Langtrace. You can now use this prompt in your applications and easily manage and reuse it across your projects.
