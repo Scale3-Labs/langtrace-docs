@@ -60,17 +60,17 @@
     {
       "group": "Tracing",
       "pages": [
-        "features/tracingoverview",
+        "Tracing/tracingoverview",
         {
-          "group": "Features",
+          "group": "Tracing",
           "pages": [
-            "features/send_traces",
-            "features/grouptraces",
-            "features/traceuserfeedback",
-            "features/attach_user_id",
-            "features/additional_attributes",
-            "features/disable_function_tracing",
-            "features/disable_vendor_instrumentation"
+            "Tracing/send_traces",
+            "Tracing/grouptraces",
+            "Tracing/traceuserfeedback",
+            "Tracing/attach_user_id",
+            "Tracing/additional_attributes",
+            "Tracing/disable_function_tracing",
+            "Tracing/disable_vendor_instrumentation"
           ]
         }
       ]
@@ -103,6 +103,7 @@
         {
           "group": "LLM Frameworks",
           "pages": [
+            "supported-integrations/llm-frameworks/anthropic",
             "supported-integrations/llm-frameworks/llamaindex",
             "supported-integrations/llm-frameworks/langchain",
             "supported-integrations/llm-frameworks/crewai",

@@ -1,0 +1,67 @@
+---
+title: "Anthropic"
+description: "Anthropic is an AI research organization focused on developing safe, reliable, and beneficial artificial intelligence systems.
+ Anthropic's research teams work at the forefront of AI development, exploring techniques to build large-scale AI systems that are interpretable, steerable, and aligned with human values. "
+
+---
+## Setup
+
+1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+
+ Note: You will also sign up and get an API key from ANTHROPIC if you haven't done so already
+
+2. Install packages and setup environment:
+<CodeGroup>
+    ````bash Python
+    pip install -U langtrace-python-sdk anthropic
+   ````
+   </CodeGroup>
+
+## Usage
+Here's a quick example of how to use Langtrace with Anthropic:
+
+<CodeGroup>
+````bash Python
+import os
+os.environ['LANGTRACE_API_KEY'] = 'YOUR_LANGTRACE_API_KEY'
+os.environ['ANTHROPIC_API_KEY'] = "YOUR_ANTHROPIC_API_KEY"
+ ````
+</CodeGroup>
+
+
+ Imports
+<CodeGroup>
+    ````bash Python
+    from langtrace_python_sdk import langtrace # Must precede any llm module imports
+langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
+from anthropic import Anthropic
+client = Anthropic(
+    # This is the default and can be omitted
+    api_key=os.environ.get("ANTHROPIC_API_KEY"),
+)
+````
+
+    </CodeGroup>
+
+Create an Index and upsert some data in Anthropic:
+<CodeGroup>
+     ```bash Python
+message = client.messages.create(
+    max_tokens=1024,
+    messages=[
+        {
+            "role": "user",
+            "content": "Hello, Claude",
+        }
+    ],
+    model="claude-3-opus-20240229",
+)
+print(message)
+ ```
+
+</CodeGroup>
+
+Want to see more supported methods? Checkout the sample code in the [Langtrace Anthropic Python Example]
+(https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/language-model/anthropic/starter.ipynb) repository.
+
+<img src="./images/anthropic.png" alt="You can now view your langtrace-anthropic_client traces on the Langtrace dashboard" />
