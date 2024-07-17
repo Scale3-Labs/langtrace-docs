@@ -5,22 +5,22 @@ description: Setup langtrace using docker compose
 ---
 
 <iframe
-	width="560"
-	height="315"
-	src="https://www.youtube.com/embed/fHghIPl_i0g?si=CTHXh0tFaLOX4SGV"
-	title="YouTube video player"
-	frameBorder="0"
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-	referrerPolicy="strict-origin-when-cross-origin"
-	allowFullScreen
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/fHghIPl_i0g?si=CTHXh0tFaLOX4SGV"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerPolicy="strict-origin-when-cross-origin"
+  allowFullScreen
 ></iframe>
 
 # Steps
 
 <Note>
-	Make sure Docker and Docker compose versions are newer. To verify the
-	versions, run the following commands: For docker `docker --version` and for
-	docker compose `docker compose --version`
+  Make sure Docker and Docker compose versions are newer. To verify the
+  versions, run the following commands: For docker `docker --version` and for
+  docker compose `docker compose --version`
 </Note>
 
 ## Step 1: Clone the repository
@@ -36,6 +36,10 @@ cd langtrace
 
 Repo already has `.env` file for common usecases, modify this file to suit your needs.
 
+### Authentication Configuration
+
+Langtrace supports multiple authentication methods. Make sure to configure the necessary environment variables for your chosen authentication method(s) in the `.env` file. For detailed instructions, refer to our [Authentication](/hosting/auth) guide.
+
 ## Step 3: Start the services
 
 ```bash
@@ -45,8 +49,8 @@ docker compose up -d
 The application will be available at `http://localhost:3000`.
 
 <Info>
-	if you wish to build the docker image locally and use it, run the `docker
-	compose up` command with the `--build` flag.
+  if you wish to build the docker image locally and use it, run the `docker
+  compose up` command with the `--build` flag.
 </Info>
 
 ## Step 4: Stop the services
@@ -60,8 +64,8 @@ docker compose down -v
 `-v` flag is used to delete volumes.
 
 <Warning>
-	Deleting the volumes also wipes out the data stored in postgres and
-	clickhouse.
+  Deleting the volumes also wipes out the data stored in postgres and
+  clickhouse.
 </Warning>
 
 ## Useful Ops Commands
@@ -149,3 +153,7 @@ The following are some common issues that you may face while setting up langtrac
   </Accordion>
 
 </AccordionGroup>
+
+## Next Steps
+
+After setting up Langtrace using Docker Compose, ensure that you've properly configured your chosen authentication method(s) and created the necessary user accounts. Refer to the [Authentication](/hosting/auth) guide for detailed instructions on setting up and managing authentication.

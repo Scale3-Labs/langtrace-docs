@@ -7,14 +7,14 @@ description: Host Langtrace on Azure AppService
 > Github Repo: [langtrace-azure-setup](https://github.com/Scale3-Labs/langtrace-azure-setup)<br />
 
 <iframe
-	width="560"
-	height="315"
-	src="https://www.youtube.com/embed/W6R5wg4KUzU?utm_source=langtrace-docs&utm_medium=azure-hosting&utm_campaign=langtrace"
-	title="YouTube video player"
-	frameBorder="0"
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-	referrerPolicy="strict-origin-when-cross-origin"
-	allowFullScreen
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/W6R5wg4KUzU?utm_source=langtrace-docs&utm_medium=azure-hosting&utm_campaign=langtrace"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerPolicy="strict-origin-when-cross-origin"
+  allowFullScreen
 ></iframe>
 
 ## Requirements
@@ -38,13 +38,13 @@ description: Host Langtrace on Azure AppService
 > The following steps are for development purpose only and serves as a reference for production usecases. If you wish to setup production, make sure to scale the resources accordingly.
 
 <iframe
-	width="560"
-	height="315"
-	src="https://www.youtube.com/embed/W6R5wg4KUzU?si=rqATdKkmQaSR3SE5"
-	title="Langtrace on Azure"
-	frameBorder="0"
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-	allowFullScreen
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/W6R5wg4KUzU?si=rqATdKkmQaSR3SE5"
+  title="Langtrace on Azure"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
 ></iframe>
 
 ### Step 1: Clone and update configuration
@@ -61,7 +61,18 @@ cd langtrace-azure-setup
 Update the region and username and passwords of the admin user and Postgres DB based on your preference in the file `main.tfvars.json`.
 You can also modify `variables.tf` based on your setup requirements.
 
-### Step 2. Run the Deploy
+### Step 2: Configure Authentication
+
+Before deploying, you need to configure authentication for your Langtrace instance:
+
+1. Open the [`main.tfvars.json`](https://github.com/Scale3-Labs/langtrace-azure-setup/blob/main/infra/main.tfvars.json) file.
+2. Locate the authentication-related variables (e.g., `admin_email`, `admin_password`).
+3. Update these variables with your desired authentication settings.
+4. For additional authentication methods (e.g., Google OAuth, Azure AD), add the necessary variables to this file.
+
+For detailed instructions on authentication options, refer to our [Authentication](/hosting/auth) guide.
+
+### Step 3. Run the Deploy
 
 Run the following command to initiate the deploy process
 
@@ -73,7 +84,7 @@ Now you will be asked to input the following variables. Give a unique name for l
 
 ![azure](/images/hosting-azure-inputs.png)
 
-### Step 3. Access the Langtrace app
+### Step 4. Access the Langtrace app
 
 Once you have provided the inputs, the deployment process will take about 15 minutes to provision all the resources. Once the deployment is successful, you will see the output with a URL as below.
 
@@ -108,3 +119,7 @@ Within five minutes, all the resources will be deleted from your Azure account.
 
   </Accordion>
 </AccordionGroup>
+
+## Next Steps
+
+After successfully deploying Langtrace on Azure, ensure that you've properly configured your chosen authentication method(s) and created the necessary user accounts. If you need to modify the authentication settings post-deployment, you may need to update the App Service configuration in the Azure portal. Refer to the [Authentication](/hosting/auth) guide for detailed instructions on managing authentication.

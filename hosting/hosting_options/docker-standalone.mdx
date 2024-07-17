@@ -23,9 +23,14 @@ cd langtrace
 Langtrace needs postgres and clickhouse to run. Update the Postgres and Clickhouse connection details in the `.env` file to point to your database.
 
 <Note>
-	Make sure the Postgres and Clickhouse databases are running and accessible
-	from the Langtrace app. If you wish to run them using Docker, checkout the docker compose guide [here](./docker-compose).
+  Make sure the Postgres and Clickhouse databases are running and accessible
+  from the Langtrace app. If you wish to run them using Docker, checkout the
+  docker compose guide [here](./docker-compose).
 </Note>
+
+### Authentication Configuration
+
+Langtrace supports multiple authentication methods. Configure the necessary environment variables for your chosen authentication method(s) in the .env file. For detailed instructions, refer to our [Authentication](/hosting/auth) guide.
 
 ## Step 3: Build the Docker image
 
@@ -55,3 +60,7 @@ docker pull scale3labs/langtrace-client:<Release Version>
 ```
 
 </Tip>
+
+### Next Steps
+
+After setting up Langtrace, make sure to configure your chosen authentication method(s) and create the necessary user accounts. Refer to the [Authentication](/hosting/auth) guide for detailed instructions.
