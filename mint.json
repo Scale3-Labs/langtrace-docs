@@ -140,7 +140,9 @@
         },
         {
           "group": "OTEL Exporters",
-          "pages": ["supported-integrations/otel-support/ts-http-json"]
+          "pages": [
+            "supported-integrations/otel-support/ts-http-json"
+          ]
         }
       ]
     },
