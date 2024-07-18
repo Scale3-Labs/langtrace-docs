@@ -131,6 +131,12 @@
             "supported-integrations/web-frameworks/django",
             "supported-integrations/web-frameworks/nextjs"
           ]
+        }, 
+        {
+          "group": "OTEL Exporters",
+          "pages": [
+            "supported-integrations/otel-support/ts-http-json"
+          ]
         }
       ]
     },
