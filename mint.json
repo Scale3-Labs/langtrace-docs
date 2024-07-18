@@ -62,7 +62,7 @@
       "pages": [
         "tracing/tracing_overview",
         {
-          "group": "Tracing",
+          "group": "Tracing Features",
           "pages": [
             "tracing/send_traces",
             "tracing/group_traces",
@@ -77,7 +77,11 @@
     },
     {
       "group": "Prompting",
-      "pages": ["features/manage_prompts", "features/manage_zod_schema", "features/playground"]
+      "pages": [
+        "features/manage_prompts",
+        "features/manage_zod_schema",
+        "features/playground"
+      ]
     },
     {
       "group": "Evaluations & Testing",
@@ -103,7 +107,6 @@
         {
           "group": "LLM Frameworks",
           "pages": [
-            "supported-integrations/llm-frameworks/anthropic",
             "supported-integrations/llm-frameworks/llamaindex",
             "supported-integrations/llm-frameworks/langchain",
             "supported-integrations/llm-frameworks/crewai",
@@ -111,8 +114,11 @@
           ]
         },
         {
-          "group": "LLM Tools",
-          "pages": ["supported-integrations/llm-tools/ollama"]
+          "group": "LLM & Tools",
+          "pages": [
+            "supported-integrations/llm-tools/anthropic",
+            "supported-integrations/llm-tools/ollama"
+          ]
         },
         {
           "group": "Vector Stores",
@@ -131,12 +137,10 @@
             "supported-integrations/web-frameworks/django",
             "supported-integrations/web-frameworks/nextjs"
           ]
-        }, 
+        },
         {
           "group": "OTEL Exporters",
-          "pages": [
-            "supported-integrations/otel-support/ts-http-json"
-          ]
+          "pages": ["supported-integrations/otel-support/ts-http-json"]
         }
       ]
     },
