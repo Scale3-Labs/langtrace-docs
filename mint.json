@@ -60,24 +60,28 @@
     {
       "group": "Tracing",
       "pages": [
-        "features/tracingoverview",
+        "tracing/tracing_overview",
         {
-          "group": "Features",
+          "group": "Tracing Features",
           "pages": [
-            "features/send_traces",
-            "features/grouptraces",
-            "features/traceuserfeedback",
-            "features/attach_user_id",
-            "features/additional_attributes",
-            "features/disable_function_tracing",
-            "features/disable_vendor_instrumentation"
+            "tracing/send_traces",
+            "tracing/group_traces",
+            "tracing/trace_user_feedback",
+            "tracing/attach_user_id",
+            "tracing/additional_attributes",
+            "tracing/disable_function_tracing",
+            "tracing/disable_vendor_instrumentation"
           ]
         }
       ]
     },
     {
       "group": "Prompting",
-      "pages": ["features/manage_prompts", "features/manage_zod_schema", "features/playground"]
+      "pages": [
+        "features/manage_prompts",
+        "features/manage_zod_schema",
+        "features/playground"
+      ]
     },
     {
       "group": "Evaluations & Testing",
@@ -110,8 +114,11 @@
           ]
         },
         {
-          "group": "LLM Tools",
-          "pages": ["supported-integrations/llm-tools/ollama"]
+          "group": "LLM & Tools",
+          "pages": [
+            "supported-integrations/llm-tools/anthropic",
+            "supported-integrations/llm-tools/ollama"
+          ]
         },
         {
           "group": "Vector Stores",
@@ -130,7 +137,7 @@
             "supported-integrations/web-frameworks/django",
             "supported-integrations/web-frameworks/nextjs"
           ]
-        }, 
+        },
         {
           "group": "OTEL Exporters",
           "pages": [
