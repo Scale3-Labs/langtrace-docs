@@ -1,0 +1,102 @@
+---
+title: "HTTP/JSON"
+description: "Adding OpenTelemetry Support for TypeScript Projects using HTTP/JSON Protocol"
+---
+
+## Overview
+
+This guide will walk you through the steps to add OpenTelemetry support to your TypeScript projects using the HTTP/JSON protocol. We will configure the OpenTelemetry collector to send traces to Langtrace Cloud and set up the TypeScript SDK to export traces.
+
+## Configurations
+
+### OpenTelemetry Collector Configuration
+
+When you are running your own OTEL Collector, create an `otel.yaml` file with the following configuration. This file will be mounted by the OpenTelemetry collector. When you send traces to your locally running OTEL Collector at the endpoint **http://localhost:4318/v1/traces**, the traces then get redirected to Langtrace Cloud.
+<CodeGroup>
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        include_metadata: true
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  otlphttp:
+    endpoint: "http://localhost:3000/api/trace"
+    encoding: json
+    compression: none
+    tls:
+      insecure: true
+    headers:
+      "x-api-key": "fbc3bf536c9c8e3c7627e56aa8a7f14b5f506d77a55fbd804b9837c2f3d301c5"
+      "Content-Type": "application/json"
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    traces:
+      receivers:
+        - otlp
+      exporters:
+        - debug
+        - otlphttp
+        ```
+</CodeGroup>
+
+#### Important Configuration Notes
+* endpoint: Change the endpoint in the otlphttp exporter section to https://langtrace.ai/api/trace if you are sending your traces to Langtrace Cloud.
+* x-api-key: The value of x-api-key should be the API key generated for your specific Langtrace project.
+
+### TypeScript SDK Configuration
+To send traces from your TypeScript project to Langtrace, use the following code snippet. Update the API key and endpoint as necessary.
+<CodeGroup>
+```typescript
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import * as Langtrace from "@langtrase/typescript-sdk";
+import OpenAI from "openai";
+
+// Initialize OpenTelemetry SDK
+Langtrace.init({
+  //   write_spans_to_console: true,
+  custom_remote_exporter: new OTLPTraceExporter({
+    url: "http://localhost:3000/api/trace",
+    headers: {
+      "x-api-key": "<LANGTRACE_API_KEY>",
+    },
+  }),
+});
+
+const openai = new OpenAI({
+  apiKey: "",
+});
+
+async function example() {
+  const completion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: "How many states of matter are there?",
+      },
+    ],
+  });
+  console.log(completion.choices[0]);
+}
+
+example().then(() => {
+  console.log("done");
+});
+
+```
+</CodeGroup>
+
+#### Important Configuration Notes
+* url: Change the endpoint in the otlphttp exporter section to https://langtrace.ai/api/trace if you are sending your traces to Langtrace Cloud.
+* x-api-key: The value of x-api-key should be the API key generated for your specific Langtrace project.
+
+## Conclusion
+By following this guide, you will have OpenTelemetry support added to your TypeScript project, enabling you to send traces to Langtrace Cloud or your self-hosted Langtrace instance using the HTTP/JSON protocol.
