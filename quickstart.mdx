@@ -125,6 +125,7 @@ For users/organizations that want to host Langtrace on their own infrastructure,
   | `write_spans_to_console`   | `bool`                              | `False`                       | Whether to write spans to the console.                                                                                                   |
   | `custom_remote_exporter`   | `Optional[Exporter]`                | `None`                        | Custom remote exporter. <br/> If `None`, a default `LangTraceExporter` will be used.                                                     |
   | `api_host`                 | `Optional[str]`                     | `https://langtrace.ai/`       | The API host for the remote exporter.                                                                                                    |
+  | `service_name`             | `Optional[str]`                     | `None`                        | The Service name for initializing langtrace                                                                                                   |
   | `disable_instrumentations` | `Optional`<br/>`[DisableInstrumentations]` | `None`                 | You can pass an object to disable instrumentation for specific vendors,<br/> e.g., `{'only': ['openai']}` <br/> or `{'all_except': ['openai']}`. |
   </Tab>
 
