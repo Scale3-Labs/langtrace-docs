@@ -8,7 +8,7 @@ description: Langtrace lets you store and version prompts, making it easy to man
 
 Step 1: Create a new project in Langtrace and go to the Prompts tab. Click on the "Create Prompt" button to create a new prompt. 
 
-You can define variables like `{name}` and `{version}` in your prompt. These variables can be dynamically filled in when you use the prompt in your application using the SDK.
+You can define variables like `${name}` and `${version}` in your prompt. These variables can be dynamically filled in when you use the prompt in your application using the SDK.
 
 ![Create Prompt](/images/prompt_1.png)
 
@@ -22,16 +22,27 @@ Step 3: Use the prompt in your application by fetching it using the SDK. You can
 
 ```python Python
 // Must precede any llm module imports
+import json
 from langtrace_python_sdk import get_prompt_from_registry
 
-prompt = get_prompt_from_registry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+response = get_prompt_from_registry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+
+prompt = response['value']
+# for json prompts (ex: tool calling)
+# prompt = json.loads(prompt)
+print(prompt)
 ```
 
 ```typescript Typescript
 # Must precede any llm module imports
 import { getPromptFromRegistry } from '@langtrase/typescript-sdk' 
 
-const prompt = await getPromptFromRegistry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+const response = await getPromptFromRegistry(<Prompt Registry ID>, options={"prompt_version": 1, "variables": {"topic": "Healthcare", "rule1": "Be polite", "rule2": "If you do not know the answer, say I do not know. Do NOT make up stuff" } })
+
+prompt = response['value']
+# for json prompts (ex: tool calling)
+# prompt = json.loads(prompt)
+print(prompt)
 ```
 
 </CodeGroup>
