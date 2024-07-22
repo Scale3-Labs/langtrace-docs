@@ -117,6 +117,7 @@
           "group": "LLM & Tools",
           "pages": [
             "supported-integrations/llm-tools/anthropic",
+            "supported-integrations/llm-tools/cohere",
             "supported-integrations/llm-tools/ollama"
           ]
         },
