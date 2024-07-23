@@ -51,18 +51,19 @@ Remember to always use caching judiciously in production environments to balance
 If you're using ThreadpoolExecutor in DSPy to parallelize your modules, you may notice that the spans in the trace are not grouped together. This is because the spans are created in the same thread and are not propagated to the parent span. To resolve this issue, 
 
 <Accordion title="Span Grouping for ThreadpoolExecutor">
-  Please use the provided code snippet as an example to ensure that the current tracing context is properly propagated when executing tasks within a `ThreadPoolExecutor`. The `run_with_context` function attaches the given context before running the specified function (func) and detaches the context after the function execution, ensuring that the tracing information is maintained. The ThreadPoolExecutor is used to run multiple tasks in parallel, each within the context captured in current_context. This approach ensures that all spans created within the threaded tasks are part of the root span, maintaining the trace's integrity.
+  Please use the provided code snippet as an example to ensure that the current tracing context is properly propagated when executing tasks within a `ThreadPoolExecutor`. The contextvars module is used to copy the current context and run the optimized CoT module within the copied context. By passing `contextvars.copy_context().run` to the `executor.submit` method, the current tracing context is propagated to the child span ensuring that the spans are grouped together in the trace.
 
   ```python
 import dspy
+import contextvars
 from dspy.datasets.gsm8k import GSM8K, gsm8k_metric
 from dspy.teleprompt import BootstrapFewShot
 from concurrent.futures import ThreadPoolExecutor
-from opentelemetry.context import get_current, attach, detac
 
 # flake8: noqa
-from langtrace_python_sdk import langtrace, with_langtrace_root_spa
-langtrace.init(api_ky="your-langtrace-api-key")
+from langtrace_python_sdk import langtrace, with_langtrace_root_span
+
+langtrace.init(api_key="<your-langtrace-api-key>")
 
 turbo = dspy.OpenAI(model="gpt-3.5-turbo", max_tokens=250)
 dspy.settings.configure(lm=turbo)
