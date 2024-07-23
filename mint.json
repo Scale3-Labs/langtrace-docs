@@ -52,7 +52,10 @@
         "concepts",
         {
           "group": "SDK",
-          "pages": ["sdk/python_sdk", "sdk/typescript_sdk"]
+          "pages": [
+            "sdk/python_sdk",
+            "sdk/typescript_sdk"
+          ]
         },
         "faqs"
       ]
@@ -112,7 +115,8 @@
             "supported-integrations/llm-frameworks/llamaindex",
             "supported-integrations/llm-frameworks/langchain",
             "supported-integrations/llm-frameworks/crewai",
-            "supported-integrations/llm-frameworks/dspy"
+            "supported-integrations/llm-frameworks/dspy",
+            "supported-integrations/llm-frameworks/vercelaisdk"
           ]
         },
         {
@@ -155,11 +159,15 @@
       "pages": [
         {
           "group": "Project APIs",
-          "pages": ["api-reference/project/POST-project"]
+          "pages": [
+            "api-reference/project/POST-project"
+          ]
         },
         {
           "group": "Prompt Registry APIs",
-          "pages": ["api-reference/prompt-registry/GET-prompt-registry"]
+          "pages": [
+            "api-reference/prompt-registry/GET-prompt-registry"
+          ]
         }
       ]
     },
@@ -183,7 +191,9 @@
     },
     {
       "group": "Contact Us",
-      "pages": ["contact/contact-us"]
+      "pages": [
+        "contact/contact-us"
+      ]
     }
   ],
   "footerSocials": {

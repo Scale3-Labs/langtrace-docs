@@ -1,0 +1,44 @@
+---
+title: "Vercel AI SDK"
+description: "Langtrace and Vercel AI SDK Integration Guide"
+---
+
+Langtrace integrates directly with the Vercel AI Sdk, offering detailed, real-time insights into performance metrics such as accuracy, evaluations, and latency.
+
+## Setup
+
+Install Langtrace's SDK and [initialize](/supported-integrations/web-frameworks/nextjs) the SDK in your code.
+
+## Usage
+
+Here's a quick example of how to use Langtrace with Vercel AI SDK:
+
+``` typescript api/chat/route.ts
+
+import * as Langtrace from '@langtrase/typescript-sdk';
+import * as ai from 'ai'
+import { openai } from '@ai-sdk/openai';
+import { NextResponse, NextRequest } from 'next/server';
+
+Langtrace.init({api_key: "05ced3c4a7a3440c0579fc3c9dadb8b9c32d88caf513f9dbf7c9e242a9edf831", instrumentations: {ai: ai}, write_spans_to_console: false, disable_latest_version_check: true})
+export async function GET(req: NextRequest) {
+  try {
+
+      const {text} = await ai.generateText({
+        model: openai('gpt-4-turbo', { user: 'TestUserId' }),
+        system: 'You are a friendly assistant!',
+        temperature: 0,
+        topP: 1,
+        maxRetries: 3,
+        maxTokens: 1024,
+        messages: [{ role: 'system', content: 'You are a friendly assistant' }, { role: 'user', content: 'How are you' }]
+      })
+    return NextResponse.json({response: text })
+  } catch (err) {
+    console.log(err)
+    return NextResponse.json({
+      error: err,
+    });
+  }
+}
+```
