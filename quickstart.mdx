@@ -9,11 +9,11 @@ Langtrace offers flexible options for trace collection and analysis:
 
 1. **[Langtrace Cloud](#langtrace-cloud) ☁️**: Our managed SaaS solution for easy setup and immediate insights.
 2. **[Self-hosted Langtrace](#langtrace-self-hosted) 🏠**: For organizations that prefer to host Langtrace on their own infrastructure.
-3. **[OpenTelemetry Integration](#opentelemetry-integration) 🔗**: Langtrace SDK supports sending traces to any OpenTelemetry-compatible backend, allowing you to use your existing observability stack.
+3. **[OpenTelemetry Integration](#opentelemetry-integration) 🔗**: Langtrace SDK supports sending traces to any OpenTelemetry-compatible backend (Datadog, New Relic, Grafana, etc), allowing you to use your existing observability stack.
 
-<Callout type="info">
+<Note>
   Important: When using Langtrace with third-party OpenTelemetry-compatible vendors, you don't need to generate a Langtrace API key. The SDK can be configured to send traces directly to your preferred backend.
-</Callout>
+</Note>
 
 Choose the option that best fits your needs and follow the corresponding setup instructions below.
 
@@ -108,7 +108,11 @@ Congrats! You can now view your traces on Langtrace Cloud. 🚀
 If you prefer to use Langtrace with your existing OpenTelemetry-compatible backend:
 
 1. Install the Langtrace SDK as described in the Langtrace Cloud section.
-2. Instead of initializing with a Langtrace API key, configure the SDK to use your OpenTelemetry exporter. See the [OpenTelemetry Integration guide](https://opentelemetry.io/docs/languages/python/) for detailed instructions.
+2. Instead of initializing with a Langtrace API key, configure the SDK to use your OpenTelemetry exporter. Refer to our [documentation](supported-integrations/overview#observabililty-tools) for OpenTelemetry tools. Or consult your platform of choice. 
+
+<Note>
+  **Note:** When shipping traces directly to other observability tools (e.g., Datadog, New Relic), you **do not** need a Langtrace API key. Only the API key for your chosen observability tool is required.
+</Note>
 
 #### Langtrace Self-hosted 🏠
 
