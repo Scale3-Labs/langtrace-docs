@@ -1,5 +1,6 @@
 ---
 title: "Vercel AI SDK"
+sidetitle: "Vercel AI"
 description: "Langtrace and Vercel AI SDK Integration Guide"
 ---
 
@@ -20,7 +21,7 @@ import * as ai from 'ai'
 import { openai } from '@ai-sdk/openai';
 import { NextResponse, NextRequest } from 'next/server';
 
-Langtrace.init({api_key: "05ced3c4a7a3440c0579fc3c9dadb8b9c32d88caf513f9dbf7c9e242a9edf831", instrumentations: {ai: ai}, write_spans_to_console: false, disable_latest_version_check: true})
+Langtrace.init({instrumentations: {ai: ai}, write_spans_to_console: false, disable_latest_version_check: true})
 export async function GET(req: NextRequest) {
   try {
 
