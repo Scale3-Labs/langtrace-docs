@@ -1,0 +1,28 @@
+---
+title: Set custom span names to traces
+sidebarTitle: Set Custom Span Name
+description: Learn how to ett custom span names to traces in Langtrace. You can use the `inject_additional_attributes` function to set custom span names to traces. This name will be appended to the operation name and will be identifed as the name of the span in the trace. 
+---
+
+<Note>
+This feature is in beta and currently works only for DSPy integration.
+</Note>
+
+## Overview
+
+When you're using the Langtrace SDK with DSPy, you can set custom span names to traces. This allows you to identify the span in the trace with a custom name. You can use the `inject_additional_attributes` function to set custom span names to traces. This name will be appended to the operation name and will be identified as the name of the span in the trace.
+
+Please see the example below to learn how to set custom span names to traces. Note that the key `langtrace.span.name` is used to pass the custom span name to the trace.
+
+```python
+from langtrace_python_sdk import inject_additional_attributes
+
+class CoT(dspy.Module):
+    def __init__(self):
+        super().__init__()
+        self.prog = dspy.ChainOfThought("question -> answer")
+
+    def forward(self, question):
+        result = inject_additional_attributes(lambda: self.prog(question=question), {'langtrace.span.name': 'MathProblemsCotParallel'})
+        return result
+```
