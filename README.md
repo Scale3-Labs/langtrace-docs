@@ -29,7 +29,7 @@ To contribute to the documentation, follow these steps:
 ### Submitting Changes
 
 1. Make your changes to the docs.
-2. Test your changes thoroughly.
+2. Test your changes thoroughly and verify no broken links with pre-comit checker.
 3. Commit your changes with a clear and descriptive commit message:
 
 `git commit -m "Description of your changes"`
@@ -47,13 +47,19 @@ git push origin feature-branch
 
 ### Development
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+- Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
 
 ```
 npm i -g mintlify
 ```
 
-Run the following command at the root (where mint.json is)
+- Install pre-commit
+
+```
+brew install pre-commit
+```
+
+- Run the following command at the root (where mint.json is)
 
 ```
 mintlify dev
@@ -67,7 +73,7 @@ mintlify dev
 ### Contributing Guidelines
 
 To ensure consistency and quality in our documentation, please follow these guidelines:
-
+• Ensure no broken links by installing pre-commit
 • Markdown Standards: Use Markdown for all documentation files.
 • Clarity and Accuracy: Ensure that your contributions are clear, accurate, and well-organized.
 

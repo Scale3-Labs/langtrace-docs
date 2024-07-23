@@ -1,7 +1,8 @@
 ---
 title: Cohere
-description: Cohere is an AI company specializing in advanced natural language processing (NLP) technologies.
- They provide powerful language models and easy-to-use APIs for text generation, sentiment analysis, summarization, and more.
+description:
+  Cohere is an AI company specializing in advanced natural language processing (NLP) technologies.
+  They provide powerful language models and easy-to-use APIs for text generation, sentiment analysis, summarization, and more.
   Cohere's solutions can be customized and fine-tuned for specific tasks, making them ideal for applications in customer support, content creation, and real-time processing.
 ---
 
@@ -19,6 +20,7 @@ Note: You will also sign up and get an API key from COHERE [initialize](https://
 # Install the SDK
 pip install -U langtrace-python-sdk cohere
 ```
+
 ## Usage
 
 Here's a quick example of how to use Langtrace with Cohere:
@@ -41,9 +43,10 @@ langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
 import cohere
 
 co = cohere.Client(
-    api_key=os.environ['COHERE_API_KEY'],
+api_key=os.environ['COHERE_API_KEY'],
 )
-```
+
+````
 
     </CodeGroup>
 
@@ -56,7 +59,7 @@ chat = co.chat(
     model="command"
 )
 print(chat.text)
- ```
+````
 
 </CodeGroup>
 
