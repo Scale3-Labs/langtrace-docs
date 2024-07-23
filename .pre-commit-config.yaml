@@ -1,0 +1,6 @@
+repos:
+  - repo: https://github.com/CoderJoshDK/precommit-mintlify-validate/
+    rev: v0.2.0 # Get the latest from: https://github.com/CoderJoshDK/precommit-mintlify-validate/
+    hooks:
+      - id: mintlify-validate
+        # args: [docs] # relative path to directory with mint.json file (optional, defaults to `.`)
