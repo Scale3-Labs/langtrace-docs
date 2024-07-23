@@ -72,41 +72,37 @@ gsm8k = GSM8K()
 gsm8k_trainset, gsm8k_devset = gsm8k.train[:10], gsm8k.dev[:10]
 
 class CoT(dspy.Module):
-  def __init__(self):
-    super().__init__()
-    self.prog = dspy.ChainOfThought("question -> answer")
-  def forward(self, question):
-    return self.prog(question=question)
+    def __init__(self):
+        super().__init__()
+        self.prog = dspy.ChainOfThought("question -> answer")
+
+    def forward(self, question):
+        return self.prog(question=question)
 
 @with_langtrace_root_span(name="parallel_example")
 def example():
+    # Set up the optimizer: we want to "bootstrap" (i.e., self-generate) 4-shot examples of our CoT program.
+    config = dict(max_bootstrapped_demos=4, max_labeled_demos=4)
 
-  # Set up the optimizer: we want to "bootstrap" (i.e., self-generate) 4-shot examples of our CoT program.
-  config = dict(max_bootstrapped_demos=4, max_labeled_demos=4)
+    # Optimize! Use the `gsm8k_metric` here. In general, the metric is going to tell the optimizer how well it's doing.
+    teleprompter = BootstrapFewShot(metric=gsm8k_metric, **config)
+    optimized_cot = teleprompter.compile(CoT(), trainset=gsm8k_trainset)
 
-  # Optimize! Use the `gsm8k_metric` here. In general, the metric is going to tell the optimizer how well it's doing.
-  teleprompter = BootstrapFewShot(metric=gsm8k_metric, **config)
-  optimized_cot = teleprompter.compile(CoT(), trainset=gsm8k_trainset
+    questions = [
+        "What is the sine of 0?",
+        "What is the tangent of 100?",
+    ]
 
-  questions = [
-    "What is the cosine of 0?",
-    "What is the tangent of 0?",
-  ]
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        futures = [executor.submit(contextvars.copy_context().run, optimized_cot, question=q) for q in questions]
 
-  # Get the current tracing context and run the optimized CoT on each question in parallel
-  current_context = get_current()
-  def run_with_context(context, func, *args, **kwargs):
-    token = attach(context)
-    try:
-        return func(*args, **kwargs)
-    finally:
-        detach(token)
+        for future in futures:
+            ans = future.result()
+            print(ans)
 
-  with ThreadPoolExecutor(max_workers=2) as executor:
-    # Run the optimized CoT on each question in parallel by passing the current tracing context
-    futures = [executor.submit(run_with_context, current_context, optimized_cot, question=q) for q in questions]
-    for future in futures:
-        future.result()
+
+if __name__ == "__main__":
+    example()
   ```
 
 </Accordion>
