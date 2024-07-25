@@ -13,21 +13,26 @@ description: "Langtrace can be easily integrated with NextJS applications with j
 # Get Started
 <Steps>
   <Step title="First Step">
-    Update the next.config.(m)js file.
-        ```typescript next.config.(m)js
-    const nextConfig = {
-      webpack: (config, { isServer }) => {
+  Update the next.config.(m)js file.
+  ```typescript next.config.(m)js
+  import { ModuleAlias } from '@langtrase/typescript-sdk/dist/webpack/plugins/ModuleAlias.js'
+  const nextConfig = {
+    webpack: (config, { isServer }) => {
+      if (isServer) {
+          config.resolve.plugins = [
+          ...(config.resolve.plugins || []),
+          new ModuleAlias(process.cwd())
+        ];
         config.module.rules.push({
-          test: /\.node$/,
           loader: "node-loader",
+          test: /\.node$/,
         });
-        if (isServer) {
-          config.ignoreWarnings = [{ module: /opentelemetry/ }];
-        }
-        return config;
-      },
-    };
-    ```
+        config.ignoreWarnings = [{ module: /opentelemetry/ }];
+      }
+    return config;
+    },
+  };
+  ```
   </Step>
   <Step title="Second Step">
     Initialize langtrace in your API routes like so:. Replace `<API_KEY>` with your Langtrace API key.
@@ -116,6 +121,19 @@ You can instrument multiple vendors in your application. For example, you can in
 
 Replace `<API_KEY>` with your Langtrace API key.
 <AccordionGroup>
+  <Accordion title="Vercel AI SDK">
+    ```typescript
+  import * as Langtrace from '@langtrase/typescript-sdk';
+  import * as ai from 'ai';
+  Langtrace.init({
+    api_key: '<API_KEY>',
+    instrumentations: {
+      ai: ai,
+    },
+  });
+    ```
+  </Accordion>
+
   <Accordion title="LlamaIndex">
     ```typescript
   import * as Langtrace from '@langtrase/typescript-sdk';
