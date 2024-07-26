@@ -3,52 +3,44 @@ title: OpenAI
 description: OpenAI is a leading artificial intelligence research and deployment company committed to ensuring that artificial general intelligence(AGI) benefits all of humanity. It develops cutting-edge AI models, such as GPT-4, to assist in various applications, from natural language processing to complex problem-solving. OpenAI focuses on safety, scalability, and ethical considerations in AI advancements.
 ---
 
-Using Langtrace to monitor your OpenAI LLM is quick and easy. Follow these steps:
+Using Langtrace to monitor your OPEN AI'S GPT 3.5 MODEL is quick and easy. Follow these steps:
 
 ## Setup
 
-1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+1. Install the Langtrace and OpenAI SDKs.
 
-Note: You will also sign up and get an API key from OPENAI [initialize] (https://openai.com/) if you haven't done so already.
-
-2. Install packages and setup environment:
+*Note: You'll need API keys from Langtrace and OPENAI'S GPT 3.5 MODEL. Sign up for [Langtrace](https://langtrace.ai) and/or [OpenAI](https://openai.com/) if you haven't done so already.*
 
 ```bash Python
 # Install the SDK
 pip install -U langtrace-python-sdk openai
 ```
-## Usage
 
-Here's a quick example of how to use Langtrace with Openai:
+2. Setup environment variables:
 
 ```python Python
-# Imports import os
 
 import os
-
 os.environ['LANGTRACE_API_KEY'] = "YOUR_LANGTRACE_API_KEY"
 os.environ['OPENAI_API_KEY'] = "YOUR_OPEN_AI_API_KEY"
 ```
 
-Imports
+## Usage
+
+Generate a simple output with your deployment's model:
 
 <CodeGroup>
   ```python Python
- from langtrace_python_sdk import langtrace # Must precede any llm module imports
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
 langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
 from openai import OpenAI
 client = OpenAI(
     # This is the default and can be omitted
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
-```
 
-    </CodeGroup>
+# Generate a simple output with OPEN AI'S GPT 3.5 MODEL
 
-4. Generate a simple output with OPEN AI'S GPT 3.5 MODEL:
-
-<CodeGroup>
-     ```bash Python
 chat_completion = client.chat.completions.create(
     messages=[
         {
@@ -59,23 +51,20 @@ chat_completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
 )
 print(chat_completion.choices[0].message.content)
- ```
+# Lets also create some embeddings
 
-</CodeGroup>
-
-5.  Lets also create some embeddings:
-<CodeGroup>
-    ````bash Python
-    response = client.embeddings.create(
+response = client.embeddings.create(
     input="Your text string goes here",
     model="text-embedding-3-small"
 )
 
 print(response.data[0].embedding)
-    ````
-</CodeGroup>
-You can now view your traces on the Langtrace dashboard:
+```
+
+    </CodeGroup>
+
+
+You can now view your traces on the Langtrace dashboard.
  ![traces](/images/openai.png)
 
-Want to see more supported methods? Checkout the sample code in the [Langtrace Anthropic Python Example]
-(https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/language-model/openai/starter.ipynb) repository.
+Want to see more supported methods? Checkout the sample code in the [Langtrace OpenAI Python Example](https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/language-model/openai/starter.ipynb) repository.
