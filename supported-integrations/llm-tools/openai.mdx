@@ -30,6 +30,7 @@ Generate a simple output with your deployment's model:
 
 <CodeGroup>
   ```python Python
+  import os
 from langtrace_python_sdk import langtrace # Must precede any llm module imports
 from openai import OpenAI
 langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
