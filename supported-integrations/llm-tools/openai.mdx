@@ -3,13 +3,13 @@ title: OpenAI
 description: OpenAI is a leading artificial intelligence research and deployment company committed to ensuring that artificial general intelligence(AGI) benefits all of humanity. It develops cutting-edge AI models, such as GPT-4, to assist in various applications, from natural language processing to complex problem-solving. OpenAI focuses on safety, scalability, and ethical considerations in AI advancements.
 ---
 
-Using Langtrace to monitor your OPEN AI'S GPT 3.5 MODEL is quick and easy. Follow these steps:
+Using Langtrace to monitor your OPENAI LLM apps is quick and easy. Follow these steps:
 
 ## Setup
 
 1. Install the Langtrace and OpenAI SDKs.
 
-*Note: You'll need API keys from Langtrace and OPENAI'S GPT 3.5 MODEL. Sign up for [Langtrace](https://langtrace.ai) and/or [OpenAI](https://openai.com/) if you haven't done so already.*
+*Note: You'll need API keys from Langtrace and OpenAI. Sign up for [Langtrace](https://langtrace.ai) and/or [OpenAI](https://openai.com/) if you haven't done so already.*
 
 ```sh Shell
 # Install the SDK
@@ -19,7 +19,6 @@ pip install -U langtrace-python-sdk openai
 2. Setup environment variables:
 
 ```sh Shell
-
 export LANGTRACE_API_KEY = YOUR_LANGTRACE_API_KEY
 export OPENAI_API_KEY = YOUR_OPEN_AI_API_KEY
 ```
@@ -40,7 +39,6 @@ client = OpenAI(
 )
 
 # Generate a simple output with OPEN AI'S GPT 3.5 MODEL
-
 chat_completion = client.chat.completions.create(
     messages=[
         {
@@ -51,8 +49,8 @@ chat_completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
 )
 print(chat_completion.choices[0].message.content)
-# Lets also create some embeddings
 
+# Lets also create some embeddings
 response = client.embeddings.create(
     input="Your text string goes here",
     model="text-embedding-3-small"

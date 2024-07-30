@@ -63,9 +63,9 @@
     {
       "group": "Tracing",
       "pages": [
-        "tracing/tracing_overview",
+        "tracing/ Overview",
         {
-          "group": "Tracing Features",
+          "group": "Features",
           "pages": [
             "tracing/send_traces",
             "tracing/group_traces",
