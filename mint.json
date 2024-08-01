@@ -63,7 +63,7 @@
     {
       "group": "Tracing",
       "pages": [
-        "tracing/ Overview",
+        "tracing/overview",
         {
           "group": "Features",
           "pages": [
