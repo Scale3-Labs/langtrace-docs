@@ -3,68 +3,57 @@ title: Groq
 description: Groq provides cutting-edge AI acceleration hardware and software solutions designed to maximize the performance and efficiency of machine learning and AI workloads. Their innovative technology enables rapid processing speeds and scalability, making it ideal for complex data-intensive applications. Groq's products are tailored to deliver high performance with low latency, catering to enterprises seeking advanced AI capabilities.
 ---
 
-Using Langtrace to monitor your Groq llama3 MODEL is quick and easy. Follow these steps:
+Using Langtrace to monitor your Groq apps is quick and easy. Follow these steps:
 
 ## Setup
 
-1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+1. Install the Langtrace and Groq SDKs.
 
-Note: You will also sign up and get an API key from GROQ [initialize](https://groq.com/)  if you haven't done so already.
+*Note: You'll need API keys from Langtrace and Groq. Sign up for [Langtrace](https://langtrace.ai) and/or [Groq](https://groq.com/) if you haven't done so already.*
 
-2. Install packages and setup environment:
-
-```bash Python
+```sh Shell
 # Install the SDK
 pip install -U langtrace-python-sdk groq
 ```
-## Usage
 
-Here's a quick example of how to use Langtrace with Groq:
+2. Setup environment variables:
 
-```python Python
-# Imports import os
-
-import os
-os.environ['LANGTRACE_API_KEY'] = "YOUR_LANGTRACE_API_KEY"
-os.environ['GROQ_API_KEY'] = "YOUR_GROQ_API_KEY"
+```sh Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export GROQ_API_KEY=YOUR_GROQ_API_KEY
 ```
 
-Imports
+## Usage
+
+Generate a simple output with your deployment's model:
 
 <CodeGroup>
   ```python Python
- from langtrace_python_sdk import langtrace # Must precede any llm module imports
+  import os
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
 langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
 from groq import Groq
 client = Groq(
     # This is the default and can be omitted
     api_key=os.environ["GROQ_API_KEY"],
 )
+
+# Generate a simple output with the llama3 MODEL
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": "What is LangChain?",
+        }
+    ],
+    model="llama3-8b-8192",
+)
+print(chat_completion.choices[0].message.content)
 ```
 
     </CodeGroup>
 
-4. Generate a simple output with the llama3 MODEL:
-
-<CodeGroup>
-     ```bash Python
-response = client.chat.completions.create(
-    model="test", # model = "deployment_name".
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "Does Azure OpenAI support customer managed keys?"},
-        {"role": "assistant", "content": "Yes, customer managed keys are supported by Azure OpenAI."},
-        {"role": "user", "content": "Do other Azure AI services support this too?"}
-    ]
-)
-
-print(response.choices[0].message.content)
- ```
-
-</CodeGroup>
-
-
 You can now view your traces on the Langtrace dashboard:
  ![traces](/images/groq.png)
 
-Want to see more supported methods? Checkout the sample code in the [Langtrace Azure-OpenAI Python Example](https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/tools/groq/starter.ipynb) repository.
+Want to see more supported methods? Checkout the sample code in the [Langtrace Groq Python Example](https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/tools/groq/starter.ipynb) repository.
