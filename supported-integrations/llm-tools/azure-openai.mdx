@@ -7,22 +7,18 @@ Using Langtrace to monitor your Azure-OpenAI LLM is quick and easy. Follow these
 
 ## Setup
 
-1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+1. Install the Langtrace and Azure-OpenAI SDKs.
 
-Note: You will also sign up and get an API key from AZURE OPENAI SERVICE [initialize](https://azure.microsoft.com/en-us/free/ai-services/?azure-portal=true/)  if you haven't done so already.
+*Note: You'll need API keys from Langtrace and AZURE-OPENAI SERVICE. Sign up for [Langtrace](https://langtrace.ai) and/or [Azure](https://azure.microsoft.com/en-us/free/ai-services/?azure-portal=true/) if you haven't done so already.*
 
-      You wil also need a deployment and Azure OPEN AI Endpoint.
-
-2. Install packages and setup environment:
-
-```bash Python
+```sh Shell
 # Install the SDK
 pip install -U langtrace-python-sdk openai
 ```
-## Usage
 
-Here's a quick example of how to use Langtrace with Azure-OpenAI:
+2. Setup environment variables:
 
+<<<<<<< HEAD
 ```python Python
 # Imports import os
 import os
@@ -31,35 +27,37 @@ os.environ['AZURE_OPENAI_ENDPOINT'] = 'YOUR_AZURE_OPENAI_ENDPOINT'
 os.environ['AZURE_OPENAI_API_KEY'] = 'YOUR_AZURE_OPENAI_API_KEY'
 os.environ['API_VERSION'] = 'YOUR_API_VERSION',
 os.environ['DEPLOYMENT_NAME'] = 'YOUR_DEPLOYMENT_NAME'
+=======
+```sh Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export AZURE_OPENAI_ENDPOINT=YOUR_AZURE_OPENAI_ENDPOINT
+export AZURE_OPENAI_API_KEY=YOUR_AZURE_OPENAI_API_KEY
+export AZURE_API_VERSION=YOUR_API_VERSION
+export AZURE_DEPLOYMENT_NAME=YOUR_DEPLOYMENT_NAME
+>>>>>>> upstream/main
 ```
 
-Imports
+## Usage
+
+Generate a simple output with your deployment's model:
 
 <CodeGroup>
   ```python Python
- from langtrace_python_sdk import langtrace # Must precede any llm module imports
-langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
+import os
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
 from openai import AzureOpenAI
+langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
 client = AzureOpenAI(
     api_key=os.environ["AZURE_OPENAI_API_KEY"],
-    api_version=os.environ['API_VERSION'],
+    api_version=os.environ['AZURE_API_VERSION'],
     azure_endpoint = os.environ["AZURE_OPENAI_ENDPOINT"]
     )
-deployment_name= os.environ['DEPLOYMENT_NAME']
+deployment_name= os.environ['AZURE_DEPLOYMENT_NAME']
 print('Sending a test completion job')
-start_phrase = 'Write a tagline for an ice cream shop. '
-response = client.completions.create(model=deployment_name, prompt=start_phrase, max_tokens=10)
-print(start_phrase+response.choices[0].text)
-```
 
-    </CodeGroup>
-
-4. Generate a simple output with your deployment's model:
-
-<CodeGroup>
-     ```bash Python
+# Generate a simple output with your deployment's model
 response = client.chat.completions.create(
-    model="test", # model = "deployment_name".
+    model=os.environ['AZURE_DEPLOYMENT_NAME'],
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "Does Azure OpenAI support customer managed keys?"},
@@ -69,12 +67,12 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
- ```
+```
 
-</CodeGroup>
+    </CodeGroup>
 
 
-You can now view your traces on the Langtrace dashboard:
+You can now view your traces on the Langtrace dashboard.
  ![traces](/images/azure-openai.png)
 
 Want to see more supported methods? Checkout the sample code in the [Langtrace Azure-OpenAI Python Example](https://github.com/Scale3-Labs/langtrace-recipes/blob/main/integrations/language-model/azure-openai/starter.ipynb) repository.

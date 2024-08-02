@@ -7,21 +7,39 @@ sidebarTitle: Python SDK
 
 > Github repository for Langtrace Python SDK's -> [Scale3-Labs/langtrace-python-sdk](https://github.com/Scale3-Labs/langtrace-python-sdk).
 
+## To use the managed version of Langtrace, follow these steps:
+1.  Sign up by going to this link [Langtrace](https://langtrace.ai).
+2.  Create a new Project and Generate an API key.
+
 ## Installation
-
-You can install the Langtrace Python SDK using pip:
-
-```bash
+1. In your application, install the Langtrace Typescript SDK using npm:
+```bash Shell
 pip install langtrace-python-sdk
 ```
 
 ## Initialization
-
-To initialize the Langtrace Python SDK
+1. Initialize the Langtrace SDK with the API key you generated in the step 2:
 
 ```python
-import langtrace
-langtrace.init()
+# Import it into your project
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
+langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 ```
+
+## For self-hosted Langtrace add *`api_host`* and point the URL to your own DNS or IP sddress.Langtrace
+Example below:
+<CodeGroup>
+```python Python
+from langtrace_python_sdk import langtrace
+langtrace.init(
+  api_key="<YOUR API KEY>",
+  api_host="http://localhost:3000/api/trace",
+)
+```
+</CodeGroup>
+
+<Note>
+    Here we are using `http://localhost:3000/api/trace` as the API host. You can replace it with your own DNS or IP address.
+    </Note>
 
 For more options on how to use SDK, please refer to [features section](/features).
