@@ -29,6 +29,26 @@ export const run = async ()=>{
 run().then(() => console.log('done'))
 ```
 
+# Giving spans a custom name with the `withAdditionalAttributes` function
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+import OpenAI from 'openai'
+Langtrace.init({
+  write_spans_to_console: true,
+})
+await withAdditionalAttributes(async () => {
+    const resp = await ai.generateText({
+      model: openai('gpt-4-turbo', { user: 'abc' }),
+      system: 'You are a friendly assistant!',
+      temperature: 0.5,
+      topP: 1,
+      maxRetries: 3,
+      maxTokens: 1024,
+      messages: [{ role: 'system', content: 'hi' }, { role: 'user', content: 'why is the sky blue' }]
+    })
+  }, { 'langtrace.span.name': 'my_custom_span' })
+```
+
 ```python Python SDK - Function Based
 from langtrace_python_sdk import inject_additional_attributes
 
