@@ -128,7 +128,8 @@
             "supported-integrations/llm-tools/cohere",
             "supported-integrations/llm-tools/groq",
             "supported-integrations/llm-tools/ollama",
-            "supported-integrations/llm-tools/openai"
+            "supported-integrations/llm-tools/openai",
+            "supported-integrations/llm-tools/perplexity"
           ]
         },
         {
