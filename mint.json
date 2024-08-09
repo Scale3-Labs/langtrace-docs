@@ -173,6 +173,12 @@
           "pages": [
             "api-reference/prompt-registry/GET-prompt-registry"
           ]
+        },
+        {
+          "group": "Traces API",
+          "pages": [
+            "api-reference/traces/POST-traces"
+          ]
         }
       ]
     },
