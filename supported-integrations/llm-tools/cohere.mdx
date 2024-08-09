@@ -12,55 +12,41 @@ Using Langtrace to monitor your Cohere backed LLM apps is quick and easy. Follow
 
 1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
 
-Note: You will also sign up and get an API key from COHERE [initialize](https://cohere.com/) if you haven't done so already
+*Note: You'll need API keys from Langtrace and Cohere. Sign up for [Langtrace](https://langtrace.ai) and/or [Cohere](https://cohere.com/) if you haven't done so already.*
 
-2. Install packages and setup environment:
-
-```bash Python
+```bash Shell
 # Install the SDK
 pip install -U langtrace-python-sdk cohere
 ```
 
-## Usage
+2. Setup environment variables:
 
-Here's a quick example of how to use Langtrace with Cohere:
-
-```python Python
-# Imports import os
-
-import os
-os.environ['LANGTRACE_API_KEY'] = "YOUR_LANGTRACE_API_KEY"
-
-os.environ['COHERE_API_KEY'] = "YOUR_COHERE_API_KEY"
+```sh Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export COHERE_API_KEY=YOUR_COHERE_API_KEY
 ```
 
-Imports
+## Usage
 
+Generate a simple output with your deployment's model:
 <CodeGroup>
-  ```python Python
- from langtrace_python_sdk import langtrace # Must precede any llm module imports
+```python Python
+# Imports import os
+import os
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
 langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
 import cohere
-
 co = cohere.Client(
-api_key=os.environ['COHERE_API_KEY'],
+    api_key=os.environ['COHERE_API_KEY'],
 )
 
-````
-
-    </CodeGroup>
-
-4. Lets query Cohere's command model:
-
-<CodeGroup>
-     ```bash Python
+#  Lets query Cohere's command model
 chat = co.chat(
     message="What is Langchain?",
     model="command"
 )
 print(chat.text)
 ````
-
 </CodeGroup>
 
 You can now view your traces on the Langtrace dashboard:
