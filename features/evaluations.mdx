@@ -1,7 +1,11 @@
 ---
 title: Evaluations
-description: Langtrace allows you run evaluations on annotated datasets aswell as your own datasets and get insights on the performance of your application.
+description: Langtrace allows you run evaluations on annotated datasets and get insights on the performance of your application.
 ---
+
+## What are evaluations?
+
+If you are using LLMs to build applications, it is important to evaluate the performance of your models. Evaluations help you understand how well your models are performing and identify areas for improvement. For example: If you are using GPT-3.5-Turbo to build a chatbot, and you want to switch to a different model, you can run evaluations to compare the performance of the two models and choose the one that works best for your application.
 
 ## How to run evaluations
 
@@ -9,115 +13,88 @@ Langtrace relies on [Inspect AI](https://ukgovernmentbeis.github.io/inspect_ai/)
 
 Inspect provides many built-in components, including facilities for prompt engineering, tool usage, multi-turn dialog, and model graded evaluations. Extensions to Inspect (e.g. to support new elicitation and scoring techniques) can be provided by other Python packages.
 
-In order to run evaluations, you need to have a dataset that has been annotated with Langtrace. To annotate a dataset, you can follow the steps in the [Annotate & Measure](/features/annotations) guide. Once you have an annotated dataset, follow the steps below to run evaluations.
+In order to run evaluations, you need to have a dataset that has been annotated or curated with Langtrace. To annotate a dataset, you can follow the steps in the [Annotate & Measure](/features/annotations) guide. Once you have an annotated dataset, follow the steps below to run evaluations.
 
-<Note>
-Currently langtrace doesn't support `inspect-ai` versions greater than `0.3.14`. Versions higher than `0.3.14` are causing [this](https://github.com/UKGovernmentBEIS/inspect_ai/issues/135) issue.
-</Note>
+1. Setup a project on Langtrace, trace a bunch of LLM completions and create a dataset out of the traced completions.
 
-1. Install Langtrace SDK & Inspect AI
+![evaluations](/images/evals_step_1.png)
+
+2. Create an independent python project and install Inspect AI
 
 ```
-pip install langtrace-python-sdk
-pip install inspect-ai==0.3.14
+pip install inspect-ai
 ```
 
-2. Make sure you add the LANGTRACE_API_KEY to your environment variables as shown below. **Note**: If you don't have an API key, you can generate one by following the steps in the [Generate API Key](/quickstart) guide.
+3. Add the LANGTRACE_API_KEY to your environment variables as shown below. **Note**: If you don't have an API key, you can generate one by following the steps in the [Generate API Key](/quickstart) guide.
 
 ```bash
-export LANGTRACE_API_KEY=<your-api-key
+export LANGTRACE_API_KEY=<your-api-key>
 ```
 
-**Note**: If you are self-hosting, set the LANGTRACE_API_HOST environment variable to the URL of your Langtrace instance.
-
+<Note>
+If you are self-hosting, set the LANGTRACE_API_HOST environment variable to the URL of your Langtrace instance.
 ```bash
 export LANGTRACE_API_HOST=<your-langtrace-instance-url>
 ```
+</Note>
 
-3. Copy the dataset ID from Langtrace and replace `<datasetId>` in the script below
+4. Copy the dataset ID from Langtrace and replace `<datasetId>` in the script below
 
-![evaluations](/images/evaluations-1.png)
+![evaluations](/images/evals_step_2.png)
 
-4. Write a simple evaluation script and save it in a file called `example_eval.py`
+5. Write a simple evaluation script and save it in a file called `example_eval.py`
+
+In the following example, we are going to run the dataset we created against different models and evaluate the performance of the models using Inspect AI & Langtrace.
+
+The script below has a `plan` which includes a `generate()` step which will run each sample in the dataset against the specified model and a `self_critique()` step which will evaluate the performance of the model using the `model_graded_fact()` scorer.
+
+The `self_critique()` step will compare the model's output with the ground truth and assign a score to the model based on how well it performed and it uses gpt-4o as the model to judge the performance of the model.
 
 ```python
 from inspect_ai import Task, task
 from inspect_ai.dataset import csv_dataset
-from inspect_ai.scorer import model_graded_qa
-from inspect_ai.solver import chain_of_thought, self_critique
+from inspect_ai.scorer import model_graded_fact
+from inspect_ai.solver import self_critique
 
 @task
 def example_eval():
     return Task(
         dataset=csv_dataset("langtracefs://<datasetId>"),
         plan=[
-            chain_of_thought(),
-            self_critique()
+            generate(),
+            self_critique(model="openai/gpt-4o")
         ],
-        scorer=model_graded_qa()
+        scorer=model_graded_fact()
     )
 
 ```
 
-5. Run the evaluation script
+6. Run the evaluation script
+
+Let's run this against a few different models using the command below
 
 ```bash
 inspect eval example_eval.py --model openai/gpt-3.5-turbo --log-dir langtracefs://<datasetId>
+inspect eval example_eval.py --model openai/gpt-4o-mini --log-dir langtracefs://<datasetId>
+inspect eval example_eval.py --model anthropic/claude-3-5-sonnet-20240620 --log-dir langtracefs://<datasetId>
+inspect eval example_eval.py --model ollama/llama3.1 --log-dir langtracefs://<datasetId>
 ```
-**Note**: In order to run the command above you will need to add your OPENAI API Key to the environment variables like so:
-```bash
-export OPENAI_API_KEY=<your_openai_api_key>
-```
-You have the option to utilize alternative language model providers through Inspect AI by simply adjusting the model argument, should you prefer not to use OPEN AI.
 
-6. Additionally, you can also configure the `--log-dir` as an environment variable as shown below:
+**Note**: In order to run the command above you will need to add your API keys for the models you are running the generations against.
+
+7. Once the evaluations are complete, you can view the results in the Langtrace dashboard by going to the evaluations page inside the dataset you ran the evaluations on.
+
+![evaluations](/images/evals_step_3.png)
+
+As you can see from the radar graph, you can compare the performance of the different models and see which one performed the best.
+
+8. Additionally, you can also configure the `--log-dir` as an environment variable as shown below:
 
 ```bash
 export INSPECT_LOG_DIR=langtracefs://<datasetId>
 ```
 
 Additional options for configuring your environment can be found in the [Inspect AI documentation](https://ukgovernmentbeis.github.io/inspect_ai/workflow.html#sec-workflow-configuration).
-
-7. If you want to run evaluations on your own datasets, you can set up your evaluation script as shown below:
-
-```python
-from inspect_ai import Task, task
-from inspect_ai.dataset import csv_dataset
-from inspect_ai.scorer import model_graded_qa
-from inspect_ai.solver import chain_of_thought, self_critique
-
-@task
-def example_eval():
-    return Task(
-        dataset=csv_dataset("./path/to/your/dataset.csv"),
-        plan=[
-            chain_of_thought(),
-            self_critique()
-        ],
-        scorer=model_graded_qa()
-    )
-
-```
-
-8. And, run the evaluation script by simply passing `langtracefs://` to the `--log-dir` flag.
-
-```bash
-inspect eval example_eval.py --model openai/gpt-3.5-turbo --log-dir langtracefs://
-```
-
-9. Now, go to the Evaluations tab in the Langtrace dashboard to view the evaluation results.
-
-![evaluations](/images/evaluations-2.png)
-
-![evaluations](/images/evaluations-3.png)
-
-10. Additionally, inspect has a built-in web interface that you can use to view the evaluation results. It works inside VSCode as well as on the browser. You can access the web interface by running the following command:
-
-```bash
-inspect view --log-dir langtracefs://<datasetId>
-```
-
-![evaluations](/images/inspect-view.png)
 
 <Tip>
   You can read more about Inspect AI and its capabilities in the [Inspect AI
