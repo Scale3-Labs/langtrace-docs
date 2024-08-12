@@ -128,7 +128,8 @@
             "supported-integrations/llm-tools/cohere",
             "supported-integrations/llm-tools/groq",
             "supported-integrations/llm-tools/ollama",
-            "supported-integrations/llm-tools/openai"
+            "supported-integrations/llm-tools/openai",
+            "supported-integrations/llm-tools/perplexity"
           ]
         },
         {
@@ -171,6 +172,12 @@
           "group": "Prompt Registry APIs",
           "pages": [
             "api-reference/prompt-registry/GET-prompt-registry"
+          ]
+        },
+        {
+          "group": "Traces API",
+          "pages": [
+            "api-reference/traces/POST-traces"
           ]
         }
       ]
