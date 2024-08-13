@@ -153,6 +153,7 @@
         {
           "group": "OTEL Exporters",
           "pages": [
+            "supported-integrations/otel-support/otel-configuration",
             "supported-integrations/otel-support/ts-http-json",
             "supported-integrations/otel-support/python-http-json"
           ]

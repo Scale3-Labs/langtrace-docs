@@ -1,0 +1,91 @@
+---
+title: OTEL Configuration
+sidebarTitle: Configuration
+description: Learn how to configure the OpenTelemetry Collector integration.
+---
+
+The following is a quick guide on how to run an OpenTelemetry Collector with a custom config to forward traces to Langtrace either self-hosted or on Cloud.
+
+## Collector Configuration
+
+Save this to a file named `otel.yaml` and replace `<LANGTRACE_API_KEY>` with your Langtrace API key.
+If you are using a self-hosted setup, you will have to first login using admin user to first create a project to generate an API key.
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      http:
+        include_metadata: true
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  otlphttp:
+    encoding: json
+    compression: none
+    traces_endpoint: "https://langtrace.ai/api/trace"
+    tls:
+      insecure: false
+    headers:
+      x-api-key: "<LANGTRACE_API_KEY>"
+      Content-Type: "application/json"
+
+service:
+  pipelines:
+    traces:
+      receivers:
+        - otlp
+      exporters:
+        - otlphttp
+```
+
+<Note>
+	The Langtrace client processes only json encoded data. Please make sure to use
+	an exporter that can encode the data in json format and does not use any
+	compression.
+</Note>
+
+### Important Configuration Notes
+
+- endpoint: Change the endpoint in the otlphttp exporter section to `https://SELF_HOSTED_URL/api/trace` if you are sending your traces to self hosted Langtrace backend. For example, for localhost, the endpoint would be `http://localhost:3000/api/trace`. If you are running the collector along with the Langtrace's docker compose setup, the endpoint would be `http://langtrace:3000/api/trace` i.e. the name of the Langtrace client container name specified in the docker compose file.
+- x-api-key: The value of x-api-key should be the API key generated for your specific Langtrace project.
+
+<Tip>
+	You can add `debug` as an exporter to the config if you wish to debug the
+	working of the collector.
+  ```yaml
+    exporters:
+      debug:
+        verbosity: detailed
+  ```
+  and append the `debug` exporter to the traces pipeline.
+  ```yaml
+    service:
+      pipelines:
+        traces:
+          exporters:
+            - debug
+  ```
+</Tip>
+
+## Docker Compose Configuration
+
+The following is a sample `docker-compose.yaml` file that runs the OpenTelemetry Collector with a custom configuration file. The configuration file is mounted as a volume in the container.
+Use this as a reference to run the OpenTelemetry Collector with a custom configuration file.
+
+```yaml
+version: "3"
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    volumes:
+      - ./otel.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - 1888:1888 # pprof extension
+      - 8888:8888 # Prometheus metrics exposed by the Collector
+      - 8889:8889 # Prometheus exporter metrics
+      - 13133:13133 # health_check extension
+      - 4317:4317 # OTLP gRPC receiver
+      - 4318:4318 # OTLP http receiver
+      - 55679:55679 # zpages extension
+```
