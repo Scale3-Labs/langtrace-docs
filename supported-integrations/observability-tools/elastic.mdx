@@ -25,14 +25,13 @@ To generate the Elastic APM API token:
 
 ![Elastic](/images/elasticapm1.png)
 
-- Select OpenTelemetry then set the following environment variables in your terminal:
+- Select OpenTelemetry then set the following environment variables in your terminal or .env file:
 
 ```bash
 export OTEL_SERVICE_NAME=your-elastic-service
 export OTEL_RESOURCE_ATTRIBUTES=service.name=your-elastic-service
-export OTEL_EXPORTER_OTLP_ENDPOINT="<https://your-elastic-apm-endpoint:443>"
-export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer%20your-elastic-apm-token"
-export OTEL_EXPORTER_OTLP_PROTOCOL=oltp
+export OTEL_EXPORTER_OTLP_ENDPOINT="<https://your-elastic-apm-endpoint:443/v1/traces>"
+export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer your-elastic-apm-token"
 ```
 
 Replace the following values:
@@ -42,16 +41,47 @@ Replace the following values:
 - `your-app-name` with your application/service name.
 - `your-elastic-service` with your service name.
 
+Note: The OTEL_EXPORTER_OTLP_HEADERS should include the full header string, including the "Authorization=Bearer" prefix.
+
 ### Install the Instrumentation Library
 
 If you haven't already, install the latest release of the Elastic OpenTelemetry Python package:
 
 ```bash
-pip install elastic-apm[opentelemetry]
-opentelemetry-bootstrap -a install
+pip install -U opentelemetry-exporter-otlp-proto-http langtrace_python_sdk
 ```
 
-### **Running the Application**
+### Add the custom exporter to your code
+
+Make sure you have set the environment variables as described above.
+
+Add the following code snippet to your Python application:
+
+```python
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+
+# Set up Elastic exporter
+headers = dict(item.split("=") for item in OTEL_EXPORTER_OTLP_HEADERS.split(",")) if OTEL_EXPORTER_OTLP_HEADERS else {}
+
+elastic_exporter = OTLPSpanExporter(
+    endpoint=OTEL_EXPORTER_OTLP_ENDPOINT,
+    headers=headers
+)
+```
+
+### Initialize the Langtrace SDK
+
+Initialize the Langtrace SDK in your application:
+
+```python
+from langtrace_python_sdk import langtrace
+# Initialize Langtrace with Elastic exporter
+langtrace.init(
+    custom_remote_exporter=elastic_exporter,
+    batch=True)
+```
+
+### **Run the Application**
 
 With the environment variables set, run your application with OpenTelemetry instrumentation. Use the following command:
 
@@ -65,23 +95,121 @@ Once the application is running, you should see the output of your query printed
 
 ![Elastic](/images/elasticapm2.png)
 
-**Troubleshooting**
+### **An Example Application**
 
-• **Traces not visible in Elastic APM**: Ensure that all required environment variables are set correctly. Double-check the variable names and values.
+Here is an example Python application that uses Langtrace AI and Elastic APM:
 
-• **Missing Libraries**: Verify that all necessary libraries are installed. You can reinstall the required packages using the following commands:
+You will need to install the following libraries:
 
 ```bash
-pip install opentelemetry-distro[otlp]
-opentelemetry-bootstrap -a install
+pip install -U opentelemetry-exporter-otlp-proto-http langtrace_python_sdk langchain-openai langchain-community duckduckgo-search duckduckgo-search python-dotenv
 ```
+
+Here is the example code. Check out our [Langtrace Recipes](https://github.com/Scale3-Labs/langtrace-recipes/tree/main/integrations/observability) repository for more examples:
+
+<Accordion title="Example Langchain Chat Application">
+
+```python
+import os
+import asyncio
+from dotenv import load_dotenv
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from langtrace_python_sdk import langtrace, with_langtrace_root_span
+from langchain_openai import AzureChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+from langchain.schema.runnable import RunnableSequence
+from langchain_community.tools import DuckDuckGoSearchResults
+from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
+
+# Load environment variables
+load_dotenv()
+
+# OpenTelemetry settings
+OTEL_EXPORTER_OTLP_ENDPOINT = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
+OTEL_SERVICE_NAME = os.getenv("OTEL_SERVICE_NAME")
+OTEL_EXPORTER_OTLP_HEADERS = os.getenv("OTEL_EXPORTER_OTLP_HEADERS")
+
+headers = dict(item.split("=") for item in OTEL_EXPORTER_OTLP_HEADERS.split(",")) if OTEL_EXPORTER_OTLP_HEADERS else {}
+
+# Set up Elastic exporter
+elastic_exporter = OTLPSpanExporter(
+    endpoint=OTEL_EXPORTER_OTLP_ENDPOINT,
+    headers=headers
+)
+
+# Initialize Langtrace with Elastic exporter
+langtrace.init(
+    custom_remote_exporter=elastic_exporter,
+    batch=True,
+)
+
+# Initialize Azure OpenAI model
+model = AzureChatOpenAI(
+    azure_endpoint=os.environ['AZURE_OPENAI_ENDPOINT'],
+    azure_deployment=os.environ['AZURE_OPENAI_DEPLOYMENT_NAME'],
+    openai_api_version=os.environ['AZURE_OPENAI_API_VERSION'],
+    model="gpt-3.5-turbo"
+)
+
+# Initialize DuckDuckGo search
+wrapper = DuckDuckGoSearchAPIWrapper(region="us-en", time="d", max_results=2)
+search = DuckDuckGoSearchResults(api_wrapper=wrapper, source="news")
+
+# Create a prompt template
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful AI assistant. Use the provided search results to answer the user's query."),
+    ("human", "{human_input}"),
+    ("ai", "To answer this query, I'll need to search for some information. Let me do that for you."),
+    ("human", "Here are the search results:\n{search_result}"),
+    ("ai", "Based on this information, here's my response:")
+])
+
+# Create the RunnableSequence
+chain = RunnableSequence(
+    {
+        "human_input": lambda x: x["query"],
+        "search_result": lambda x: search.run(x["query"]),
+    }
+    | prompt
+    | model
+)
+
+@with_langtrace_root_span()
+async def chat_interface():
+    print("Welcome to the AI Chat Interface!")
+    print("Type 'quit' to exit the chat.")
+
+    while True:
+        user_input = input("\nYou: ").strip()
+
+        if user_input.lower() == 'quit':
+            print("Thank you for chatting. Goodbye!")
+            break
+
+        print("AI: Thinking...")
+        try:
+            result = await chain.ainvoke({"query": user_input})
+            print(f"AI: {result.content}")
+        except Exception as e:
+            print(f"An error occurred: {str(e)}")
+
+if __name__ == "__main__":
+    asyncio.run(chat_interface())
+```
+
+</Accordion>
+# **Troubleshooting**
+
+• **Traces not visible in Elastic APM**:
+
+- Ensure that all required environment variables are set correctly. Double-check the variable names and values.
+- Also ensure that your `OTEL_EXPORTER_OTLP_ENDPOINT` is correct. You need to add `/v1/traces` at the end of your endpoint.
+
+• **Missing Libraries**: Verify that all necessary libraries are installed. If you encounter any errors, reinstall the libraries using the provided commands.
 
 **Additional Resources**
 
-• [Elastic APM Documentation](https://www.elastic.co/guide/en/apm/get-started/current/quick-start-overview.html)
-
-• [Elastic Observability Documentation](https://www.elastic.co/guide/en/observability/current/index.html)
-
-• [Langtrace AI Documentation](https://docs.langtrace.ai/)
-
-• [Elastic Community](https://discuss.elastic.co/)
+- [Elastic APM Documentation](https://www.elastic.co/guide/en/apm/get-started/current/quick-start-overview.html)
+- [Elastic Observability Documentation](https://www.elastic.co/guide/en/observability/current/index.html)
+- [Langtrace AI Documentation](https://docs.langtrace.ai/)
+- [Elastic Community](https://discuss.elastic.co/)

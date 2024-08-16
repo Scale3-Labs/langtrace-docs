@@ -106,6 +106,7 @@
           "pages": [
             "supported-integrations/observability-tools/elastic",
             "supported-integrations/observability-tools/grafana",
+            "supported-integrations/observability-tools/newrelic",
             "supported-integrations/observability-tools/signoz",
             "supported-integrations/observability-tools/honeycomb"
           ]
