@@ -6,42 +6,12 @@ description: " Collection of guides to help you get started with Langtrace."
 ## Languages
 
 <CardGroup cols={2}>
-  <Card title="Python SDK" icon="python" href="/quickstart">
+  <Card title="Python SDK" icon="python" href="/sdk/python_sdk">
     Integrate with your Python project
   </Card>
-  <Card title="Typescript SDK" icon="node-js" href="/quickstart">
+  <Card title="Typescript SDK" icon="node-js" href="/sdk/typescript_sdk">
     Integrate with your Typescript project
   </Card>
-</CardGroup>
-
-## Frameworks
-
-<CardGroup cols={2}>
-	<Card href="/supported-integrations/web-frameworks/nextjs">
-    <img className="block h-8 w-8 dark:hidden" src="/images/nextjs-icon-light.svg" />
-    <img className="hidden h-8 w-8 dark:block" src="/images/nextjs-icon.svg" />
-    **NextJS**<br />
-    Integrate with your NextJS project
-  </Card>
-  <Card href="/supported-integrations/web-frameworks/fastapi">
-    <img className="block h-8 w-8 dark:hidden" src="/images/fastapi-icon-light.svg" />
-    <img className="hidden h-8 w-8 dark:block" src="/images/fastapi-icon.svg" />
-    **FastAPI**<br />
-    Integrate with your FastAPI project
-  </Card>
-  <Card href="/supported-integrations/web-frameworks/django">
-    <img className="block h-8 w-8 dark:hidden" src="/images/django-icon-light.svg" />
-    <img className="hidden h-8 w-8 dark:block" src="/images/django-icon.svg" />
-    **Django**<br />
-    Integrate with your Django project
-  </Card>
-  <Card href="/supported-integrations/web-frameworks/flask">
-    <img className="block h-8 w-8 dark:hidden" src="/images/flask-icon-light.svg" />
-    <img className="hidden h-8 w-8 dark:block" src="/images/flask-icon.svg" />
-    **Flask**<br />
-    Integrate with your Flask project
-  </Card>
-
 </CardGroup>
 
 ## Tracing features
@@ -138,6 +108,214 @@ description: " Collection of guides to help you get started with Langtrace."
     How to use the model playground, import prompts and conversations.
   </Card>
 </CardGroup>
+
+## LLM Foundation Models
+
+Integrate Langtrace with leading foundation models to power your AI applications:
+
+<CardGroup cols={3}>
+  <Card
+    title="OpenAI"
+    icon="circle-half-stroke"
+    href="/supported-integrations/llm-tools/openai"
+  >
+    How to setup and trace OpenAI models
+  </Card>
+  <Card
+    title="Anthropic"
+    icon="robot"
+    href="/supported-integrations/llm-tools/anthropic"
+  >
+    Setup and tracing for Anthropic's Claude models
+  </Card>
+  <Card
+    title="Azure OpenAI"
+    icon="microsoft"
+    href="/supported-integrations/llm-tools/azure-openai"
+  >
+    Integrate with Azure-hosted OpenAI models
+  </Card>
+  <Card title="Cohere" icon="c" href="/supported-integrations/llm-tools/cohere">
+    Implement and trace Cohere's language models
+  </Card>
+  <Card title="Groq" icon="bolt" href="/supported-integrations/llm-tools/groq">
+    Harness Groq's high-speed inference engine
+  </Card>
+  <Card
+    title="Ollama"
+    icon="laptop-code"
+    href="/supported-integrations/llm-tools/ollama"
+  >
+    Run and trace open-source models locally with Ollama
+  </Card>
+  <Card
+    title="Perplexity"
+    icon="brain"
+    href="/supported-integrations/llm-tools/perplexity"
+  >
+    Leverage Perplexity AI's advanced language models
+  </Card>
+</CardGroup>
+
+## LLM Frameworks
+
+Integrate Langtrace with powerful LLM frameworks to build sophisticated AI-powered applications.
+
+<Accordion title="Supported LLM Frameworks">
+  <CardGroup cols={2}>
+    <Card
+      title="LlamaIndex"
+      icon="database"
+      href="/supported-integrations/llm-frameworks/llamaindex"
+    >
+      Data framework for LLM-based applications
+    </Card>
+    <Card
+      title="LangChain"
+      icon="link-simple"
+      href="/supported-integrations/llm-frameworks/langchain"
+    >
+      Framework for developing applications powered by language models
+    </Card>
+    <Card
+      title="CrewAI"
+      icon="users-gear"
+      href="/supported-integrations/llm-frameworks/crewai"
+    >
+      Framework for orchestrating role-playing AI agents
+    </Card>
+    <Card
+      title="DSPy"
+      icon="wand-magic-sparkles"
+      href="/supported-integrations/llm-frameworks/dspy"
+    >
+      Programming framework for solving AI tasks without prompting
+    </Card>
+    <Card
+      title="Vercel AI SDK"
+      icon="triangle"
+      href="/supported-integrations/llm-frameworks/vercelaisdk"
+    >
+      React hooks for building AI-powered user interfaces
+    </Card>
+  </CardGroup>
+</Accordion>
+
+## Vector DBs
+
+Integrate Langtrace with popular vector stores for efficient tracing and debugging of similarity search and retrieval.
+
+<Accordion title="Supported Vector Databases">
+
+<CardGroup cols={2}>
+  <Card
+    title="ChromaDB"
+    icon="database"
+    href="/supported-integrations/vector-stores/chromadb"
+  >
+    Open-source embedding database for AI applications
+  </Card>
+  <Card
+    title="Pinecone"
+    icon="magnifying-glass-chart"
+    href="/supported-integrations/vector-stores/pinecone"
+  >
+    Managed vector database for real-time AI applications
+  </Card>
+  <Card
+    title="Qdrant"
+    icon="atom"
+    href="/supported-integrations/vector-stores/qdrant"
+  >
+    Vector database with extended filtering support
+  </Card>
+  <Card
+    title="Weaviate"
+    icon="wave-square"
+    href="/supported-integrations/vector-stores/weaviate"
+  >
+    Cloud-native vector database with multi-modal capabilities
+  </Card>
+</CardGroup>
+</Accordion>
+
+## Web Frameworks
+
+Integrate Langtrace with popular web frameworks to add AI capabilities to your web applications:
+
+<Accordion title="Supported Web Frameworks">
+<CardGroup cols={2}>
+	<Card href="/supported-integrations/web-frameworks/nextjs">
+    <img className="block h-8 w-8 dark:hidden" src="/images/nextjs-icon-light.svg" />
+    <img className="hidden h-8 w-8 dark:block" src="/images/nextjs-icon.svg" />
+    **NextJS**<br />
+    React framework for production-grade applications
+  </Card>
+  <Card href="/supported-integrations/web-frameworks/fastapi">
+    <img className="block h-8 w-8 dark:hidden" src="/images/fastapi-icon-light.svg" />
+    <img className="hidden h-8 w-8 dark:block" src="/images/fastapi-icon.svg" />
+    **FastAPI**<br />
+    Modern, fast web framework for building APIs with Python
+  </Card>
+  <Card href="/supported-integrations/web-frameworks/django">
+    <img className="block h-8 w-8 dark:hidden" src="/images/django-icon-light.svg" />
+    <img className="hidden h-8 w-8 dark:block" src="/images/django-icon.svg" />
+    **Django**<br />
+    High-level Python web framework that encourages rapid development
+  </Card>
+  <Card href="/supported-integrations/web-frameworks/flask">
+    <img className="block h-8 w-8 dark:hidden" src="/images/flask-icon-light.svg" />
+    <img className="hidden h-8 w-8 dark:block" src="/images/flask-icon.svg" />
+    **Flask**<br />
+    Lightweight WSGI web application framework in Python
+  </Card>
+
+</CardGroup>
+</Accordion>
+
+## Observabililty Tools
+
+Integrate Langtrace with powerful observability platforms to gain insights, monitor performance, and troubleshoot issues.
+
+<Accordion title="Observablity Backend Tools">
+  <CardGroup cols={2}>
+    <Card
+      title="Elastic"
+      icon="elephant"
+      href="/supported-integrations/observability-tools/elastic"
+    >
+      Unified platform for search, logging, and observability
+    </Card>
+    <Card
+      title="Grafana"
+      icon="chart-line"
+      href="/supported-integrations/observability-tools/grafana"
+    >
+      Open-source analytics and interactive visualization platform
+    </Card>
+    <Card
+      title="New Relic"
+      icon="glasses"
+      href="/supported-integrations/observability-tools/newrelic"
+    >
+      Full-stack observability platform for cloud-native applications
+    </Card>
+    <Card
+      title="SigNoz"
+      icon="signal-stream"
+      href="/supported-integrations/observability-tools/signoz"
+    >
+      Open-source APM and observability tool
+    </Card>
+    <Card
+      title="Honeycomb"
+      icon="hexagon"
+      href="/supported-integrations/observability-tools/honeycomb"
+    >
+      Observability tool for debugging complex systems
+    </Card>
+  </CardGroup>
+</Accordion>
 
 ## Self-hosting
 
