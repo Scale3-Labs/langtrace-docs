@@ -6,8 +6,10 @@ description: You can add additional attributes to traces in Langtrace by simply 
 
 You can add additional attributes to traces in Langtrace by simply wrapping your code with the `withAdditionalAttributes` for typescript or `inject_additional_attributes` function for python. This will add the specified attributes to the trace spans. Make sure to pass the attributes as a key-value pair to the function.
 
+# Typescript SDK
+
 <CodeGroup>
-```typescript Typescript SDK
+```typescript Add Additional Attributes
 import * as Langtrace from "@langtrase/typescript-sdk";
 import OpenAI from 'openai'
 Langtrace.init({
@@ -29,7 +31,30 @@ export const run = async ()=>{
 run().then(() => console.log('done'))
 ```
 
-```python Python SDK - Function Based
+```typescript Custom Span Name
+import * as Langtrace from "@langtrase/typescript-sdk";
+import OpenAI from 'openai'
+Langtrace.init({
+  write_spans_to_console: true,
+})
+await withAdditionalAttributes(async () => {
+    const resp = await ai.generateText({
+      model: openai('gpt-4-turbo', { user: 'abc' }),
+      system: 'You are a friendly assistant!',
+      temperature: 0.5,
+      topP: 1,
+      maxRetries: 3,
+      maxTokens: 1024,
+      messages: [{ role: 'system', content: 'hi' }, { role: 'user', content: 'why is the sky blue' }]
+    })
+  }, { 'langtrace.span.name': 'my_custom_span' })
+```
+</CodeGroup>
+
+# Python SDK
+
+<CodeGroup>
+```python Function Based
 from langtrace_python_sdk import inject_additional_attributes
 
 def do_llm_stuff(name=""):
@@ -50,7 +75,7 @@ def main():
 main()
 ```
 
-```python Python SDK - Decorator Based
+```python Decorator Based
 from langtrace_python_sdk import langtrace, with_additional_attributes
 from openai import OpenAI
 
