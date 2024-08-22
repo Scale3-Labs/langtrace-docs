@@ -8,62 +8,36 @@ It provides the infrastructure for the long-term memory and retrieval needed to 
 
 1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
 
-2. Install packages and setup environment:
-   <CodeGroup>
-     ```bash Python 
-     pip install -U langtrace-python-sdk pinecone-client 
-     ```
-     ```bash Typescript 
-     npm install @pinecone-database/pinecone-client 
-     ```
-   </CodeGroup>
+*Note: You'll need API keys from Langtrace and Pinecone. Sign up for [Langtrace](https://langtrace.ai) and/or [Pinecone](https://www.pinecone.io/) if you haven't done so already.*
+
+```bash Shell
+# Install the SDK
+pip install -U langtrace-python-sdk pinecone
+```
+```bash Shell
+     npm install @pinecone-database/pinecone-client
+```
+
+2. Setup environment variables:
+```sh Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export PINECONE_API_KEY=YOUR_PINECONE_API_KEY
+```
+
 
 ## Usage
 
-Here's a quick example of how to use Langtrace with Pinecone:
+Generate a simple output with your deployment's model:
 
 <CodeGroup>
 ```python Python
 import os
-os.environ['LANGTRACE_API_KEY'] = "YOUR LANGTRACE_API_KEY"
-os.environ['PINECONE_API_KEY'] = "YOUR PINECONE_API_KEY"
- ```
- ```javascript Typescript
- import { init as langtraceInit } from 'langtrase/typescript-sdk';
-import { PineconeClient, ServerlessSpec } from '@pinecone-database/pinecone-client';
-
-const langtraceApiKey = "YOUR_LANGTRACE_API_KEY";
-const pineconeApiKey = "YOUR_PINECONE_API_KEY";
-
-```
-</CodeGroup>
-
-
-Imports
-<CodeGroup>
-   ```python Python
    from langtrace_python_sdk import langtrace # Must precede any llm module imports
 langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
-```
+from pinecone import Pinecone, ServerlessSpec
+pc = Pinecone(api_key=os.environ['PINECONE_API_KEY'])
 
-```javascript Typescript
- langtraceInit({
-  apiKey: langtraceApiKey,
-  });
-
-// Step 3: Initialize Pinecone client
-const pinecone = new PineconeClient({
-  apiKey: pineconeApiKey,
-});
-
-```
-
-    </CodeGroup>
-
-Create an Index and upsert some data in Pinecone:
-
-<CodeGroup>
-     ```python Python
+# Create an Index and upsert some data in Pinecone:
 pc.create_index(
     name="index",
     dimension=8, # Replace with your model dimensions
@@ -82,8 +56,20 @@ index.upsert(
     {"id": "D", "values": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]}
   ]
 )
+
  ```
  ```javascript Typescript
+ import { init as langtraceInit } from 'langtrase/typescript-sdk';
+import { PineconeClient, ServerlessSpec } from '@pinecone-database/pinecone-client';
+
+langtraceInit({
+  apiKey: langtraceApiKey,
+  });
+
+// Step 3: Initialize Pinecone client
+const pinecone = new PineconeClient({
+  apiKey: pineconeApiKey,
+});
 
 // Step 4: Create an Index and upsert some data in Pinecone
 (async () => {
