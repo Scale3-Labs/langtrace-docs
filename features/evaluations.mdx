@@ -54,7 +54,7 @@ The `self_critique()` step will compare the model's output with the ground truth
 from inspect_ai import Task, task
 from inspect_ai.dataset import csv_dataset
 from inspect_ai.scorer import model_graded_fact
-from inspect_ai.solver import self_critique
+from inspect_ai.solver import self_critique, generate
 
 @task
 def example_eval():
