@@ -5,15 +5,17 @@ description: "Setting up Langtrace Typescript SDK with OTEL Collector"
 
 ## Overview
 
-This guide will walk you through the steps to setup Langtrace with OpenTelemetry (OTEL) Collector using the HTTP/JSON protocol in a TypeScript project.
+This guide will walk you through the steps to set up Langtrace with OpenTelemetry (OTEL) Collector using the HTTP/JSON protocol in a TypeScript project.
 
 ## Configurations
 
 ### OTEL Collector
 
-Refer to the OTEL configuration page on how to run and configure the OpenTelemetry Collector with a custom configuration file.
+Refer to the OTEL configuration page for instructions on running and configuring the OpenTelemetry Collector with a custom configuration file.
 
 [OTEL Configuration](./otel-configuration)
+
+<Warning> Ensure that you configure the Langtrace API token in the OTEL collector configuration file before proceeding. </Warning>
 
 ### TypeScript SDK
 
@@ -27,19 +29,20 @@ npm install @opentelemetry/exporter-trace-otlp-http
 
 ## Implementation
 
-Initialize Langtrace SDK with the custom remote exporter that uses the OTLPTraceExporter to send traces to Langtrace Cloud or your self-hosted Langtrace instance.
+Initialize the Langtrace SDK with a custom remote exporter that uses the OTLPTraceExporter to send traces to Langtrace Cloud or your self-hosted Langtrace instance.
 
 <AccordionGroup>
-  <Accordion title="Example setup steps">
+  <Accordion title="Example pre-requisite steps for running the code.">
 
     Create a folder and setup a project
     ```bash
     mkdir langtrace-otel
-    touch your-script.js
+    cd langtrace-otel
+    touch langtrace_otel.js
     npm init -y
     ```
 
-    Edit the package.json and add type: module so we can run JS files directly
+    Edit the `package.json` file and add `"type": "module"` to enable running JS files directly:
     ```json
     {
       ...
@@ -53,7 +56,7 @@ Initialize Langtrace SDK with the custom remote exporter that uses the OTLPTrace
       npm i openai @langtrase/typescript-sdk @opentelemetry/exporter-trace-otlp-http
     ```
 
-    Export OpenAI key:
+    Export the OpenAI key:
     ```bash
     export OPENAI_API_KEY="your-openai-api-key"
     ```
@@ -62,7 +65,7 @@ Initialize Langtrace SDK with the custom remote exporter that uses the OTLPTrace
 
 </AccordionGroup>
 
-```typescript
+```typescript langtrace_otel.js
 import * as Langtrace from "@langtrase/typescript-sdk";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import OpenAI from "openai";
@@ -95,14 +98,14 @@ export async function example() {
 await example();
 ```
 
-Run the script
+Run the script:
 
 ```bash
-node your-script.js
+node langtrace_otel.js
 ```
 
 <Info>
-	Ignore the following Warning message from Langtrace SDK:
+	Ignore the following warning message from the Langtrace SDK: 
 ```bash
 No API key provided. Please provide an API key to start sending traces to Langtrace.
 ```
@@ -111,4 +114,4 @@ No API key provided. Please provide an API key to start sending traces to Langtr
 
 ## Conclusion
 
-By following this guide, you will have OpenTelemetry support added to your TypeScript project, enabling you to send traces to Langtrace Cloud or your self-hosted Langtrace instance using the HTTP/JSON protocol.
+By following this guide, you will have added OpenTelemetry support to your TypeScript project, enabling you to send traces to Langtrace Cloud or your self-hosted Langtrace instance using the HTTP/JSON protocol.

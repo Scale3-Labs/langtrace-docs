@@ -5,37 +5,48 @@ description: "Setting up Langtrace Python SDK with OTEL Collector"
 
 ## Overview
 
-This guide will walk you through the steps to setup Langtrace's python SDK with OpenTelemetry (OTEL) Collector using.
+This guide will walk you through setting up Langtrace's Python SDK with the OpenTelemetry (OTEL) Collector to send traces to Langtrace's Cloud or a self-hosted setup.
 
 ## Configurations
 
 ### OTEL Collector
 
-Refer to the OTEL configuration page on how to run and configure the OpenTelemetry Collector with a custom configuration file.
+Refer to the OTEL configuration page for details on running and configuring the OpenTelemetry Collector with a custom configuration file.
 
 [OTEL Configuration](./otel-configuration)
 
-### Python SDK Configuration
+<Warning> Ensure that you configure the Langtrace API token in the OTEL collector configuration file before proceeding. </Warning>
 
-To send traces from your python project to the collector, use the following code snippet.
+### Python SDK
+
+To send traces to the OTEL Collector, install the required OpenTelemetry exporter package:
+
+```bash
+pip install opentelemetry-exporter-otlp-proto-http
+```
+
+## Implementation
+
+Initialize the Langtrace SDK with a custom remote exporter using the OTLPSpanExporter to send traces.
 
 <AccordionGroup>
-  <Accordion title="Example setup steps">
+  <Accordion title="Example pre-requisite steps for running the code.">
 
-    Create a folder and setup a virtual env for python
+    Create a folder and set up a virtual environment for Python:
     ```bash
     mkdir langtrace-otel
-    touch main.py
+    cd langtrace-otel
+    touch langtrace_otel.py
     python3 -m venv venv
     source venv/bin/activate
     ```
 
-    Install openai and Langtrace python SDK
+    Install the OpenAI and Langtrace Python SDK:
     ```bash
     pip install openai langtrace-python-sdk
     ```
 
-    Export OpenAI key:
+    Export the OpenAI API key:
     ```bash
     export OPENAI_API_KEY="your-openai-api-key"
     ```
@@ -44,17 +55,8 @@ To send traces from your python project to the collector, use the following code
 
 </AccordionGroup>
 
-Install the OpenTelemetry exporter package:
 
-```bash
-pip install opentelemetry-exporter-otlp-proto-http
-```
-
-## Implementation
-
-Initialize Langtrace SDK with the custom remote exporter that uses the OTLPTraceExporter to send traces.
-
-```python
+```python langtrace_otel.py
 from langtrace_python_sdk import langtrace
 from openai import OpenAI
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
@@ -64,7 +66,8 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExport
 otlp_endpoint = "http://localhost:4318/v1/traces"
 otlp_exporter = OTLPSpanExporter(
     endpoint=otlp_endpoint,
-    headers=(("Content-Type", "application/json"),))
+    headers={"Content-Type": "application/json"}
+)
 langtrace.init(custom_remote_exporter=otlp_exporter, batch=False)
 
 
@@ -87,12 +90,12 @@ def chat_with_openai():
 chat_with_openai()
 ```
 
-Run the script
+Run the script:
 
 ```bash
-python main.py
+python langtrace_otel.py
 ```
 
 ## Conclusion
 
-By following this guide, you will have OpenTelemetry support added to your Python project, enabling you to send traces to an OpenTelemetry backend including Langtrace's Cloud or self-hosted setup.
+By following this guide, you will have integrated OpenTelemetry support into your Python project, allowing you to send traces to an OpenTelemetry backend, including Langtrace's Cloud or a self-hosted setup.
