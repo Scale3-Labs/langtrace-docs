@@ -9,8 +9,94 @@ Langtrace integrates directly with Langchain, offering detailed, real-time insig
 
 1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
 
+*Note: You'll need API keys from Langtrace and OpenAI. Sign up for [Langtrace](https://langtrace.ai) and/or [OpenAI](https://openai.com/) if you haven't done so already.*
+
+```bash Python
+# Install the SDK
+pip install -U langtrace-python-sdk langchain langchain-chroma langchainhub
+
+```
+```bash Typescript
+npm install @pinecone-database/pinecone-client
+```
+
+2. Setup environment variables:
+```bash Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export OPENAI_API_KEY=YOUR_OPENAI_API_KEY
+```
+
 ## Usage
 
-Here's a quick example of how to use Langtrace with Langchain:
+Generate a simple output with your deployment's model:
+<CodeGroup>
+````python Python
+import os
+from langtrace_python_sdk import langtrace # Must precede any llm module imports
+langtrace.init(api_key = os.environ['LANGTRACE_API_KEY'])
+from langchain_openai import ChatOpenAI
 
-- [Langchain Reference](https://python.langchain.com/docs/get_started/installation/)
+llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
+
+import bs4
+from langchain import hub
+from langchain_chroma import Chroma
+from langchain_community.document_loaders import TextLoader
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+````
+</CodeGroup>
+
+Create a vector store index and query it
+<CodeGroup>
+````python python
+# We will be loading a document from the assets folder to create embeddings and query it
+
+loader = TextLoader("assets/soccer_rules.txt")
+docs = loader.load()
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+splits = text_splitter.split_documents(docs)
+vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+
+# Retrieve and generate using the relevant snippets of the blog.
+retriever = vectorstore.as_retriever()
+prompt = hub.pull("rlm/rag-prompt")
+
+````
+ </CodeGroup>
+
+Retrieve and generate using the relevant snippets of the document.
+
+<CodeGroup>
+````python Python
+retriever = vectorstore.as_retriever()
+prompt = hub.pull("rlm/rag-prompt")
+````
+</CodeGroup>
+
+Format our document ,setup a rag chain and query
+
+<CodeGroup>
+````python Python
+  def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+
+rag_chain.invoke("What is Offside??")
+````
+</CodeGroup>
+
+You can now view your traces on the Langtrace dashboard
+![traces](/images/langchain.png)
+
+Want to see more supported methods? Checkout the sample code in the [Langtrace Langchain Python Example](https://python.langchain.com/docs/get_started/installation/)
