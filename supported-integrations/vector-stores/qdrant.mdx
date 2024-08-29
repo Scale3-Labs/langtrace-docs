@@ -24,7 +24,7 @@ Before integrating Langtrace with Qdrant, ensure you have the following:
 
 If you haven't already installed the required libraries, you can do so using pip:
 
-```bash Shell
+```bash Python
 pip install qdrant-client langtrace-python-sdk
 ```
 
@@ -32,7 +32,7 @@ pip install qdrant-client langtrace-python-sdk
 
 To start using Langtrace with Qdrant, you need to initialize both clients:
 
-```bash python
+```python Python
 from langtrace_python_sdk import langtrace, with_langtrace_root_span
 from qdrant_client import QdrantClient
 
@@ -49,7 +49,7 @@ Langtrace allows you to trace various Qdrant operations. Here are some common op
 
 ### Adding Points to a Collection
 
-```bash python
+```python Python
 @with_langtrace_root_span("add_points")
 def add_points_to_collection(collection_name, points):
     qdrant_client.upsert(
@@ -60,7 +60,7 @@ def add_points_to_collection(collection_name, points):
 
 ### Searching in a Collection
 
-```bash python
+```python Python
 @with_langtrace_root_span("search")
 def search_collection(collection_name, query_vector, limit=10):
     return qdrant_client.search(
@@ -72,7 +72,7 @@ def search_collection(collection_name, query_vector, limit=10):
 
 ### Creating a Collection
 
-```bash python
+```python Python
 @with_langtrace_root_span("create_collection")
 def create_collection(collection_name, vector_size):
     qdrant_client.recreate_collection(
@@ -87,7 +87,7 @@ def create_collection(collection_name, vector_size):
 
 2. **Error Handling**: Wrap your Qdrant operations in try-except blocks to capture and trace errors:
 
-   ```bash python
+```python Python
    @with_langtrace_root_span("qdrant_operation")
    def qdrant_operation():
        try:
@@ -96,7 +96,7 @@ def create_collection(collection_name, vector_size):
        except Exception as e:
            add_attribute_to_current_span("error", str(e))
            raise
-   ```
+```
 
 3. **Performance Monitoring**: Use Langtrace to monitor the performance of your Qdrant operations over time. This can help you identify slow queries or other bottlenecks in your application.
 
