@@ -11,14 +11,14 @@ Using Langtrace to monitor your OPENAI LLM apps is quick and easy. Follow these 
 
 *Note: You'll need API keys from Langtrace and OpenAI. Sign up for [Langtrace](https://langtrace.ai) and/or [OpenAI](https://openai.com/) if you haven't done so already.*
 
-```sh Shell
+```bash Python
 # Install the SDK
 pip install -U langtrace-python-sdk openai
 ```
 
 2. Setup environment variables:
 
-```sh Shell
+```bash Shell
 export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
 export OPENAI_API_KEY=YOUR_OPEN_AI_API_KEY
 ```
@@ -28,7 +28,7 @@ export OPENAI_API_KEY=YOUR_OPEN_AI_API_KEY
 Generate a simple output with your deployment's model:
 
 <CodeGroup>
-  ```python Python
+```python Python
   import os
 from langtrace_python_sdk import langtrace # Must precede any llm module imports
 from openai import OpenAI
@@ -59,7 +59,7 @@ response = client.embeddings.create(
 print(response.data[0].embedding)
 ```
 
-    </CodeGroup>
+</CodeGroup>
 
 
 You can now view your traces on the Langtrace dashboard.
