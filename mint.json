@@ -118,6 +118,7 @@
             "supported-integrations/llm-frameworks/langchain",
             "supported-integrations/llm-frameworks/crewai",
             "supported-integrations/llm-frameworks/dspy",
+            "supported-integrations/llm-frameworks/embedchain",
             "supported-integrations/llm-frameworks/vercelaisdk"
           ]
         },
