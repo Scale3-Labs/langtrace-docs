@@ -1,0 +1,62 @@
+---
+title: "Mistral AI"
+description: Mistral AI is a cutting-edge platform focused on developing advanced large language models that prioritize efficiency and performance. Known for producing compact yet powerful AI models, Mistral AI aims to democratize access to high-performance AI by making these models more accessible and adaptable to various applications. The platform emphasizes open innovation, contributing to the AI community with tools that are both versatile and state-of-the-art.
+---
+
+## Setup
+
+1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+
+*Note: You'll need API keys from Langtrace and MistralAI. Sign up for [Langtrace](https://langtrace.ai) and/or [MistralAI](https://mistral.ai/) if you haven't done so already.*
+
+```bash Python
+# Install the SDK
+pip install -U langtrace-python-sdk mistralai
+```
+
+
+2. Setup environment variables:
+```bash Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export MISTRAL_API_KEY=YOUR_MISTRAL_API_KEY
+```
+
+
+## Usage
+
+Generate a simple output with your deployment's model:
+
+<CodeGroup>
+```python Python
+import os
+from langtrace_python_sdk import langtrace, with_langtrace_root_span
+from mistralai import Mistral
+
+langtrace.init(api_key=os.environ["LANGTRACE_API_KEY"])
+
+
+@with_langtrace_root_span("chat_complete")
+def chat_complete():
+    model = "mistral-large-latest"
+    client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
+    chat_response = client.chat.complete(
+        model=model,
+        messages=[
+            {
+                "role": "user",
+                "content": "I need 10 cocktail recipes with tequila other than the classics like margarita, tequila"
+            },
+        ]
+    )
+    print(chat_response.choices[0].message.content)
+
+
+chat_complete()
+
+```
+</CodeGroup>
+
+You can now view your traces on the Langtrace dashboard:
+![traces](/images/mistral_ai.png)
+
+Want to see more supported methods? Checkout the sample code in the [Langtrace MistralAI Python Example](https://github.com/Scale3-Labs/langtrace-python-sdk/blob/main/src/examples/mistral_example/complete.py) repository.
