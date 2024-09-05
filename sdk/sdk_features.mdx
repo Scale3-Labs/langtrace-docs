@@ -1,44 +1,169 @@
 ---
 title: Langtrace SDK Features
+sidebarTitle: Features
 ---
 
-While Langtrace Cloud is the default destination for your traces, there are scenarios where you might need to send traces to a custom endpoint. This could be for testing, using an on-premises solution, or integrating with other systems. This guide covers two methods to achieve this: using the `api_host` parameter and implementing a custom exporter.
+While Langtrace Cloud is the default destination for your traces, there are scenarios where you might need to send traces to a custom endpoint. This could be for testing, using an on-premises solution, or integrating with other systems. This guide covers two methods to achieve this: using the `api_host` parameter or implementing a custom exporter.
 
-## Choosing a Method
+## SDK Init options
 
-- Use the `api_host` parameter for quick setup with a different endpoint.
-- Use `custom_remote_exporter` for more control over the export process, such as custom formatting or additional processing of spans before sending.
+The `Langtrace.init` function takes an object with the following options:
 
-<Warning>
-  {" "}
-  Using the `custom_remote_exporter` or `api_host` option with a custom url will
-  cause majority of the langtrace features to not work and should only be used if
-  **Langtrace** is being used only to **capture** and **send** traces{" "}
-</Warning>
+| Parameter                       | Type     | Description                                                                                                      | Default Value   |
+| ------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- | --------------- |
+| `api_key`                       | `str`    | Your Langtrace API key. Required for sending traces to Langtrace Cloud.                                          | `-`             |
+| `api_host`                      | [`str`]  | The custom endpoint to send traces to.                                                                           | Langtrace Cloud |
+| `batch`                         | [`bool`] | Whether to batch spans before sending.                                                                           | `true`          |
+| `write_spans_to_console`        | [`bool`] | To allow spans to be displayed on console. Note: If you enable this, spans wont be forwarded to remote endpoint. | `false`         |
+| `custom_remote_exporter`        | [`Any`]  | A custom exporter for remote traces. Optional.                                                                   | `-`             |
+| `disable_instrumentations`      | [`dict`] | Instrumentations that are to be disabled or enabled. Optional.                                                   | `-`             |
+| `disable_tracing_for_functions` | [`dict`] | Functions to exclude from tracing. Optional.                                                                     | `None`          |
+| `service_name`                  | [`str`]  | The name of the service for which traces are generated. Optional.                                                | `-`             |
+| `disable_logging`               | [`bool`] | Whether to disable logging within the SDK.                                                                       | `false`         |
+| `instrumentations`              | [`dict`] | **[Typescript SDK only]** This is a required option for next.js applications.                                    | `-`             |
+| `disable_latest_version_check`  | [`bool`] | **[Typescript SDK only]** Whether to disable the latest version check.                                           | `false`         |
 
-### API Host Example
+### api_key
+
+The `api_key` option allows you to specify Langtrace project API key.
+
+The precedence order for determining the API key is as follows:
+
+- The `x-api-key` specified in environment variable `OTEL_EXPORTER_OTLP_TRACES_HEADERS`
+- The `x-api-key` specified in environment variable `OTEL_EXPORTER_OTLP_HEADERS`
+- The environment variable `LANGTRACE_API_KEY`
+- The `api_key` parameter in the `Langtrace.init` function
+
+#### API Key as argument
 
 <CodeGroup>
 ```python Python SDK
 from langtrace_python_sdk import langtrace
 langtrace.init(
-  write_spans_to_console=True,
+  api_key="your_api_key"
+)
+```
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  api_key: "your_api_key",
+});
+```
+</CodeGroup>
+
+#### API Key as environment variable
+
+```bash
+export OTEL_EXPORTER_OTLP_TRACES_HEADERS="x-api-key=your_api_key"
+# or
+export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=your_api_key"
+# or
+export LANGTRACE_API_KEY="your_api_key"
+```
+
+### api_host
+
+The `api_host` option allows you to specify a custom endpoint to send traces to. This is particularly useful when you want to send traces to a different endpoint than the default Langtrace Cloud.
+If no custom endpoint is specified, traces will be sent to Langtrace Cloud by default.
+
+The precedence order for determining the API host is as follows:
+
+- The environment variable `LANGTRACE_API_HOST`
+- The environment variable `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`
+- The environment variable `OTEL_EXPORTER_OTLP_ENDPOINT`
+- The `api_host` parameter in the `Langtrace.init` function
+
+#### API Host as argument
+
+<CodeGroup>
+```python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(
   api_host="https://example.com/"
 )
 ```
 ```typescript Typescript SDK
 import * as Langtrace from "@langtrase/typescript-sdk";
 Langtrace.init({
-  write_spans_to_console: true,
   api_host: "https://example.com/",
 });
 ```
 
 </CodeGroup>
 
-This can also be done by passing a custom exporter to the `custom_remote_exporter` parameter in the `Langtrace.init` function. The `custom_remote_exporter` option will take precedence over the `api_host` option.
+#### API Host as environment variable
 
-### Custom Exporter Example
+```bash
+export LANGTRACE_API_HOST="http://localhost:3000/api/trace"
+# or
+export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="http://localhost:3000/api/trace"
+# or
+export OTEL_EXPORTER_OTLP_ENDPOINT="http://localhost:3000/api/trace"
+```
+
+### batch
+
+Allows you to specify whether to batch spans before sending. This is useful for reducing the number of requests sent to the server, which can improve performance and reduce costs.
+
+<Tip>
+	If you are using the SDK in a script or a notebook, you might want to set this
+	to `false` to see the spans as they are captured.
+</Tip>
+
+<CodeGroup>
+```python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(
+  batch=False
+)
+```
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  batch: false,
+});
+```
+</CodeGroup>
+
+### write_spans_to_console
+
+Allows you to specify whether to write spans to the console output.
+This is useful if you have a logforwarded that forwards console output or for debugging.
+
+<Warning>
+	If this is set to `true`, the spans will not be sent to the remote endpoint.
+</Warning>
+
+<CodeGroup>
+```python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(
+  write_spans_to_console=True
+)
+```
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  write_spans_to_console: true,
+});
+```
+</CodeGroup>
+
+### custom_remote_exporter
+
+By defining a custom exporter, you have full control over the export process, including custom formatting or additional processing of spans before sending.
+
+If you want to send traces to a remote endpoint, instead of defining `api_host`, it can be done by passing a custom exporter to the `custom_remote_exporter` parameter in the `Langtrace.init` function.
+The `custom_remote_exporter` option will take precedence over the `api_host` option.
+
+<Warning>
+	Using the `custom_remote_exporter` with a custom url will cause majority of
+	the langtrace features (like evaluations, user feedback, etc.) to not work and
+	should only be used if **Langtrace** is being used only to **capture** and
+	**send** traces.
+</Warning>
+
+Here is an example of how to implement a custom exporter that demonstrates that with a custom exporter you have endless possibilities!
 
 <Tabs>
 <Tab title="Typescript SDK">
@@ -59,41 +184,41 @@ import { SpanExporter, ReadableSpan } from "@opentelemetry/sdk-trace-base";
 import axios from "axios";
 
 export class CustomExporter implements SpanExporter {
-  private readonly apiHost: string;
+	private readonly apiHost: string;
 
-  constructor(apiHost: string) {
-    this.apiHost = apiHost;
-  }
+	constructor(apiHost: string) {
+		this.apiHost = apiHost;
+	}
 
-  async export(
-    spans: ReadableSpan[],
-    resultCallback: (result: any) => void
-  ): Promise<void> {
-    const data = spans.map((span) => ({
-      traceId: span.spanContext().traceId,
-      spanId: span.spanContext().spanId,
-      name: span.name,
-      startTime: span.startTime,
-      endTime: span.endTime,
-      attributes: span.attributes,
-    }));
+	async export(
+		spans: ReadableSpan[],
+		resultCallback: (result: any) => void
+	): Promise<void> {
+		const data = spans.map((span) => ({
+			traceId: span.spanContext().traceId,
+			spanId: span.spanContext().spanId,
+			name: span.name,
+			startTime: span.startTime,
+			endTime: span.endTime,
+			attributes: span.attributes,
+		}));
 
-    const headers = { "Content-Type": "application/json" };
+		const headers = { "Content-Type": "application/json" };
 
-    try {
-      const response = await axios.post(this.apiHost, data, { headers });
-      resultCallback({ code: response.status === 200 ? 0 : 1 });
-    } catch (error: any) {
-      resultCallback({
-        code: 1,
-        error: new Error(`Failed to export spans: ${error.message}`),
-      });
-    }
-  }
+		try {
+			const response = await axios.post(this.apiHost, data, { headers });
+			resultCallback({ code: response.status === 200 ? 0 : 1 });
+		} catch (error: any) {
+			resultCallback({
+				code: 1,
+				error: new Error(`Failed to export spans: ${error.message}`),
+			});
+		}
+	}
 
-  async shutdown(): Promise<void> {
-    return await Promise.resolve();
-  }
+	async shutdown(): Promise<void> {
+		return await Promise.resolve();
+	}
 }
 ```
 
@@ -158,3 +283,126 @@ class CustomExporter(SpanExporter):
 </CodeGroup>
 </Tab>
 </Tabs>
+
+### disable_instrumentations
+
+With this option, certain libraries can be either excluded or included from being traced.
+This enables users to have more control over what is being traced and easily filter out noisy libraries.
+
+This option can be used to exclude a library from being traced by passing the library name to the `disable_instrumentations` parameter in the `Langtrace.init` function.
+
+#### Exclude libraries
+
+To exclude specific vendors, you can pass the value to this parameter as follows:
+
+```json
+{ "all_except": ["weaviate", "gemini"] }
+```
+
+This way, all the instrumentations except for `weaviate` and `gemini` will be disabled.
+
+#### Include libraries
+
+To include specific vendors, you can pass the value to this parameter as follows:
+
+```json
+{ "only": ["weaviate", "gemini"] }
+```
+
+This way, only `weaviate` and `gemini` will be traced.
+
+For Python SDK, the vendor name can be found in the `all_instrumentations` variable in the repo [here](https://github.com/Scale3-Labs/langtrace-python-sdk/blob/a9f0083d6f4cc98c4755f63bf87cc2e87cde8d38/src/langtrace_python_sdk/langtrace.py#L120-L142).
+
+For Typescript SDK, the vendor name can be found in the `allInstrumentations` variable in the repo [here](https://github.com/Scale3-Labs/langtrace-typescript-sdk/blob/1f56006e42bdc2a34809c37016f387f38d8c2a46/src/init/init.ts).
+
+> For more details on the implementation, refer [Disable Tracing For Specific Vendors](/tracing/disable_vendor_instrumentation).
+
+### disable_tracing_for_functions
+
+This option allows you to exclude specific functions from being traced. This can be useful if you have certain functions that you do not want to trace, such as health check functions.
+
+To exclude a function, do it the following way:
+
+```json
+{
+	"<vendor_name_1>": ["your_function_name_1", "your_function_name_2"],
+	"<vendor_name_2>": ["your_function_name_1", "your_function_name_2"]
+}
+```
+
+> For more details on the implementation, refer [Disable Tracing For Functions](/tracing/disable_function_tracing).
+
+### service_name
+
+This option allows you to specify the name of the service for which traces are generated.
+This is useful if you have multiple services within your application and want to trace them separately.
+This option overrides the attribute `service.name` in the trace as per the OpenTelemetry specification.
+
+The precedence order for determining the service name is as follows:
+
+- The environment variable `OTEL_SERVICE_NAME`
+- The `service_name` parameter in the `Langtrace.init` function
+
+<CodeGroup>
+```python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(
+  service_name="your_service_name"
+)
+```
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  service_name: "your_service_name",
+});
+```
+</CodeGroup>
+
+### disable_logging
+
+This option allows you to disable logging within the SDK. This is useful if you have a logging system in place and do not want Langtrace to log anything.
+
+<CodeGroup>
+```python Python SDK
+from langtrace_python_sdk import langtrace
+langtrace.init(
+  disable_logging=True
+)
+```
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  disable_logging: true,
+});
+```
+</CodeGroup>
+
+### instrumentations
+
+This argument is only applicable for Typescript SDK with Next.js.
+This option allows you to specify the instrumentations to be used. This is useful if you have a custom implementation of a library and want to trace it.
+
+<CodeGroup>
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  instrumentations: {
+    openai: openai,
+  },
+});
+```
+</CodeGroup>
+
+### disable_latest_version_check
+
+This argument is only applicable for Typescript SDK.
+Flag to disable the latest version check. This removes any version checks that happens on every init call.
+
+<CodeGroup>
+```typescript Typescript SDK
+import * as Langtrace from "@langtrase/typescript-sdk";
+Langtrace.init({
+  disable_latest_version_check: true,
+});
+```
+</CodeGroup>
