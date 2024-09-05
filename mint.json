@@ -54,7 +54,8 @@
           "group": "SDK",
           "pages": [
             "sdk/python_sdk",
-            "sdk/typescript_sdk"
+            "sdk/typescript_sdk",
+            "sdk/sdk_features"
           ]
         },
         "faqs"
