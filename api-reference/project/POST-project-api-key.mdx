@@ -1,0 +1,185 @@
+---
+title: "POST Project API Key"
+description: "This endpoint enables creation of an api key for an existing project"
+api: "POST /api-key"
+
+---
+
+<Note>You can find the `projectId` when you click on your project and copying the `Project ID` at the top of the `Traces` table. You will need a team level API key which can be generated on the same page by clicking `Generate API Key`.</Note>
+
+A complete list of supported parameters for the `POST project api key` endpoint is provided below.
+  <ParamField query="project_Id" type="string" required>
+    ID of your project. This can be found on the langtrace ui.
+  </ParamField>
+
+<Accordion title="200 (OK) Response Object Schema" defaultOpen="false">
+    <ResponseField name="apiKey" type="string">
+        Project api key
+    </ResponseField>
+</Accordion>
+<Accordion title="Error Response Object Schema">
+<ResponseField name="error" type="object">
+    <Expandable title="Error Object Properties"  defaultOpen="false">
+        <ResponseField name="message" type="string" required >
+            Error message
+        </ResponseField>
+    </Expandable>
+</ResponseField>
+</Accordion>
+
+<RequestExample>
+```bash cURL
+curl --request POST \
+  --url https://langtrace.ai/api/api-key?project_id=cm0u2v1620001fmtvf2t8kd07 \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: 6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5' \
+```
+
+```python Python
+import requests
+
+url = 'https://langtrace.ai/api/api-key?project_id=cm0u2v1620001fmtvf2t8kd07'
+headers = {
+    'Content-Type': 'application/json',
+    'x-api-key': '6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5'
+}
+
+response = requests.post(url, headers=headers)
+print(response.text)
+```
+
+```javascript Javascript
+const url = "https://langtrace.ai/api/api-key?project_id=cm0u2v1620001fmtvf2t8kd07";
+const headers = {
+  "Content-Type": "application/json",
+  "x-api-key": "6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5"
+};
+
+fetch(url, {
+  method: 'POST',
+  headers: headers,
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+```php PHP
+<?php
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+    CURLOPT_URL => "https://langtrace.ai/api/api-key?project_id=cm0u2v1620001fmtvf2t8kd07",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "POST",
+    CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json",
+        "x-api-key: 6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5"
+    ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+    echo "cURL Error #:" . $err;
+} else {
+    echo $response;
+}
+?>
+```
+
+```go Go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://langtrace.ai/api/api-key?project_id=cm0u2v1620001fmtvf2t8kd07"
+
+    jsonData, err := json.Marshal(payload)
+    if err != nil {
+        fmt.Println("Error marshalling JSON:", err)
+        return
+    }
+
+    req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+    if err != nil {
+        fmt.Println("Error creating request:", err)
+        return
+    }
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("x-api-key", "6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5")
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Println("Error making request:", err)
+        return
+    }
+    defer resp.Body.Close()
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println("Error reading response body:", err)
+        return
+    }
+    fmt.Println(string(body))
+}
+```
+```java Java
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) {
+        HttpClient client = HttpClient.newHttpClient();
+        
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://langtrace.ai/api/api-key?project_id=cm0u2v1620001fmtvf2t8kd07"))
+            .header("Content-Type", "application/json")
+            .header("x-api-key", "6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5")
+            .POST(HttpRequest.BodyPublishers.ofString(payload))
+            .build();
+        
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Sample 200 (OK) Response
+{
+    "apiKey" : "09dcd4714134db52615e79207e340f54b46311cc8b00cf501f4d86fc6906fa13"
+}
+```
+
+```json Sample Error Response
+{
+  "message": "Invalid api key unauthorized",
+}
+```
+</ResponseExample>
