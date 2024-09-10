@@ -171,7 +171,8 @@
         {
           "group": "Project APIs",
           "pages": [
-            "api-reference/project/POST-project"
+            "api-reference/project/POST-project", 
+            "api-reference/project/POST-project-api-key"
           ]
         },
         {
