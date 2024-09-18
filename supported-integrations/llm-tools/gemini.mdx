@@ -1,0 +1,58 @@
+---
+title: Gemini
+description: Gemini is an AI-driven platform that enhances conversational experiences by enabling seamless user-system interactions. Integrated with Langtrace, it provides deep language tracing and insights into dialogue patterns. This combination helps optimize AI-driven conversations for improved efficiency and user satisfaction.
+---
+
+Using Langtrace to monitor your Gemini backed LLM apps is quick and easy. Follow these steps:
+
+## Setup
+
+1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+
+*Note: You'll need API keys from Langtrace and Gemini. Sign up for [Langtrace](https://langtrace.ai) and/or [Gemini](https://aistudio.google.com/app/apikey) if you haven't done so already.*
+
+```bash Python
+# Install the SDK
+pip install -U langtrace-python-sdk
+```
+
+```bash Shell
+pip install -q -U google-generativeai
+```
+2. Setup environment variables:
+
+```bash Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+## Usage
+
+Generate a simple output with your deployment's model:
+
+<CodeGroup>
+```python Python
+import google.generativeai as genai
+import os
+from langtrace_python_sdk import langtrace, with_langtrace_root_span  # Must precede any llm module imports
+
+langtrace.init(api_key=os.environ["LANGTRACE_API_KEY"])
+
+
+@with_langtrace_root_span("chat_complete")
+def chat_complete():
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+
+    chat_response = genai.chat.complete(
+        model=model,
+        response=model.generate_content("Write a story about a magic backpack.")
+
+    )
+    print(chat_response.text)
+    print(chat_response.choices[0].response.content)
+
+chat_complete()
+
+```
+</CodeGroup>
