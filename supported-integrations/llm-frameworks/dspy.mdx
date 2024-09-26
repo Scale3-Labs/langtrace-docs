@@ -5,21 +5,45 @@ description: "Langtrace and DSPy Integration Guide"
 
 DSPy is a framework for algorithmically optimizing LM prompts and weights, especially when LMs are used one or more times within a pipeline.
 
-Langtrace has first class support for DSPy, allowing you to capture traces from your DSPy pipelines or agents automatically and analyze them in Langtrace.
+Langtrace has first class support for DSPy, allowing you to capture traces from your DSPy pipelines or agents automatically and analyze them in Langtrace. You can also track experiments and the corresponding metrics and evaluations if you are running DSPy experiments.
 
 ## Setup
 
 1. Follow the [DSPy installation guide](https://github.com/stanfordnlp/dspy?tab=readme-ov-file#1-installation) to install DSPy.
 2. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
-3. Run your DSPy pipeline or agent and view the traces in Langtrace.
+3. Create a project on Langtrace with type `DSPy`.
+4. Run your DSPy pipeline or agent and view the traces in Langtrace.
+5. To run experiments, follow the conventions below and head over to the `Experiments` tab in Langtrace to view your experiments.
 
-## Traces
+<Note>Important: Follow the steps below for running experiments</Note> For experiments
+to show up, pass the following additional attributes using the `inject_additional_attributes`.
+This way Langtrace knows that you are running an experiment:
 
-![traces](/images/dspy-traces.png)
+1. (Required) `experiment` - Experiment name. Ex: `experiment 1`.
+2. (Optional) `description` - Some useful description about the experiment.
+3. (Optional) `run_id` - When you want to associate traces to a specific runs, pass a unique run ID. This is useful when you are running `Evaluate()` as part of your experiment where the traces specific to the `Evaluate()` will appear as an individual entry.
 
-## Logs
+```python
+from langtrace_python_sdk import inject_additional_attributes
 
-![traces](/images/dspy-logs.png)
+predictor = inject_additional_attributes(lambda: compiled_rag(my_question), {'experiment': 'experiment 1', 'description': 'some useful description', 'run_id': 'run_1'})
+```
+
+Note: The Eval Chart will appear when you run dspy's `Evaluate()`. Note: Currently the score ranges it supports are between 0 and 100. So if you have scores that do not fall within this range, it could cause some UI issues.
+
+## Project Type
+
+When creating a project in Langtrace, select the project type as `DSPy`.
+
+![traces](/images/dspy-1.png)
+
+## Inference Metrics
+
+![traces](/images/dspy-2.png)
+
+## Evaluation Scores
+
+![traces](/images/dspy-3.png)
 
 ## Troubleshooting
 
@@ -48,12 +72,12 @@ Remember to always use caching judiciously in production environments to balance
 
 ### Grouping of Spans in Trace when using ThreadpoolExecutor in DSPy
 
-If you're using ThreadpoolExecutor in DSPy to parallelize your modules, you may notice that the spans in the trace are not grouped together. This is because the spans are created in the same thread and are not propagated to the parent span. To resolve this issue, 
+If you're using ThreadpoolExecutor in DSPy to parallelize your modules, you may notice that the spans in the trace are not grouped together. This is because the spans are created in the same thread and are not propagated to the parent span. To resolve this issue,
 
 <Accordion title="Span Grouping for ThreadpoolExecutor">
   Please use the provided code snippet as an example to ensure that the current tracing context is properly propagated when executing tasks within a `ThreadPoolExecutor`. The contextvars module is used to copy the current context and run the optimized CoT module within the copied context. By passing `contextvars.copy_context().run` to the `executor.submit` method, the current tracing context is propagated to the child span ensuring that the spans are grouped together in the trace.
 
-  ```python
+```python
 import dspy
 import contextvars
 from dspy.datasets.gsm8k import GSM8K, gsm8k_metric
@@ -73,37 +97,37 @@ gsm8k = GSM8K()
 gsm8k_trainset, gsm8k_devset = gsm8k.train[:10], gsm8k.dev[:10]
 
 class CoT(dspy.Module):
-    def __init__(self):
-        super().__init__()
-        self.prog = dspy.ChainOfThought("question -> answer")
+  def __init__(self):
+      super().__init__()
+      self.prog = dspy.ChainOfThought("question -> answer")
 
-    def forward(self, question):
-        return self.prog(question=question)
+  def forward(self, question):
+      return self.prog(question=question)
 
 @with_langtrace_root_span(name="parallel_example")
 def example():
-    # Set up the optimizer: we want to "bootstrap" (i.e., self-generate) 4-shot examples of our CoT program.
-    config = dict(max_bootstrapped_demos=4, max_labeled_demos=4)
+  # Set up the optimizer: we want to "bootstrap" (i.e., self-generate) 4-shot examples of our CoT program.
+  config = dict(max_bootstrapped_demos=4, max_labeled_demos=4)
 
-    # Optimize! Use the `gsm8k_metric` here. In general, the metric is going to tell the optimizer how well it's doing.
-    teleprompter = BootstrapFewShot(metric=gsm8k_metric, **config)
-    optimized_cot = teleprompter.compile(CoT(), trainset=gsm8k_trainset)
+  # Optimize! Use the `gsm8k_metric` here. In general, the metric is going to tell the optimizer how well it's doing.
+  teleprompter = BootstrapFewShot(metric=gsm8k_metric, **config)
+  optimized_cot = teleprompter.compile(CoT(), trainset=gsm8k_trainset)
 
-    questions = [
-        "What is the sine of 0?",
-        "What is the tangent of 100?",
-    ]
+  questions = [
+      "What is the sine of 0?",
+      "What is the tangent of 100?",
+  ]
 
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        futures = [executor.submit(contextvars.copy_context().run, optimized_cot, question=q) for q in questions]
+  with ThreadPoolExecutor(max_workers=2) as executor:
+      futures = [executor.submit(contextvars.copy_context().run, optimized_cot, question=q) for q in questions]
 
-        for future in futures:
-            ans = future.result()
-            print(ans)
+      for future in futures:
+          ans = future.result()
+          print(ans)
 
 
 if __name__ == "__main__":
-    example()
-  ```
+  example()
+```
 
 </Accordion>
