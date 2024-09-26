@@ -31,6 +31,17 @@ predictor = inject_additional_attributes(lambda: compiled_rag(my_question), {'ex
 
 Note: The Eval Chart will appear when you run dspy's `Evaluate()`. Note: Currently the score ranges it supports are between 0 and 100. So if you have scores that do not fall within this range, it could cause some UI issues.
 
+## Checkpoints
+
+By default, checkpoints are traced for DSPy pipelines. If you would like to disable it, set the following env var,
+
+`TRACE_DSPY_CHECKPOINT=false`
+
+<Warning>
+  Checkpoint tracing will increase the latency of executions as the state is
+  serialized. Please disable it in production.
+</Warning>
+
 ## Project Type
 
 When creating a project in Langtrace, select the project type as `DSPy`.
