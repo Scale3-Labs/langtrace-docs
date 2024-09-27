@@ -26,7 +26,19 @@ This way Langtrace knows that you are running an experiment:
 ```python
 from langtrace_python_sdk import inject_additional_attributes
 
-predictor = inject_additional_attributes(lambda: compiled_rag(my_question), {'experiment': 'experiment 1', 'description': 'some useful description', 'run_id': 'run_1'})
+optimized_program = inject_additional_attributes(lambda: optimizer.compile(
+    RAG(),
+    trainset=trainset,
+    max_bootstrapped_demos=3,
+    max_labeled_demos=4,
+    num_trials=15,
+    minibatch_size=2,
+    minibatch_full_eval_steps=10,
+    minibatch=True,
+    requires_permission_to_run=False,
+), {'experiment': 'experiment 1', 'description': 'some useful description', 'run_id': 'run_1'})
+
+predictor = inject_additional_attributes(lambda: optimized_program(my_question), {'experiment': 'experiment 1', 'description': 'some useful description', 'run_id': 'run_1'})
 ```
 
 Note: The Eval Chart will appear when you run dspy's `Evaluate()`. Note: Currently the score ranges it supports are between 0 and 100. So if you have scores that do not fall within this range, it could cause some UI issues.
