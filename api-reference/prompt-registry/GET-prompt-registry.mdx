@@ -93,14 +93,14 @@ A complete list of supported parameters for the `GET promptset` endpoint is prov
 <RequestExample>
 ```bash cURL
   curl --request GET \
-    --url https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot \
+    --url https://app.langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot \
     --header 'x-api-key: 5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f'
 ```
 
 ```python Python
 import requests
 
-url = "https://langtrace.ai/api/promptset"
+url = "https://app.langtrace.ai/api/promptset"
 params = {
     "promptsetid": "clw123ay10001v55p02lo1lmp",
     "variables.name": "langtrace",
@@ -115,7 +115,7 @@ print(response.text)
 ```
 
 ```javascript Javascript
-const url = "https://langtrace.ai/api/promptset";
+const url = "https://app.langtrace.ai/api/promptset";
 const params = new URLSearchParams({
   promptsetid: "clw123ay10001v55p02lo1lmp",
   "variables.name": "langtrace",
@@ -140,7 +140,7 @@ fetch(`${url}?${params}`, {
 $curl = curl_init();
 
 curl_setopt_array($curl, [
-    CURLOPT_URL => "https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot",
+    CURLOPT_URL => "https://app.langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_ENCODING => "",
@@ -176,7 +176,7 @@ import (
 )
 
 func main() {
-    url := "https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot"
+    url := "https://app.langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot"
     req, _ := http.NewRequest("GET", url, nil)
     req.Header.Add("x-api-key", "5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f")
 
@@ -206,7 +206,7 @@ public class Main {
     public static void main(String[] args) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot"))
+            .uri(URI.create("https://app.langtrace.ai/api/promptset?promptsetid=clw123ay10001v55p02lo1lmp&variables.name=langtrace&variables.org=chatbot"))
             .header("x-api-key", "5b4077b5068e79e9b2742fc65afa03327210c4c6f54d213b09f25b516d07ee9f")
             .build();
         try {

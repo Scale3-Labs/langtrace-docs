@@ -6,7 +6,7 @@
     "light": "/logo/light.svg"
   },
   "api": {
-    "baseUrl": "https://langtrace.ai/api",
+    "baseUrl": "https://app.langtrace.ai/api",
     "auth": {
       "method": "key",
       "name": "x-api-key"

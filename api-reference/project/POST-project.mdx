@@ -51,7 +51,7 @@ A complete list of supported parameters for the `POST project` endpoint is provi
 <RequestExample>
 ```bash cURL
 curl --request POST \
-  --url https://langtrace.ai/api/project \
+  --url https://app.langtrace.ai/api/project \
   --header 'Content-Type: application/json' \
   --header 'x-api-key: 6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5' \
   --data '{
@@ -65,7 +65,7 @@ curl --request POST \
 ```python Python
 import requests
 
-url = 'https://langtrace.ai/api/project'
+url = 'https://app.langtrace.ai/api/project'
 headers = {
     'Content-Type': 'application/json',
     'x-api-key': '6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5'
@@ -83,7 +83,7 @@ print(response.text)
 ```
 
 ```javascript Javascript
-const url = "https://langtrace.ai/api/project";
+const url = "https://app.langtrace.ai/api/project";
 const headers = {
   "Content-Type": "application/json",
   "x-api-key": "6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5"
@@ -111,7 +111,7 @@ fetch(url, {
 $curl = curl_init();
 
 curl_setopt_array($curl, [
-    CURLOPT_URL => "https://langtrace.ai/api/project",
+    CURLOPT_URL => "https://app.langtrace.ai/api/project",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_ENCODING => "",
@@ -155,7 +155,7 @@ import (
 )
 
 func main() {
-    url := "https://langtrace.ai/api/project"
+    url := "https://app.langtrace.ai/api/project"
     payload := map[string]interface{}{
         "name":              "My Project",
         "description":       "Your Project Description",
@@ -213,7 +213,7 @@ public class Main {
                 + "}";
         
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://langtrace.ai/api/project"))
+            .uri(URI.create("https://app.langtrace.ai/api/project"))
             .header("Content-Type", "application/json")
             .header("x-api-key", "6bd254a6615f48ea0da16823520db8efa4caa4186f62385fbd0f03324c7edcb5")
             .POST(HttpRequest.BodyPublishers.ofString(payload))

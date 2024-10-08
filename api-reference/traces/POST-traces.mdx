@@ -64,13 +64,13 @@ A complete list of supported parameters for the `POST traces` endpoint is provid
 ```bash cURL
 curl -H "x-api-key: <LANGTRACE_API_KEY>" \
      -X POST \
-     'https://langtrace.ai/api/traces' \
+     'https://app.langtrace.ai/api/traces' \
      --data-raw '{"page":1,"pageSize":1,"projectId":"<PROJECT_ID>"}'
 ```
 ```python Python
 import requests
 
-url = 'https://langtrace.ai/api/traces'
+url = 'https://app.langtrace.ai/api/traces'
 headers = {
 'x-api-key': '<LANGTRACE_API_KEY>',
 'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ print(response.text)
 ````
 
 ```javascript Javascript
-const url = "https://langtrace.ai/api/traces";
+const url = "https://app.langtrace.ai/api/traces";
 const headers = {
   "x-api-key": "<LANGTRACE_API_KEY>",
   "Content-Type": "application/json"
