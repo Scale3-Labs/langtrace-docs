@@ -120,7 +120,8 @@
             "supported-integrations/llm-frameworks/crewai",
             "supported-integrations/llm-frameworks/dspy",
             "supported-integrations/llm-frameworks/mem0",
-            "supported-integrations/llm-frameworks/vercelaisdk"
+            "supported-integrations/llm-frameworks/vercelaisdk",
+            "supported-integrations/llm-frameworks/litellm"
           ]
         },
         {
