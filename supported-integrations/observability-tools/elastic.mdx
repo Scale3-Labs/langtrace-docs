@@ -12,7 +12,6 @@ Elastic APM is a powerful solution for monitoring the performance of your applic
 Before you begin, ensure you have the following:
 
 - An [Elastic](https://elastic.co/) account
-- A [Langtrace AI](http://langtrace.ai/) account
 
 ## Setup
 
@@ -27,47 +26,23 @@ To generate the Elastic APM API token:
 
 - Select OpenTelemetry then set the following environment variables in your terminal or .env file:
 
+<Note>
+  We Support all opentelemetry environment variables as well e.g:
+  `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_EXPORTER_OTLP_HEADERS`.
+</Note>
+
 ```bash
+export LANGTRACE_API_HOST="<https://your-elastic-apm-endpoint:443/v1/traces>"
+export LANGTRACE_HEADERS="Authorization=Bearer your-elastic-apm-token"
 export OTEL_SERVICE_NAME=your-elastic-service
-export OTEL_RESOURCE_ATTRIBUTES=service.name=your-elastic-service
-export OTEL_EXPORTER_OTLP_ENDPOINT="<https://your-elastic-apm-endpoint:443/v1/traces>"
-export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer your-elastic-apm-token"
 ```
 
-Replace the following values:
+{" "}
 
-- `your_elastic_apm_token` with your actual Elastic APM API token.
-- `your_elastic_apm_endpoint` with your endpoint values.
-- `your-app-name` with your application/service name.
-- `your-elastic-service` with your service name.
-
-Note: The OTEL_EXPORTER_OTLP_HEADERS should include the full header string, including the "Authorization=Bearer" prefix.
-
-### Install the Instrumentation Library
-
-If you haven't already, install the latest release of the Elastic OpenTelemetry Python package:
-
-```bash
-pip install -U opentelemetry-exporter-otlp-proto-http langtrace_python_sdk
-```
-
-### Add the custom exporter to your code
-
-Make sure you have set the environment variables as described above.
-
-Add the following code snippet to your Python application:
-
-```python
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-
-# Set up Elastic exporter
-headers = dict(item.split("=") for item in OTEL_EXPORTER_OTLP_HEADERS.split(",")) if OTEL_EXPORTER_OTLP_HEADERS else {}
-
-elastic_exporter = OTLPSpanExporter(
-    endpoint=OTEL_EXPORTER_OTLP_ENDPOINT,
-    headers=headers
-)
-```
+<Note>
+  The `LANGTRACE_HEADERS` should include the full header string, including the
+  `Authorization=Bearer` prefix.
+</Note>
 
 ### Initialize the Langtrace SDK
 
@@ -75,19 +50,13 @@ Initialize the Langtrace SDK in your application:
 
 ```python
 from langtrace_python_sdk import langtrace
-# Initialize Langtrace with Elastic exporter
-langtrace.init(
-    custom_remote_exporter=elastic_exporter,
-    batch=True)
+# Initialize Langtrace
+langtrace.init()
 ```
 
 ### **Run the Application**
 
-With the environment variables set, run your application with OpenTelemetry instrumentation. Use the following command:
-
-```
-opentelemetry-instrument python main.py
-```
+With the environment variables set, run your application with OpenTelemetry instrumentation.
 
 ### **Verifying the Setup**
 
@@ -102,7 +71,7 @@ Here is an example Python application that uses Langtrace AI and Elastic APM:
 You will need to install the following libraries:
 
 ```bash
-pip install -U opentelemetry-exporter-otlp-proto-http langtrace_python_sdk langchain-openai langchain-community duckduckgo-search duckduckgo-search python-dotenv
+pip install -U langtrace_python_sdk langchain-openai langchain-community duckduckgo-search duckduckgo-search python-dotenv
 ```
 
 Here is the example code. Check out our [Langtrace Recipes](https://github.com/Scale3-Labs/langtrace-recipes/tree/main/integrations/observability) repository for more examples:
@@ -113,7 +82,6 @@ Here is the example code. Check out our [Langtrace Recipes](https://github.com/S
 import os
 import asyncio
 from dotenv import load_dotenv
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from langtrace_python_sdk import langtrace, with_langtrace_root_span
 from langchain_openai import AzureChatOpenAI
 from langchain.prompts import ChatPromptTemplate
@@ -129,19 +97,9 @@ OTEL_EXPORTER_OTLP_ENDPOINT = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
 OTEL_SERVICE_NAME = os.getenv("OTEL_SERVICE_NAME")
 OTEL_EXPORTER_OTLP_HEADERS = os.getenv("OTEL_EXPORTER_OTLP_HEADERS")
 
-headers = dict(item.split("=") for item in OTEL_EXPORTER_OTLP_HEADERS.split(",")) if OTEL_EXPORTER_OTLP_HEADERS else {}
 
-# Set up Elastic exporter
-elastic_exporter = OTLPSpanExporter(
-    endpoint=OTEL_EXPORTER_OTLP_ENDPOINT,
-    headers=headers
-)
-
-# Initialize Langtrace with Elastic exporter
-langtrace.init(
-    custom_remote_exporter=elastic_exporter,
-    batch=True,
-)
+# Initialize Langtrace
+langtrace.init()
 
 # Initialize Azure OpenAI model
 model = AzureChatOpenAI(
