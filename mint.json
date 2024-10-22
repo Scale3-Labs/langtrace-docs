@@ -136,7 +136,8 @@
             "supported-integrations/llm-tools/kubeai",
             "supported-integrations/llm-tools/ollama",
             "supported-integrations/llm-tools/openai",
-            "supported-integrations/llm-tools/perplexity"
+            "supported-integrations/llm-tools/perplexity",
+            "supported-integrations/llm-tools/xai"
           ]
         },
         {
