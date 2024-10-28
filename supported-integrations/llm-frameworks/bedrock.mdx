@@ -1,0 +1,121 @@
+---
+title: "AWS Bedrock"
+description: "Langtrace and AWS Bedrock Integration Guide"
+---
+
+AWS Bedrock provides access to high-performance foundation models through a unified API. Langtrace integration with AWS Bedrock allows you to capture and analyze interactions with various foundation models, helping you optimize and monitor your AI applications.
+
+<Callout type="warning">
+  Langtrace currently only captures traces for requests sent using the converse API.
+</Callout>
+
+## Available Models
+
+Before getting started, you'll need to request access to the specific foundation models you plan to use through the AWS Console. Visit [Supported Models](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html) for a list of models available to use with the converse API.
+
+## Setup
+
+### Install Langtrace SDK
+Install and [initialize](/quickstart) the SDK in your code.
+
+### Install AWS SDK
+Install the AWS SDK for Python/Typescript:
+<CodeGroup>
+```python Python
+pip install boto3
+``` 
+```javascript Typescript
+npm install @aws-sdk/client-bedrock-runtime
+```
+</CodeGroup>
+
+## Usage Example
+
+<CodeGroup>
+```python Python
+import boto3
+from langtrace_python_sdk import langtrace
+
+# Initialize Langtrace
+langtrace = Langtrace(
+    api_key="LANGTRACE_API_KEY",
+)
+
+# Initialize Bedrock client
+client = boto3.client(
+    service_name='bedrock-runtime',
+    region_name='us-east-1',
+    aws_access_key_id=<AWS_ACCESS_KEY_ID>,
+    aws_secret_access_key=<AWS_SECRET_ACCESS_KEY>,
+)
+
+# Example usage
+conversation = [
+    {
+        "role": "user",
+        "content": [{"text": "Write a story about a magic backpack."}],
+    }
+]
+response = client.converse(
+    modelId=model_id,
+    messages=conversation,
+    inferenceConfig={"maxTokens":4096,"temperature":0},
+    additionalModelRequestFields={"top_k":250}
+)
+response_text = response["output"]["message"]["content"][0]["text"]
+print(response_text)
+```
+```javascript Typescript
+import * as Langtrace from '@langtrase/typescript-sdk'
+import {
+  BedrockRuntimeClient,
+  ConverseCommand,
+  Message
+} from '@aws-sdk/client-bedrock-runtime'
+
+// Initialize Langtrace
+Langtrace.init({
+  api_key: "LANGTRACE_API_KEY"
+})
+
+// Initialize Bedrock client
+const bedrock = new BedrockRuntimeClient({ region: "us-east-1" });
+
+// Example usage
+const userMessage = 'Describe the purpose of a hello world program in one line.'
+const conversation: Message[] = [
+  {
+    role: 'user',
+    content: [{ text: userMessage }]
+  }
+]
+
+const modelId = 'mistral.mistral-large-2402-v1:0'
+
+const command = new ConverseCommand({
+    modelId,
+    messages: conversation,
+    inferenceConfig: { maxTokens: 512, temperature: 0.5, topP: 0.9 }
+})
+
+
+const response = await client.send(command)
+const responseText = ((response.output?.message?.content?.length) != null) && response.output.message.content[0].text
+console.log(responseText)
+```
+</CodeGroup>
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Model Access**: If you receive a "ResourceNotFoundException", ensure you've requested and been granted access to the model.
+2. **Trace Capture**: If traces aren't appearing, verify you're using the converse API and the Langtrace SDK is properly initialized.
+3. **Region Availability**: Some models may not be available in all AWS regions. Check the AWS Bedrock documentation for region availability.
+
+### Support
+
+For additional help:
+- Visit the [AWS Bedrock documentation](https://docs.aws.amazon.com/bedrock)
+- Check the [Langtrace documentation](/docs)
+- Contact Langtrace support at support@langtrace.com or https://discord.langtrace.ai/
