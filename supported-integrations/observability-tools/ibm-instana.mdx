@@ -1,0 +1,132 @@
+---
+title: "IBM Instana"
+description: "Langtrace and IBM Instana Integration Guide"
+---
+
+## Overview
+
+IBM Instana is a powerful platform for monitoring the performance of your applications. This guide focuses on integrating Langtrace AI with IBM Instana for distributed tracing of your LLM powered applications.
+
+## Prerequisites
+
+Before you begin, ensure you have the following:
+
+- An [IBM Instana](https://www.ibm.com/products/instana) account
+
+## Setup
+
+In your OpenTelemetry collector setup, make sure you have the collector endpoint environment variable set like this example:
+
+```bash
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+```
+
+### Initialize the Langtrace SDK
+
+Initialize the Langtrace SDK in your application with your OTLP collector endpoint:
+
+```python
+import os
+from openai import OpenAI
+
+from langtrace_python_sdk import langtrace
+from langtrace_python_sdk.utils.with_root_span import with_langtrace_root_span
+
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import \
+    OTLPSpanExporter
+
+# Set up the OTLP exporter with the endpoint from your collector
+otlp_exporter = OTLPSpanExporter(
+    # This should match your collector's OTLP gRPC endpoint
+    endpoint=os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT"),
+    insecure=True  # Set to False if using HTTPS
+)
+
+# set up langtrace
+langtrace.init(custom_remote_exporter=otlp_exporter)
+
+# rest of your code
+@with_langtrace_root_span() # This optional annotation is used to create a parent root span for the entire application
+def app():
+    client = OpenAI(
+        api_key="<YOUR_OPENAI_API_KEY>")
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "How many states of matter are there?"
+            }
+        ],
+    )
+    print(response.choices[0].message.content)
+
+
+app()
+```
+
+Note: The OTLP collector is setup using a config file in this example. The config file is shown below:
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: "localhost:4318"
+      grpc:
+        endpoint: "localhost:4317"
+
+processors:
+  batch:
+
+exporters:
+  otlp:
+    endpoint: "otlp-coral-saas.instana.io:4317"
+    headers:
+      "x-instana-key": "<YOUR_INSTANA_API_KEY>" # Replace with your actual Instana API key which you can find in your email confirmation after signing up for Instana.
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]
+```
+
+### **Run the Application**
+
+With the environment variables set, run your application with OpenTelemetry instrumentation. Use the following command:
+
+```bash
+python main.py
+```
+
+Note: Make sure your collector is running and configured correctly. To run the collector locally, you can use the following command:
+
+```bash
+otelcol-contrib --config otel-collector-config.yaml
+```
+
+### **Verifying the Setup**
+
+Once the application is running, you should see traces in your Datadog APM dashboard as shown below:
+
+![IBM Instana Tracing 1](/images/instana1.png)
+
+![IBM Instana Tracing 2](/images/instana2.png)
+
+![IBM Instana Tracing 3](/images/instana3.png)
+
+**Missing Libraries**: Verify that all necessary libraries are installed. If you encounter any errors, reinstall the libraries using the provided commands.
+
+**Additional Resources**
+
+- [IBM Instana OpenTelemetry Documentation](https://www.ibm.com/docs/en/instana-observability/current?topic=instana-backend#endpoints-of-the-instana-backend-otlp-acceptor)
