@@ -77,7 +77,8 @@
             "tracing/disable_function_tracing",
             "tracing/disable_vendor_instrumentation",
             "tracing/disable_prompt_&_completions_tracing",
-            "tracing/custom_span_naming"
+            "tracing/custom_span_naming",
+            "tracing/filter_by_session_id"
           ]
         }
       ]

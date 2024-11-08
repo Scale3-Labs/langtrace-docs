@@ -1,0 +1,39 @@
+---
+title: Filtering Traces by Session ID
+sidebarTitle: Filtering Traces by Session ID
+description: Langtrace SDK allows you to pass a session ID to traces to filter them later.
+---
+
+## What is a Session ID?
+
+A session ID is a unique identifier for a user session. It is useful to group traces together for a single user session.
+
+## How to pass a session ID to traces
+
+In order to pass a session ID to traces, you can use the `inject_additional_attributes` function (Python) or `withAdditionalAttributes` function (Typescript).
+
+## Usage
+
+For python, you can use the `inject_additional_attributes` function to pass a session ID to traces.
+
+```python
+from langtrace.utils import inject_additional_attributes
+
+inject_additional_attributes(lambda: None, {"session.id": "unique-session-id"})
+```
+
+For Typescript, you can use the `withAdditionalAttributes` function to pass a session ID to traces.
+
+```typescript
+withAdditionalAttributes(async () => {
+    // your code here
+}, { "session.id": "unique-session-id" });
+```
+
+## How to filter traces by session ID
+
+To filter traces by session ID, you can use the `session.id` filter in the UI. Additionally, you can also see the session ID of each trace in the UI.
+
+![Filter Traces by Session ID](/images/session_id_2.png)
+
+![Session ID in Traces](/images/session_id_1.png)
