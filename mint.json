@@ -150,7 +150,8 @@
             "supported-integrations/vector-stores/chromadb",
             "supported-integrations/vector-stores/pinecone",
             "supported-integrations/vector-stores/qdrant",
-            "supported-integrations/vector-stores/weaviate"
+            "supported-integrations/vector-stores/weaviate",
+            "supported-integrations/vector-stores/mongodb"
           ]
         },
         {
