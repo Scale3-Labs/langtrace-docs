@@ -1,0 +1,57 @@
+---
+title: 'Guardrails AI Integration'
+description: 'Learn how to use Langtrace with Guardrails AI for enhanced LLM validation and tracing'
+---
+
+# Langtrace Integration with Guardrails AI
+
+We are excited to announce that Langtrace now supports tracing [Guardrails AI](https://www.guardrailsai.com/) natively. This means Langtrace will automatically capture traces from guardrails with useful information related to the validators and validator metadata and surface it on Langtrace. This helps you get visibility into your models performance based on the validators you are using and the corresponding hits Guardrails is capturing.
+
+## Setup
+
+1. Sign up to Langtrace, create a project and get a Langtrace API key
+
+2. Install Langtrace SDK
+```bash
+pip install -U langtrace-python-sdk
+```
+
+3. Setup the .env var
+```bash
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+```
+
+4. Initialize Langtrace in your code
+```python
+import os
+from langtrace_python_sdk import langtrace
+from guardrails import Guard, OnFailAction
+from guardrails.hub import ProfanityFree, ToxicLanguage
+
+langtrace.init()
+
+guard = Guard()
+guard.name = 'ChatBotGuard'
+guard.use_many(
+    ProfanityFree(on_fail=OnFailAction.EXCEPTION),
+    ToxicLanguage(on_fail="exception"),
+    on="output"
+)
+
+result = guard(
+    messages=[{"role": "user", "content": "Hello, how are you?"}],
+    model="gpt-4",
+    stream=False,
+)
+```
+
+5. See the traces in Langtrace
+
+![Langtrace Guardrails Trace](/images/integrations/guardrails/langtrace-guardrails-trace1.png)
+![Langtrace Guardrails Validation](/images/integrations/guardrails/langtrace-guardrails-trace2.png)
+
+## Resources
+
+- [Getting started with Langtrace](/introduction)
+- [Guardrails AI Documentation](https://www.guardrailsai.com/docs)
+- [Join our Discord Community](https://discord.langtrace.ai/)

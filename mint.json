@@ -125,7 +125,8 @@
             "supported-integrations/llm-frameworks/mem0",
             "supported-integrations/llm-frameworks/vercelaisdk",
             "supported-integrations/llm-frameworks/litellm",
-            "supported-integrations/llm-frameworks/bedrock"
+            "supported-integrations/llm-frameworks/bedrock",
+            "supported-integrations/llm-frameworks/guardrails"
           ]
         },
         {
