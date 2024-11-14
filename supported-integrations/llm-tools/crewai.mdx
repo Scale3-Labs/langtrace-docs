@@ -1,0 +1,45 @@
+---
+title: "CrewAI Integration"
+description: "Learn how to integrate Langtrace with CrewAI"
+---
+
+# CrewAI Integration
+
+This guide explains how to integrate Langtrace with CrewAI, particularly when using CrewAI's command-line interface.
+
+## Installation Requirements
+
+When using CrewAI's CLI (e.g., when you create a project using `crewai create crew <crewname>`), you need to add Langtrace as a dependency in your project's `pyproject.toml` file:
+
+```toml
+[project]
+dependencies = [
+    # ... other dependencies ...
+    "langtrace_python_sdk>=3.3"
+]
+```
+
+## Usage
+
+After adding the dependency, you can import and initialize Langtrace in your CrewAI project:
+
+```python
+import os
+from langtrace_python_sdk import langtrace  # Must precede any llm module imports
+
+langtrace.init(api_key=os.environ.get("LANGTRACE_API_KEY"))
+
+# Your CrewAI code here
+```
+
+Make sure to set your `LANGTRACE_API_KEY` in your environment variables or `.env` file.
+
+## Running Your CrewAI Project
+
+Once you've added Langtrace as a dependency and initialized it in your code, you can run your CrewAI project normally using the CLI:
+
+```bash
+crewai flow kickoff
+```
+
+This will now work with Langtrace integration enabled, allowing you to track and monitor your CrewAI agents' interactions.
