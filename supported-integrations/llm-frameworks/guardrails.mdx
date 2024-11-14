@@ -1,27 +1,19 @@
 ---
-title: 'Guardrails AI Integration'
+title: 'Guardrails'
 description: 'Learn how to use Langtrace with Guardrails AI for enhanced LLM validation and tracing'
 ---
 
-# Langtrace Integration with Guardrails AI
+# Guardrails
 
-We are excited to announce that Langtrace now supports tracing [Guardrails AI](https://www.guardrailsai.com/) natively. This means Langtrace will automatically capture traces from guardrails with useful information related to the validators and validator metadata and surface it on Langtrace. This helps you get visibility into your models performance based on the validators you are using and the corresponding hits Guardrails is capturing.
+Guardrails AI is a framework for adding validation and safety rails to Large Language Model outputs. Langtrace provides native integration with Guardrails, automatically capturing traces with validator information and metadata to help you monitor and analyze your model's performance and validation results.
 
 ## Setup
 
-1. Sign up to Langtrace, create a project and get a Langtrace API key
+1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
 
-2. Install Langtrace SDK
-```bash
-pip install -U langtrace-python-sdk
-```
+2. Install Guardrails SDK and set up your validators according to the [Guardrails documentation](https://www.guardrailsai.com/docs).
 
-3. Setup the .env var
-```bash
-export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
-```
-
-4. Initialize Langtrace in your code
+3. Initialize Langtrace in your code and implement Guardrails validation:
 ```python
 import os
 from langtrace_python_sdk import langtrace
@@ -45,7 +37,15 @@ result = guard(
 )
 ```
 
-5. See the traces in Langtrace
+## Monitoring Validation Results
+
+Once implemented, Langtrace automatically captures:
+- Validator execution and results
+- Validation metadata
+- Model inputs and outputs
+- Validation failures and exceptions
+
+View your traces in the Langtrace dashboard:
 
 ![Langtrace Guardrails Trace](/images/integrations/guardrails/langtrace-guardrails-trace1.png)
 ![Langtrace Guardrails Validation](/images/integrations/guardrails/langtrace-guardrails-trace2.png)
