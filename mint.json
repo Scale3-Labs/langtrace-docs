@@ -152,7 +152,8 @@
             "supported-integrations/vector-stores/pinecone",
             "supported-integrations/vector-stores/qdrant",
             "supported-integrations/vector-stores/weaviate",
-            "supported-integrations/vector-stores/mongodb"
+            "supported-integrations/vector-stores/mongodb",
+            "supported-integrations/vector-stores/milvus"
           ]
         },
         {
@@ -180,7 +181,7 @@
         {
           "group": "Project APIs",
           "pages": [
-            "api-reference/project/POST-project", 
+            "api-reference/project/POST-project",
             "api-reference/project/POST-project-api-key"
           ]
         },
