@@ -7,11 +7,17 @@ Milvus is a cloud-native vector database designed for managing large-scale vecto
 
 ## Setup
 
-1. Install Milvus by following the [official installation guide](https://milvus.io/docs/install_standalone-docker.md).
+1. Create a virtual environment and activate it:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+```
 
-2. Create a database and collection in Milvus for your vector data.
+2. Install Milvus by following the [official installation guide](https://milvus.io/docs/install_standalone-docker.md).
 
-3. Install Langtrace and Milvus Python SDK:
+3. Create a database and collection in Milvus for your vector data.
+
+4. Install Langtrace and Milvus Python SDK:
 
 ```bash
 pip install langtrace-python-sdk pymilvus python-dotenv
@@ -142,4 +148,23 @@ This example demonstrates how to:
 4. Execute metadata queries
 5. Use Langtrace to monitor and trace all vector operations
 
-Each operation is wrapped with Langtrace's tracing capabilities, allowing you to monitor and debug your vector database operations effectively.
+## Observing the Full Trace
+
+When you run this example, Langtrace captures the entire pipeline of vector operations. You can observe:
+- Collection creation and management
+- Embedding generation process
+- Data insertion operations
+- Vector similarity search performance
+- Metadata query execution
+
+All these operations are automatically traced and can be monitored through the Langtrace dashboard, providing deep insights into your vector database operations.
+
+## Conclusion
+
+Integrating Langtrace with Milvus provides comprehensive observability for your vector database operations. This integration enables you to:
+- Monitor and debug vector operations in real-time
+- Track performance metrics across your vector search pipeline
+- Optimize your vector database queries
+- Ensure reliable and efficient vector similarity search
+
+Ready to enhance your Milvus workflows? Start exploring Langtrace x Milvus today, and take your vector database observability to the next level. 🚀
