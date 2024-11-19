@@ -48,9 +48,7 @@
       "pages": [
         "introduction",
         "quickstart",
-        "project-settings",
-        "installation",
-        "configuration"
+        "project-settings"
       ]
     },
     {
@@ -73,36 +71,7 @@
     {
       "group": "Integrations",
       "pages": [
-        "integrations/overview",
-        {
-          "group": "LLM Providers",
-          "pages": [
-            "integrations/openai",
-            "integrations/anthropic",
-            "integrations/azure-openai",
-            "integrations/cohere",
-            "integrations/gemini",
-            "integrations/mistral-ai"
-          ]
-        },
-        {
-          "group": "Frameworks",
-          "pages": [
-            "integrations/langchain",
-            "integrations/llamaindex",
-            "integrations/crewai",
-            "integrations/dspy"
-          ]
-        },
-        {
-          "group": "Observability",
-          "pages": [
-            "integrations/grafana",
-            "integrations/datadog",
-            "integrations/newrelic",
-            "integrations/elastic"
-          ]
-        }
+        "integrations/overview"
       ]
     },
     {
