@@ -3,13 +3,14 @@ title: Langtrace SDK Features
 sidebarTitle: Features
 ---
 
-While Langtrace Cloud is the default destination for your traces, there are scenarios where you might need to send traces to a custom endpoint. This could be for testing, using an on-premises solution, or integrating with other systems. This guide covers two methods to achieve this: using the `api_host` parameter or implementing a custom exporter.
+<Card title="SDK Configuration Overview" icon="gear">
+  While Langtrace Cloud is the default destination for your traces, you can customize the trace destination using the `api_host` parameter or implementing a custom exporter. This guide covers all available configuration options.
+</Card>
 
-## SDK Init options
+## SDK Initialization Options
 
-The `Langtrace.init` function takes an object with the following options:
-
-| Parameter                       | Type     | Description                                                                                                      | Default Value   |
+<Accordion title="Configuration Parameters Reference" defaultOpen="true">
+| Parameter | Type | Description | Default Value |
 | ------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- | --------------- |
 | `api_key`                       | `str`    | Your Langtrace API key. Required for sending traces to Langtrace Cloud.                                          | `-`             |
 | `api_host`                      | [`str`]  | The custom endpoint to send traces to.                                                                           | Langtrace Cloud |
@@ -22,6 +23,24 @@ The `Langtrace.init` function takes an object with the following options:
 | `disable_logging`               | [`bool`] | Whether to disable logging within the SDK.                                                                       | `false`         |
 | `instrumentations`              | [`dict`] | **[Typescript SDK only]** This is a required option for next.js applications.                                    | `-`             |
 | `disable_latest_version_check`  | [`bool`] | **[Typescript SDK only]** Whether to disable the latest version check.                                           | `false`         |
+</Accordion>
+
+<CardGroup cols={2}>
+  <Card title="API Key Configuration" icon="key">
+    The `api_key` option specifies your Langtrace project API key. [Learn more](#api-key)
+  </Card>
+  <Card title="API Host Configuration" icon="server">
+    The `api_host` option lets you specify a custom endpoint for traces. [Learn more](#api-host)
+  </Card>
+  <Card title="Batch Processing" icon="layer-group">
+    Control span batching for improved performance. [Learn more](#batch)
+  </Card>
+  <Card title="Console Output" icon="terminal">
+    Write spans to console for debugging. [Learn more](#write-spans-to-console)
+  </Card>
+</CardGroup>
+
+## Configuration Details
 
 ### api_key
 
@@ -103,12 +122,9 @@ export OTEL_EXPORTER_OTLP_ENDPOINT="http://localhost:3000/api/trace"
 
 ### batch
 
-Allows you to specify whether to batch spans before sending. This is useful for reducing the number of requests sent to the server, which can improve performance and reduce costs.
-
-<Tip>
-	If you are using the SDK in a script or a notebook, you might want to set this
-	to `false` to see the spans as they are captured.
-</Tip>
+<Note>
+  Batching spans can improve performance and reduce costs. For development in scripts or notebooks, consider setting `batch=false`.
+</Note>
 
 <CodeGroup>
 ```python Python SDK
@@ -127,11 +143,8 @@ Langtrace.init({
 
 ### write_spans_to_console
 
-Allows you to specify whether to write spans to the console output.
-This is useful if you have a logforwarded that forwards console output or for debugging.
-
 <Warning>
-	If this is set to `true`, the spans will not be sent to the remote endpoint.
+  When enabled, spans will only be written to console and not sent to any remote endpoint.
 </Warning>
 
 <CodeGroup>
@@ -151,16 +164,8 @@ Langtrace.init({
 
 ### custom_remote_exporter
 
-By defining a custom exporter, you have full control over the export process, including custom formatting or additional processing of spans before sending.
-
-If you want to send traces to a remote endpoint, instead of defining `api_host`, it can be done by passing a custom exporter to the `custom_remote_exporter` parameter in the `Langtrace.init` function.
-The `custom_remote_exporter` option will take precedence over the `api_host` option.
-
 <Warning>
-	Using the `custom_remote_exporter` with a custom url will cause majority of
-	the langtrace features (like evaluations, user feedback, etc.) to not work and
-	should only be used if **Langtrace** is being used only to **capture** and
-	**send** traces.
+  Using a custom exporter may limit access to Langtrace features like evaluations and user feedback.
 </Warning>
 
 Here is an example of how to implement a custom exporter that demonstrates that with a custom exporter you have endless possibilities!
@@ -284,41 +289,30 @@ class CustomExporter(SpanExporter):
 </Tab>
 </Tabs>
 
+## Advanced Configuration
+
 ### disable_instrumentations
 
-With this option, certain libraries can be either excluded or included from being traced.
-This enables users to have more control over what is being traced and easily filter out noisy libraries.
-
-This option can be used to exclude a library from being traced by passing the library name to the `disable_instrumentations` parameter in the `Langtrace.init` function.
-
-#### Exclude libraries
-
-To exclude specific vendors, you can pass the value to this parameter as follows:
-
-```json
-{ "all_except": ["weaviate", "gemini"] }
-```
-
-This way, all the instrumentations except for `weaviate` and `gemini` will be disabled.
-
-#### Include libraries
-
-To include specific vendors, you can pass the value to this parameter as follows:
-
-```json
-{ "only": ["weaviate", "gemini"] }
-```
-
-This way, only `weaviate` and `gemini` will be traced.
-
-For Python SDK, the vendor name can be found in the `all_instrumentations` variable in the repo [here](https://github.com/Scale3-Labs/langtrace-python-sdk/blob/a9f0083d6f4cc98c4755f63bf87cc2e87cde8d38/src/langtrace_python_sdk/langtrace.py#L120-L142).
-
-For Typescript SDK, the vendor name can be found in the `allInstrumentations` variable in the repo [here](https://github.com/Scale3-Labs/langtrace-typescript-sdk/blob/1f56006e42bdc2a34809c37016f387f38d8c2a46/src/init/init.ts).
+<Steps>
+  <Step title="Exclude Libraries">
+    To disable all instrumentations except specific ones:
+    ```json
+    { "all_except": ["weaviate", "gemini"] }
+    ```
+  </Step>
+  <Step title="Include Libraries">
+    To enable only specific instrumentations:
+    ```json
+    { "only": ["weaviate", "gemini"] }
+    ```
+  </Step>
+</Steps>
 
 > For more details on the implementation, refer [Disable Tracing For Specific Vendors](/tracing/disable_vendor_instrumentation).
 
 ### disable_tracing_for_functions
 
+<Card title="Function Exclusion Configuration">
 This option allows you to exclude specific functions from being traced. This can be useful if you have certain functions that you do not want to trace, such as health check functions.
 
 To exclude a function, do it the following way:
@@ -331,9 +325,11 @@ To exclude a function, do it the following way:
 ```
 
 > For more details on the implementation, refer [Disable Tracing For Functions](/tracing/disable_function_tracing).
+</Card>
 
 ### service_name
 
+<Card title="Service Name Configuration" icon="tag">
 This option allows you to specify the name of the service for which traces are generated.
 This is useful if you have multiple services within your application and want to trace them separately.
 This option overrides the attribute `service.name` in the trace as per the OpenTelemetry specification.
@@ -357,9 +353,11 @@ Langtrace.init({
 });
 ```
 </CodeGroup>
+</Card>
 
 ### disable_logging
 
+<Card title="Logging Configuration" icon="terminal">
 This option allows you to disable logging within the SDK. This is useful if you have a logging system in place and do not want Langtrace to log anything.
 
 <CodeGroup>
@@ -376,11 +374,13 @@ Langtrace.init({
 });
 ```
 </CodeGroup>
+</Card>
 
 ### instrumentations
 
-This argument is only applicable for Typescript SDK with Next.js.
-This option allows you to specify the instrumentations to be used. This is useful if you have a custom implementation of a library and want to trace it.
+<Note>
+  This option is specific to the TypeScript SDK when used with Next.js.
+</Note>
 
 <CodeGroup>
 ```typescript Typescript SDK
@@ -395,8 +395,9 @@ Langtrace.init({
 
 ### disable_latest_version_check
 
-This argument is only applicable for Typescript SDK.
-Flag to disable the latest version check. This removes any version checks that happens on every init call.
+<Note>
+  This option is specific to the TypeScript SDK.
+</Note>
 
 <CodeGroup>
 ```typescript Typescript SDK

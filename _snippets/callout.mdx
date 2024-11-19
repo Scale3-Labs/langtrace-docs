@@ -1,0 +1,46 @@
+## Callouts
+
+<Info>This is an info callout for important notes.</Info>
+
+<Tip>This is a tip callout for helpful suggestions.</Tip>
+
+<Warning>This is a warning callout for potential issues.</Warning>
+
+<Note>This is a note callout for additional context.</Note>
+
+## Cards
+
+<CardGroup cols={2}>
+  <Card title="Python SDK" icon="python" href="/sdk/python_sdk">
+    Get started with our Python SDK
+  </Card>
+  <Card title="TypeScript SDK" icon="js" href="/sdk/typescript_sdk">
+    Get started with our TypeScript SDK
+  </Card>
+</CardGroup>
+
+## Steps
+
+<Steps>
+  1. Install Langtrace
+  2. Initialize the SDK
+  3. Start sending traces
+  4. View traces in dashboard
+</Steps>
+
+## Tabs
+
+<Tabs>
+  <Tab title="Python">
+    ```python
+    from langtrace_python_sdk import langtrace
+    langtrace.init(api_key='your-api-key')
+    ```
+  </Tab>
+  <Tab title="TypeScript">
+    ```typescript
+    import * as Langtrace from "@langtrase/typescript-sdk";
+    Langtrace.init({ api_key: "your-api-key" });
+    ```
+  </Tab>
+</Tabs>

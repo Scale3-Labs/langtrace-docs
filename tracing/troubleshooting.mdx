@@ -1,0 +1,82 @@
+---
+title: "Troubleshooting Traces"
+description: "Common issues and solutions when working with Langtrace traces"
+---
+
+# Trace Ingestion Issues
+
+## Checking Trace Status
+
+When sending traces to Langtrace, you can verify successful ingestion through multiple steps:
+
+1. **UI Dashboard**: Check the Traces tab in your project dashboard
+2. **Collector Logs**: Verify traces are reaching the collector
+3. **Backend Logs**: Confirm successful POST requests to `/api/traces`
+
+## Common Issues
+
+### Traces Not Appearing in UI
+
+If traces are not appearing in the UI but you see successful POST requests:
+
+1. **Check Database Configuration**:
+   - Ensure ClickHouse is properly configured
+   - Verify database and table schemas are created
+   - Check database connection settings
+
+2. **Verify Project Configuration**:
+   - Confirm project ID in collector configuration
+   - Validate API key usage in SDK initialization
+
+3. **Inspect Trace Data**:
+   - Check trace attributes format
+   - Verify span relationships (parent-child)
+   - Ensure required fields are present
+
+### SDK Configuration
+
+When configuring the Python SDK, ensure proper endpoint configuration:
+
+```python
+from langtrace_python_sdk import langtrace
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+
+# Configure OTLP exporter
+otlp_exporter = OTLPSpanExporter(
+    endpoint="http://localhost:4318/v1/traces",  # Use appropriate host/port
+    headers=(("Content-Type", "application/json"),)
+)
+
+# Initialize Langtrace
+langtrace.init(
+    api_key='your_api_key',
+    custom_remote_exporter=otlp_exporter,
+    batch=False  # Set to True for production
+)
+```
+
+## Best Practices
+
+1. **Development Environment**:
+   - Use `batch=False` for immediate trace visibility
+   - Enable debug logging for troubleshooting
+   - Monitor collector and service logs
+
+2. **Production Environment**:
+   - Enable batch processing for better performance
+   - Configure appropriate TTL for traces
+   - Monitor trace storage usage
+
+## Getting Help
+
+If you continue experiencing issues:
+
+1. Check the [GitHub repository](https://github.com/Scale3-Labs/langtrace) for known issues
+2. Join our community Discord for support
+3. Contact Scale3 Labs support team
+
+Remember to include:
+- SDK version
+- Configuration details
+- Error messages or logs
+- Steps to reproduce the issue

@@ -1,0 +1,241 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Langtrace AI Docs",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "api": {
+    "baseUrl": "https://app.langtrace.ai/api",
+    "auth": {
+      "method": "key",
+      "name": "x-api-key"
+    },
+    "playground": {
+      "mode": "hide"
+    }
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#005FAF",
+    "light": "#07C983",
+    "dark": "#005FAF",
+    "anchors": {
+      "from": "#07C983",
+      "to": "#005FAF"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "/contact/contact-us"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Langtrace App",
+    "url": "https://langtrace.ai"
+  },
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/Scale3-Labs/langtrace"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "how-to-guides",
+        "concepts",
+        "project-settings",
+        "faqs"
+      ]
+    },
+    {
+      "group": "SDK Reference",
+      "pages": [
+        "sdk/python_sdk",
+        "sdk/typescript_sdk",
+        "sdk/sdk_features"
+      ]
+    },
+    {
+      "group": "Core Features",
+      "pages": [
+        {
+          "group": "Tracing",
+          "pages": [
+            "tracing/overview",
+            "tracing/send_traces",
+            "tracing/group_traces",
+            "tracing/trace_user_feedback",
+            "tracing/attach_user_id",
+            "tracing/attach_prompt_id",
+            "tracing/additional_attributes",
+            "tracing/disable_function_tracing",
+            "tracing/disable_vendor_instrumentation",
+            "tracing/disable_prompt_&_completions_tracing",
+            "tracing/custom_span_naming",
+            "tracing/filter_by_session_id"
+          ]
+        },
+        {
+          "group": "Prompting",
+          "pages": [
+            "features/manage_prompts",
+            "features/manage_zod_schema",
+            "features/playground"
+          ]
+        },
+        {
+          "group": "Evaluations",
+          "pages": [
+            "features/evaluations",
+            "features/compare-evaluations",
+            "features/annotations"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [
+        "supported-integrations/overview",
+        {
+          "group": "Observability Tools",
+          "pages": [
+            "supported-integrations/observability-tools/elastic",
+            "supported-integrations/observability-tools/grafana",
+            "supported-integrations/observability-tools/signoz",
+            "supported-integrations/observability-tools/newrelic",
+            "supported-integrations/observability-tools/datadog",
+            "supported-integrations/observability-tools/honeycomb",
+            "supported-integrations/observability-tools/ibm-instana"
+          ]
+        },
+        {
+          "group": "LLM Frameworks",
+          "pages": [
+            "supported-integrations/llm-frameworks/llamaindex",
+            "supported-integrations/llm-frameworks/langchain",
+            "supported-integrations/llm-frameworks/crewai",
+            "supported-integrations/llm-frameworks/dspy",
+            "supported-integrations/llm-frameworks/mem0",
+            "supported-integrations/llm-frameworks/vercelaisdk",
+            "supported-integrations/llm-frameworks/litellm",
+            "supported-integrations/llm-frameworks/bedrock",
+            "supported-integrations/llm-frameworks/guardrails"
+          ]
+        },
+        {
+          "group": "LLM & Tools",
+          "pages": [
+            "supported-integrations/llm-tools/anthropic",
+            "supported-integrations/llm-tools/azure-openai",
+            "supported-integrations/llm-tools/cohere",
+            "supported-integrations/llm-tools/gemini",
+            "supported-integrations/llm-tools/groq",
+            "supported-integrations/llm-tools/mistral-ai",
+            "supported-integrations/llm-tools/kubeai",
+            "supported-integrations/llm-tools/ollama",
+            "supported-integrations/llm-tools/openai",
+            "supported-integrations/llm-tools/perplexity",
+            "supported-integrations/llm-tools/xai"
+          ]
+        },
+        {
+          "group": "Vector Stores",
+          "pages": [
+            "supported-integrations/vector-stores/chromadb",
+            "supported-integrations/vector-stores/pinecone",
+            "supported-integrations/vector-stores/qdrant",
+            "supported-integrations/vector-stores/weaviate",
+            "supported-integrations/vector-stores/mongodb"
+          ]
+        },
+        {
+          "group": "Web Frameworks",
+          "pages": [
+            "supported-integrations/web-frameworks/fastapi",
+            "supported-integrations/web-frameworks/flask",
+            "supported-integrations/web-frameworks/django",
+            "supported-integrations/web-frameworks/nextjs"
+          ]
+        },
+        {
+          "group": "OTEL Exporters",
+          "pages": [
+            "supported-integrations/otel-support/otel-configuration",
+            "supported-integrations/otel-support/ts-http-json",
+            "supported-integrations/otel-support/python-http-json"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Self Hosting",
+      "pages": [
+        "hosting/overview",
+        "hosting/docker",
+        "hosting/kubernetes",
+        "hosting/authentication",
+        {
+          "group": "Advanced",
+          "pages": [
+            "hosting/using_local_setup",
+            "hosting/auth",
+            "hosting/hosting_options/docker-standalone",
+            "hosting/hosting_options/docker-compose",
+            "hosting/hosting_options/kubernetes",
+            "hosting/hosting_options/azure",
+            "hosting/hosting_options/railway"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        {
+          "group": "Project APIs",
+          "pages": [
+            "api-reference/project/POST-project",
+            "api-reference/project/POST-project-api-key"
+          ]
+        },
+        {
+          "group": "Prompt Registry APIs",
+          "pages": [
+            "api-reference/prompt-registry/GET-prompt-registry"
+          ]
+        },
+        {
+          "group": "Traces API",
+          "pages": [
+            "api-reference/traces/POST-traces"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Contact Us",
+      "pages": [
+        "contact/contact-us"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/langtrace_ai?utm_source=langtrace-docs&utm_medium=footer&utm_campaign=langtrace-docs",
+    "github": "https://github.com/Scale3-Labs/langtrace",
+    "discord": "https://discord.com/invite/EaSATwtr4t",
+    "youtube": "https://www.youtube.com/channel/UCmqi7fUaU4kslkXl2qZFjNw?utm_source=langtrace-docs&utm_medium=footer&utm_campaign=langtrace-docs"
+  },
+  "analytics": {
+    "ga4": {
+      "measurementId": "G-CLZFYWTWJR"
+    }
+  }
+}
