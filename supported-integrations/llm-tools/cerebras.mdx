@@ -1,0 +1,179 @@
+---
+title: "Cerebras"
+description: "Learn how to use Langtrace with Cerebras for AI workload observability"
+---
+
+# Cerebras Integration
+
+This guide demonstrates how to integrate Langtrace with Cerebras to gain deep observability into your AI workloads. Cerebras, a leader in AI hardware and cloud solutions, enables unprecedented performance for large language models. By combining Cerebras with Langtrace, you can monitor, debug, and optimize your AI pipelines effectively.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+1. A Cerebras API key
+2. Python 3.7 or later installed
+3. The Langtrace SDK installed and configured
+
+## Installation
+
+Install the required packages:
+
+```bash
+pip install langtrace-python-sdk cerebras-cloud-sdk python-dotenv
+```
+
+## Configuration
+
+Set up your environment variables:
+
+```bash
+export CEREBRAS_API_KEY='your-cerebras-api-key'
+export LANGTRACE_API_KEY='your-langtrace-api-key'
+```
+
+Or use a `.env` file:
+
+```plaintext
+CEREBRAS_API_KEY=your-cerebras-api-key
+LANGTRACE_API_KEY=your-langtrace-api-key
+```
+
+## Usage
+
+### Direct Cerebras SDK Integration
+
+Here's how to use Langtrace with the Cerebras SDK:
+
+```python
+from langtrace_python_sdk import langtrace
+from cerebras.cloud.sdk import Cerebras
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Initialize Langtrace
+langtrace.init()
+
+# Initialize Cerebras client
+client = Cerebras()
+
+def completion_example(stream=False):
+    completion = client.chat.completions.create(
+        messages=[{
+            "role": "user",
+            "content": "Why is fast inference important?",
+        }],
+        model="llama3.1-8b",
+        stream=stream,
+    )
+
+    if stream:
+        for chunk in completion:
+            print(chunk)
+    else:
+        return completion
+
+# Execute the completion
+completion_example()
+```
+
+### OpenAI-Compatible Endpoint
+
+Cerebras also provides an OpenAI-compatible endpoint:
+
+```python
+from langtrace_python_sdk import langtrace
+from dotenv import load_dotenv
+from openai import OpenAI
+import os
+
+# Load environment variables
+load_dotenv()
+
+# Initialize Langtrace
+langtrace.init()
+
+# Initialize OpenAI client with Cerebras endpoint
+openai_client = OpenAI(
+    base_url="https://api.cerebras.ai/v1",
+    api_key=os.getenv("CEREBRAS_API_KEY"),
+)
+
+def openai_cerebras_example(stream=False):
+    completion = openai_client.chat.completions.create(
+        messages=[{
+            "role": "user",
+            "content": "Why is fast inference important?",
+        }],
+        model="llama3.1-8b",
+        stream=stream,
+    )
+
+    if stream:
+        for chunk in completion:
+            print(chunk)
+    else:
+        return completion
+
+# Execute the completion
+openai_cerebras_example()
+```
+
+## Observability Features
+
+Langtrace provides comprehensive observability for your Cerebras workloads:
+
+1. **Performance Monitoring**
+   - Track latency and throughput metrics
+   - Monitor resource utilization
+   - Identify bottlenecks in your pipeline
+
+2. **Error Tracking**
+   - Trace errors in distributed workloads
+   - Debug complex pipelines
+   - Monitor both synchronous and asynchronous operations
+
+3. **Resource Optimization**
+   - Analyze hardware resource usage
+   - Optimize model execution
+   - Fine-tune performance parameters
+
+4. **User Experience Metrics**
+   - Track completion times
+   - Monitor streaming response performance
+   - Measure end-to-end request latency
+
+## Best Practices
+
+1. **Initialize Early**
+   Always initialize Langtrace before creating the Cerebras client to ensure all operations are traced.
+
+2. **Use Environment Variables**
+   Store sensitive credentials in environment variables or `.env` files.
+
+3. **Enable Streaming**
+   For long-running operations, use streaming to monitor progress in real-time.
+
+4. **Monitor Resource Usage**
+   Regularly check resource utilization metrics to optimize performance.
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **Authentication Errors**
+   - Verify your API keys are correctly set
+   - Ensure environment variables are loaded
+
+2. **Performance Issues**
+   - Check Langtrace dashboards for bottlenecks
+   - Monitor resource utilization metrics
+   - Verify model configuration settings
+
+## Additional Resources
+
+- [Cerebras Documentation](https://docs.cerebras.ai/)
+- [Langtrace Documentation](https://docs.langtrace.ai/)
+- [Cerebras API Reference](https://api.cerebras.ai/)
