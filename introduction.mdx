@@ -39,61 +39,60 @@ Langtrace optimizes for the following 3 pillars of observability for your LLM ap
 
 Need help with the SDK? [Contact us](https://calendar.app.google/Go5gXNPcqZjAY4i47)
 
-## Setting up
+## Getting Started with Langtrace
 
-The first step to using Langtrace is to import into your Typescript or Python project.
+<Steps>
+  <Step title="Sign up and Generate API Key">
+    - Sign up to Langtrace [here](https://app.langtrace.ai/signup)
+    - Navigate to the [Langtrace dashboard](https://app.langtrace.ai/projects)
+    - Create a new project with a name and description
+      ![project](/images/screenshots/20241119_6299d99a-5ae4-4dee-9842-126197cbc705.png)
 
-#### Step 1: Signup to Langtrace and generate an API key from the Langtrace dashboard.
+    - Click on the Project name
+    - Click on the `Generate API Key` button
+      ![api](/images/screenshots/20241119_e5bffdce-ac35-4049-a9b6-ee29529fc87a.png)
 
-- Signup to Langtrace [here](https://app.langtrace.ai/signup)
-- Go to the [Langtrace dashboard](https://app.langtrace.ai/projects)
-- Create a new project, be sure to provide a name and description
-  ![project](/images/screenshots/20241119_6299d99a-5ae4-4dee-9842-126197cbc705.png)
+    - Copy the generated API key for SDK initialization
+  </Step>
 
-- Click on the Project name
-- Click on the `Generate API Key` button
-  ![api](/images/screenshots/20241119_e5bffdce-ac35-4049-a9b6-ee29529fc87a.png)
+  <Step title="Install the SDK">
+    <Tabs>
+      <Tab title="Python">
+        ```python
+        pip install langtrace-python-sdk
+        ```
+      </Tab>
+      <Tab title="Typescript">
+        ```typescript
+        npm i @langtrase/typescript-sdk
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
 
-- Copy the generated API key. You will need this key to initialize the SDK in your project.
+  <Step title="Initialize the SDK">
+    <CodeGroup>
+      ```typescript Typescript
+      // Must precede any llm module imports
+      import * as Langtrace from "@langtrase/typescript-sdk";
 
-#### Step 2: Install the SDK on your project:
+      Langtrace.init({ api_key: "<LANGTRACE_API_KEY>" });
+      ```
 
-- **Python**: Install the Langtrace SDK using pip
+      ```python Python
+      from langtrace_python_sdk import langtrace
 
-```python
-pip install langtrace-python-sdk
-```
+      langtrace.init(api_key = '<LANGTRACE_API_KEY>')
+      ```
+    </CodeGroup>
+  </Step>
 
-- **Typescript**: Install the Langtrace SDK using npm
+  <Step title="View Your Traces">
+    You can now view your traces on the [Langtrace dashboard](https://app.langtrace.ai/projects).
 
-```typescript
-npm i @langtrase/typescript-sdk
-```
-
-#### Step 3: Initialize the SDK in your project:
-
-<CodeGroup>
-
-```typescript Typescript
-// Must precede any llm module imports
-import * as Langtrace from "@langtrase/typescript-sdk";
-
-Langtrace.init({ api_key: "<LANGTRACE_API_KEY>" });
-```
-
-```python Python
-from langtrace_python_sdk import langtrace
-
-langtrace.init(api_key = '<LANGTRACE_API_KEY>')
-```
-
-</CodeGroup>
-
-#### Step 4: Run your application to view your traces on the Langtrace dashboard.
-
-You can now view your traces on the [Langtrace dashboard](https://app.langtrace.ai/projects).
-
-![traces](/images/screenshots/20241119_d23c9ade-327d-4ba5-9285-223039dd2740.png)
+    ![traces](/images/screenshots/20241119_d23c9ade-327d-4ba5-9285-223039dd2740.png)
+  </Step>
+</Steps>
 
 ## Start using Langtrace
 
@@ -121,79 +120,99 @@ We are working hard to add support for more languages.
 
 ## Pricing
 
-Langtrace offers flexible pricing options to suit various needs and usage levels. Here's an overview of our pricing structure:
+<Tabs>
+  <Tab title="Starter">
+    <Card title="Free Forever">
+      Perfect for individuals or hackers starting with LLM observability
 
-## Starter
+      ### Features
+      - 1 user/month
+      - Up to 10K spans/month
+      - Prompt management
+      - Evaluations
+    </Card>
+  </Tab>
 
-Ideal for individuals or hackers just beginning their LLM observability journey.
+  <Tab title="Growth">
+    <Card title="$39/user/month">
+      Designed for growing teams with increasing observability needs
 
-- Free forever
-- 1 user/month
-- Includes up to 10K spans/month, prompt management, and evaluations
+      ### Features
+      - Usage based: $0.005/additional span/month (above 50K)
+      - Everything in Free Forever
+      - Cloud evaluations
+      - Team collaboration
+      - Security guardrails
+    </Card>
+  </Tab>
 
-## Growth
+  <Tab title="Scale">
+    <Card title="Enterprise - Custom Pricing">
+      Tailored solutions for large-scale enterprises
 
-Designed for growing teams and projects with increasing observability needs.
+      ### Features
+      - Custom retention policy
+      - Custom SLAs
+      - Security guardrails
+      - Team collaboration
+      - SOC 2 Type II Compliance
+    </Card>
+  </Tab>
 
-- $39/user/month
-- Usage based pricing: $0.005 / additional span ingested / month (above 50K spans)
-- Includes everything in Free Forever
-- Evaluations in the cloud
-- Team collaboration features
-- Security guardrails
+  <Tab title="Self-Hosted">
+    <Card title="Free to Start">
+      Perfect for developers prioritizing data control
 
-## Scale - Enterprises
-
-Tailored solutions for large-scale enterprises with complex requirements.
-
-- Custom pricing
-- Custom retention policy
-- Custom SLAs
-- Security guardrails
-- Team collaboration features
-- SOC 2 Type II Compliance
-
-## Self-Hosted
-
-Perfect for developers who prioritize data control and customization.
-
-- Free to get started
-- Includes tracing, prompt management, and evaluations that can be accessed by hosting locally
+      ### Features
+      - Tracing
+      - Prompt management
+      - Local evaluations
+      - Full customization
+    </Card>
+  </Tab>
+</Tabs>
 
 ## Pricing FAQs
 
-### What is a span?
+<Accordion title="What is a span?">
+  A span represents a single unit of work or operation in your application. For LLM apps, this typically corresponds to an API call or a specific step in your language model pipeline.
+</Accordion>
 
-A span represents a single unit of work or operation in your application. For LLM apps, this typically corresponds to an API call or a specific step in your language model pipeline.
+<Accordion title="How do I know which plan is right for me?">
+  If you're just getting started or want to self-host, our Self-Hosted option is perfect. For small teams or projects using our managed service, the Starter plan is ideal. As your usage grows, the Growth plan offers more flexibility and features. Large enterprises with specific needs should consider our Scale plan.
+</Accordion>
 
-### How do I know which plan is right for me?
+<Accordion title="Can I upgrade or downgrade my plan?">
+  Yes, you can change your plan at any time to match your current needs.
+</Accordion>
 
-If you're just getting started or want to self-host, our Self-Hosted option is perfect. For small teams or projects using our managed service, the Starter plan is ideal. As your usage grows, the Growth plan offers more flexibility and features. Large enterprises with specific needs should consider our Scale plan.
+<Accordion title="What happens if I exceed my plan's limits?">
+  For the Growth plan, you'll be charged for additional spans above the 50K limit. For other plans, please contact our sales team sales@langtrace.ai to discuss options.
+</Accordion>
 
-### Can I upgrade or downgrade my plan?
+<Accordion title="Do you offer a free trial of paid features?">
+  Please contact our sales team to discuss trial options for our paid features.
+</Accordion>
 
-Yes, you can change your plan at any time to match your current needs.
-
-### What happens if I exceed my plan's limits?
-
-For the Growth plan, you'll be charged for additional spans above the 50K limit. For other plans, please contact our sales team sales@langtrace.ai to discuss options.
-
-### Do you offer a free trial of paid features?
-
-Please contact our sales team to discuss trial options for our paid features.
-
-To discuss specific requirements or to learn more about our Enterprise offerings, please contact us at sales@langtrace.ai.
+To discuss specific requirements or Enterprise offerings, contact us at sales@langtrace.ai.
 
 ## FAQs
 
-- **What is Langtrace?**
+<Accordion title="What is Langtrace?">
   Langtrace is an open-source observability tool that helps you collect and analyze traces to improve your LLM apps.
-- **How do I get started with Langtrace?**
+</Accordion>
+
+<Accordion title="How do I get started with Langtrace?">
   To get started with Langtrace, you need to signup and generate an API key. Then, install and import the SDK into your project to start shipping traces to Langtrace.
-- **What are the benefits of using Langtrace?**
+</Accordion>
+
+<Accordion title="What are the benefits of using Langtrace?">
   Langtrace helps you with the following:
   - Monitor your LLM usage - token and costs, latency and success rate.
   - Evaluate the responses of the LLM to measure the accuracy of your LLM apps.
   - Create and manage datasets and prompt sets for your LLM apps.
-- **What languages does Langtrace support?**
+</Accordion>
+
+<Accordion title="What languages does Langtrace support?">
   Langtrace currently supports Python and Typescript. We are adding support for more languages.
+</Accordion>

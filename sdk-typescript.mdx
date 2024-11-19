@@ -3,51 +3,60 @@ title: Langtrace Typescript SDK
 sidebarTitle: Typescript SDK
 ---
 
-## Github
-
-> Github repository for Langtrace Typescript SDK's -> [Scale3-Labs/langtrace-typescript-sdk](https://github.com/Scale3-Labs/langtrace-typescript-sdk).
+<Card title="TypeScript SDK Repository" icon="github">
+  Check out our TypeScript SDK on GitHub: [Scale3-Labs/langtrace-typescript-sdk](https://github.com/Scale3-Labs/langtrace-typescript-sdk)
+</Card>
 
 <Warning>
-	The name of Typescript SDK has word `langtrase` with a `s` and NOT
-	`langtrace`.
+  **Important Package Name Note**: The TypeScript SDK package name uses `langtrase` with an 's' (NOT `langtrace`).
 </Warning>
 
+## Getting Started
 
-## To use the managed version of Langtrace, follow these steps:
-1.  Sign up by going to this link [Langtrace](https://langtrace.ai).
-2.  Create a new Project and Generate an API key.
+<Steps>
+  <Step title="Sign Up">
+    Create your account at [Langtrace](https://langtrace.ai) and create a new Project to generate your API key.
+  </Step>
 
-## Installation
-1. In your application, install the Langtrace Typescript SDK using npm:
-```bash Shell
-# Install the SDK
-npm i @langtrase/typescript-sdk
-```
+  <Step title="Installation">
+    Install the Langtrace TypeScript SDK using npm:
+    ```bash Shell
+    # Install the SDK
+    npm i @langtrase/typescript-sdk
+    ```
+  </Step>
 
-## Initialization
-1. Initialize the Langtrace SDK with the API key you generated in the step 2:
+  <Step title="Initialize SDK">
+    Initialize the SDK with your API key:
+    ```typescript
+    # Import it into your project. Must precede any llm module imports
+    import * as Langtrace from "@langtrase/typescript-sdk";
+    Langtrace.init({ api_key: '<LANGTRACE_API_KEY>'})
+    ```
+  </Step>
+</Steps>
 
-```bash typescript
-# Import it into your project. Must precede any llm module imports
-import * as Langtrace from "@langtrase/typescript-sdk";
-Langtrace.init({ api_key: '<LANGTRACE_API_KEY>'})
-```
-
-## For self-hosted Langtrace add *`api_host`* and point the URL to your own DNS or IP sddress.Langtrace
-Example below:
-<CodeGroup>
-````bash Typescript
-import * as Langtrace from "@langtrase/typescript-sdk";
-Langtrace.init({
-	api_key: "<YOUR API KEY>",
-	batch: false,
-	api_host: "http://localhost:3000/api/trace",
-});
-````
-</CodeGroup>
+## Self-Hosted Setup
 
 <Note>
-    Here we are using `http://localhost:3000/api/trace` as the API host. You can replace it with your own DNS or IP address.
+  For self-hosted Langtrace installations, you'll need to specify your custom API host.
 </Note>
 
-For more options on how to use SDK, please refer to [features section](/features).
+<CodeGroup>
+  ```typescript TypeScript
+  import * as Langtrace from "@langtrase/typescript-sdk";
+  Langtrace.init({
+    api_key: "<YOUR API KEY>",
+    batch: false,
+    api_host: "http://localhost:3000/api/trace",
+  });
+  ```
+</CodeGroup>
+
+<Card title="Configuration Note">
+  Replace `http://localhost:3000/api/trace` with your own DNS or IP address for self-hosted installations.
+</Card>
+
+<Card title="Next Steps" icon="arrow-right">
+  For more SDK features and options, check out our [features section](/features).
+</Card>
