@@ -1,0 +1,92 @@
+---
+title: "SwarmZero"
+description: "Langtrace and SwarmZero Integration Guide"
+sidebarTitle: "SwarmZero"
+---
+
+SwarmZero provides a platform for developers to build, deploy, and monetize AI agents. It offers an Agent Hub marketplace where developers can create and customize AI agents, while users can discover and utilize these agents for various tasks. The platform supports multiple LLM models and provides tools for creating both individual agents and swarms of collaborative agents.
+
+## Setup
+
+1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+2. Install SwarmZero's SDK:
+```bash
+pip install swarmzero
+```
+3. Use the `langtrace` SDK to capture traces from your SwarmZero app.
+
+## Configuration
+
+1. Create a `.env` file in your project directory and add your OpenAI API key:
+```bash
+OPENAI_API_KEY=your-api-key-here
+```
+
+2. Create a configuration file (e.g., `swarmzero_config.toml`) for your SwarmZero agent:
+```toml
+[agent]
+model = "gpt-3.5-turbo"
+timeout = 15
+environment = "dev"
+```
+
+3. Initialize the SwarmZero agent with Langtrace:
+```python
+from langtrace_python_sdk import langtrace
+from swarmzero import Agent
+from dotenv import load_dotenv
+
+# Initialize Langtrace
+langtrace.init(api_key=os.environ['LANGTRACE_API_KEY'])
+
+# Load environment variables
+load_dotenv()
+
+# Create and run your agent
+my_agent = Agent(
+    name="my_agent",
+    functions=[],
+    instruction="your instructions for this agent's goal",
+    config_path="./swarmzero_config.toml"
+)
+my_agent.run()
+```
+
+## Advanced Features
+
+### Creating Agent Swarms
+SwarmZero allows you to create swarms of collaborative agents:
+
+```python
+from swarmzero.swarm import Swarm
+from swarmzero.agent import Agent
+from swarmzero.sdk_context import SDKContext
+
+# Create individual agents
+agent1 = Agent(name="Research Agent", instruction="Conduct research")
+agent2 = Agent(name="Analysis Agent", instruction="Analyze data")
+
+# Create swarm
+swarm = Swarm(
+    name="Research Team",
+    description="Collaborative research agents",
+    agents=[agent1, agent2]
+)
+```
+
+### Adding Retrievers
+Enable semantic search and document analysis:
+
+```python
+my_agent = Agent(
+    name="retrieve-test",
+    functions=[],
+    retrieve=True,
+    required_exts=['.md'],
+    retrieval_tool='chroma'
+)
+```
+
+![SwarmZero Interface](/images/llm-frameworks/swarmzero.png)
+
+For more detailed information about SwarmZero's features and capabilities, visit their [documentation](https://docs.swarmzero.ai/sdk/agent-kit).
