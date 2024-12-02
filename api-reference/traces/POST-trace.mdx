@@ -71,18 +71,47 @@ curl -X POST 'https://app.langtrace.ai/api/trace' \
               "stringValue": "openai"
             },
             "llm.request.model": {
-              "stringValue": "gpt-3.5-turbo"
+              "stringValue": "gpt-4"
             },
             "llm.request.type": {
               "stringValue": "chat_completion"
             },
             "llm.request.messages": {
-              "stringValue": "[{\"role\":\"user\",\"content\":\"Hello, how are you?\"}]"
+              "stringValue": "[{\"role\":\"user\",\"content\":\"Write a function to calculate fibonacci numbers\"}]"
+            },
+            "llm.tools": {
+              "stringValue": "[{\"type\":\"function\",\"function\":{\"name\":\"calculate_fibonacci\",\"arguments\":\"{\\\"n\\\": 10}\"}}]"
+            },
+            "llm.response.model": {
+              "stringValue": "gpt-4"
             },
             "llm.response.choices": {
-              "stringValue": "[{\"role\":\"assistant\",\"content\":\"I'm doing well, thank you for asking!\"}]"
+              "stringValue": "[{\"role\":\"assistant\",\"content\":{\"name\":\"calculate_fibonacci\",\"arguments\":\"{\\\"n\\\": 10}\"}}]"
+            },
+            "llm.system_fingerprint": {
+              "stringValue": "fp_44709d6fcb"
+            },
+            "llm.usage.prompt_tokens": {
+              "intValue": 127
+            },
+            "llm.usage.completion_tokens": {
+              "intValue": 86
+            },
+            "llm.usage.total_tokens": {
+              "intValue": 213
             }
-          }
+          },
+          "events": [
+            {
+              "name": "completion",
+              "timeUnixNano": "1701555556000000000",
+              "attributes": {
+                "llm.response.choices": {
+                  "stringValue": "[{\"role\":\"assistant\",\"content\":\"Here's a Python function to calculate Fibonacci numbers:\",\"content_filter_results\":{\"hate\":0.01,\"self_harm\":0.01,\"sexual\":0.01,\"violence\":0.01}}]"
+                }
+              }
+            }
+          ]
         }]
       }]
     }]
@@ -118,11 +147,28 @@ payload = {
                 "endTimeUnixNano": "1701555557000000000",
                 "attributes": {
                     "llm.vendor": {"stringValue": "openai"},
-                    "llm.request.model": {"stringValue": "gpt-3.5-turbo"},
+                    "llm.request.model": {"stringValue": "gpt-4"},
                     "llm.request.type": {"stringValue": "chat_completion"},
-                    "llm.request.messages": {"stringValue": json.dumps([{"role": "user", "content": "Hello, how are you?"}])},
-                    "llm.response.choices": {"stringValue": json.dumps([{"role": "assistant", "content": "I'm doing well, thank you for asking!"}])}
-                }
+                    "llm.request.messages": {"stringValue": json.dumps([{"role": "user", "content": "Write a function to calculate fibonacci numbers"}])},
+                    "llm.tools": {"stringValue": json.dumps([{"type": "function", "function": {"name": "calculate_fibonacci", "arguments": "{\"n\": 10}"}}])},
+                    "llm.response.model": {"stringValue": "gpt-4"},
+                    "llm.response.choices": {"stringValue": json.dumps([{"role": "assistant", "content": {"name": "calculate_fibonacci", "arguments": "{\"n\": 10}"}}])},
+                    "llm.system_fingerprint": {"stringValue": "fp_44709d6fcb"},
+                    "llm.usage.prompt_tokens": {"intValue": 127},
+                    "llm.usage.completion_tokens": {"intValue": 86},
+                    "llm.usage.total_tokens": {"intValue": 213}
+                },
+                "events": [
+                    {
+                        "name": "completion",
+                        "timeUnixNano": "1701555556000000000",
+                        "attributes": {
+                            "llm.response.choices": {
+                                "stringValue": json.dumps([{"role": "assistant", "content": "Here's a Python function to calculate Fibonacci numbers:", "content_filter_results": {"hate": 0.01, "self_harm": 0.01, "sexual": 0.01, "violence": 0.01}}])
+                            }
+                        }
+                    }
+                ]
             }]
         }]
     }]

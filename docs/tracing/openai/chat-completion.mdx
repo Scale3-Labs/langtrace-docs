@@ -1,6 +1,6 @@
 # OpenAI Chat Completion Traces
 
-This guide demonstrates how to send OpenAI chat completion traces to Langtrace using the OpenTelemetry format.
+This guide demonstrates how to send OpenAI chat completion traces to Langtrace using the OpenTelemetry format, including streaming responses and function calls.
 
 ## Example Trace
 
@@ -10,7 +10,7 @@ Below is an example of how your traces will appear in the Langtrace UI after suc
 
 ## Trace Format
 
-The trace format follows the OpenTelemetry specification with specific attributes for LLM operations:
+The trace format follows the OpenTelemetry specification with specific attributes for LLM operations. Here's a comprehensive example including function calls and streaming:
 
 ```json
 {
@@ -36,17 +36,38 @@ The trace format follows the OpenTelemetry specification with specific attribute
           "key": "llm.request.model",
           "value": { "stringValue": "gpt-4" }
         }, {
-          "key": "llm.model",
-          "value": { "stringValue": "gpt-4" }
+          "key": "llm.tools",
+          "value": { "stringValue": "[{\"type\":\"function\",\"function\":{\"name\":\"get_weather\",\"arguments\":\"{\\\"location\\\": \\\"London\\\"}\"}}]" }
         }, {
           "key": "llm.request.messages",
-          "value": { "stringValue": "[{\"role\": \"user\", \"content\": \"Hello\"}]" }
+          "value": { "stringValue": "[{\"role\": \"user\", \"content\": \"What's the weather in London?\"}]" }
         }, {
           "key": "llm.response.model",
           "value": { "stringValue": "gpt-4" }
         }, {
           "key": "llm.response.choices",
-          "value": { "stringValue": "[{\"role\": \"assistant\", \"content\": \"Hi there!\"}]" }
+          "value": { "stringValue": "[{\"role\": \"assistant\",\"content\":{\"name\":\"get_weather\",\"arguments\":\"{\\\"location\\\":\\\"London\\\"}\"},\"content_filter_results\":{\"hate\":0.01,\"self_harm\":0.01,\"sexual\":0.01,\"violence\":0.01}}]" }
+        }, {
+          "key": "llm.system_fingerprint",
+          "value": { "stringValue": "fp_44709d6fcb" }
+        }, {
+          "key": "llm.usage.prompt_tokens",
+          "value": { "intValue": 127 }
+        }, {
+          "key": "llm.usage.completion_tokens",
+          "value": { "intValue": 86 }
+        }, {
+          "key": "llm.usage.total_tokens",
+          "value": { "intValue": 213 }
+        }],
+        "events": [{
+          "name": "completion",
+          "timeUnixNano": "1701555556000000000",
+          "attributes": {
+            "llm.response.choices": {
+              "stringValue": "[{\"role\":\"assistant\",\"content\":\"Let me check the weather for you.\"}]"
+            }
+          }
         }]
       }]
     }]
@@ -66,10 +87,35 @@ The trace format follows the OpenTelemetry specification with specific attribute
 |-----------|-------------|
 | llm.vendor | The LLM vendor (e.g., "openai") |
 | llm.request.model | The model requested (e.g., "gpt-4") |
-| llm.model | The model used for the completion |
 | llm.request.messages | Array of chat messages in the request |
 | llm.response.model | The model that processed the request |
 | llm.response.choices | Array of completion choices returned |
+| llm.tools | Array of function or tool definitions (for function/tool calling) |
+| llm.system_fingerprint | System fingerprint for the response |
+| llm.usage.prompt_tokens | Number of tokens in the prompt |
+| llm.usage.completion_tokens | Number of tokens in the completion |
+| llm.usage.total_tokens | Total tokens used in the request |
+
+### Events
+
+Spans can include events for streaming responses and intermediate completions:
+
+| Event Name | Description |
+|------------|-------------|
+| completion | Represents a completion chunk in streaming responses |
+
+### Content Filter Results
+
+Response choices may include content filter results with safety scores:
+
+```json
+"content_filter_results": {
+  "hate": 0.01,
+  "self_harm": 0.01,
+  "sexual": 0.01,
+  "violence": 0.01
+}
+```
 
 ## Example cURL Request
 
@@ -101,17 +147,29 @@ curl -X POST "https://app.langtrace.ai/api/trace" \
             "key": "llm.request.model",
             "value": { "stringValue": "gpt-4" }
           }, {
-            "key": "llm.model",
-            "value": { "stringValue": "gpt-4" }
+            "key": "llm.tools",
+            "value": { "stringValue": "[{\"type\":\"function\",\"function\":{\"name\":\"get_weather\",\"arguments\":\"{\\\"location\\\": \\\"London\\\"}\"}}]" }
           }, {
             "key": "llm.request.messages",
-            "value": { "stringValue": "[{\"role\": \"user\", \"content\": \"Hello\"}]" }
+            "value": { "stringValue": "[{\"role\": \"user\", \"content\": \"What's the weather in London?\"}]" }
           }, {
             "key": "llm.response.model",
             "value": { "stringValue": "gpt-4" }
           }, {
             "key": "llm.response.choices",
-            "value": { "stringValue": "[{\"role\": \"assistant\", \"content\": \"Hi there!\"}]" }
+            "value": { "stringValue": "[{\"role\":\"assistant\",\"content\":{\"name\":\"get_weather\",\"arguments\":\"{\\\"location\\\":\\\"London\\\"}\"},\"content_filter_results\":{\"hate\":0.01,\"self_harm\":0.01,\"sexual\":0.01,\"violence\":0.01}}]" }
+          }, {
+            "key": "llm.system_fingerprint",
+            "value": { "stringValue": "fp_44709d6fcb" }
+          }, {
+            "key": "llm.usage.prompt_tokens",
+            "value": { "intValue": 127 }
+          }, {
+            "key": "llm.usage.completion_tokens",
+            "value": { "intValue": 86 }
+          }, {
+            "key": "llm.usage.total_tokens",
+            "value": { "intValue": 213 }
           }]
         }]
       }]
