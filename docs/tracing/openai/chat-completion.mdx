@@ -1,0 +1,122 @@
+# OpenAI Chat Completion Traces
+
+This guide demonstrates how to send OpenAI chat completion traces to Langtrace using the OpenTelemetry format.
+
+## Example Trace
+
+Below is an example of how your traces will appear in the Langtrace UI after successful ingestion. Note that important fields like the model (gpt-4), vendor (openai), and completion status are clearly visible:
+
+![OpenAI Chat Completion Trace](/images/tracing/openai/chat-completion-trace.png)
+
+## Trace Format
+
+The trace format follows the OpenTelemetry specification with specific attributes for LLM operations:
+
+```json
+{
+  "resourceSpans": [{
+    "resource": {
+      "attributes": [{
+        "key": "service.name",
+        "value": { "stringValue": "your-service-name" }
+      }]
+    },
+    "scopeSpans": [{
+      "scope": {
+        "name": "openai",
+        "version": "1.0.0"
+      },
+      "spans": [{
+        "name": "OpenAI ChatCompletion",
+        "kind": 2,
+        "attributes": [{
+          "key": "llm.vendor",
+          "value": { "stringValue": "openai" }
+        }, {
+          "key": "llm.request.model",
+          "value": { "stringValue": "gpt-4" }
+        }, {
+          "key": "llm.model",
+          "value": { "stringValue": "gpt-4" }
+        }, {
+          "key": "llm.request.messages",
+          "value": { "stringValue": "[{\"role\": \"user\", \"content\": \"Hello\"}]" }
+        }, {
+          "key": "llm.response.model",
+          "value": { "stringValue": "gpt-4" }
+        }, {
+          "key": "llm.response.choices",
+          "value": { "stringValue": "[{\"role\": \"assistant\", \"content\": \"Hi there!\"}]" }
+        }]
+      }]
+    }]
+  }]
+}
+```
+
+### Required Headers
+
+- `Content-Type: application/json`
+- `x-api-key: your-langtrace-api-key`
+- `User-Agent: opentelemetry-python`
+
+### Required Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| llm.vendor | The LLM vendor (e.g., "openai") |
+| llm.request.model | The model requested (e.g., "gpt-4") |
+| llm.model | The model used for the completion |
+| llm.request.messages | Array of chat messages in the request |
+| llm.response.model | The model that processed the request |
+| llm.response.choices | Array of completion choices returned |
+
+## Example cURL Request
+
+```bash
+curl -X POST "https://app.langtrace.ai/api/trace" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: your-langtrace-api-key" \
+  -H "User-Agent: opentelemetry-python" \
+  -d '{
+    "resourceSpans": [{
+      "resource": {
+        "attributes": [{
+          "key": "service.name",
+          "value": { "stringValue": "openai-test" }
+        }]
+      },
+      "scopeSpans": [{
+        "scope": {
+          "name": "openai",
+          "version": "1.0.0"
+        },
+        "spans": [{
+          "name": "OpenAI ChatCompletion",
+          "kind": 2,
+          "attributes": [{
+            "key": "llm.vendor",
+            "value": { "stringValue": "openai" }
+          }, {
+            "key": "llm.request.model",
+            "value": { "stringValue": "gpt-4" }
+          }, {
+            "key": "llm.model",
+            "value": { "stringValue": "gpt-4" }
+          }, {
+            "key": "llm.request.messages",
+            "value": { "stringValue": "[{\"role\": \"user\", \"content\": \"Hello\"}]" }
+          }, {
+            "key": "llm.response.model",
+            "value": { "stringValue": "gpt-4" }
+          }, {
+            "key": "llm.response.choices",
+            "value": { "stringValue": "[{\"role\": \"assistant\", \"content\": \"Hi there!\"}]" }
+          }]
+        }]
+      }]
+    }]
+  }'
+```
+
+For local development, use `http://localhost:3000/api/trace` as the endpoint.
