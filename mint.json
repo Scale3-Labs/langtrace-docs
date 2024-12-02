@@ -137,6 +137,7 @@
             "supported-integrations/llm-tools/azure-openai",
             "supported-integrations/llm-tools/cerebras",
             "supported-integrations/llm-tools/cohere",
+            "supported-integrations/llm-tools/deepseek",
             "supported-integrations/llm-tools/gemini",
             "supported-integrations/llm-tools/groq",
             "supported-integrations/llm-tools/mistral-ai",
