@@ -1,0 +1,174 @@
+---
+title: "Send Trace"
+api: "POST /api/trace"
+description: "Send OpenTelemetry-compatible traces to Langtrace"
+---
+
+Send traces to Langtrace using the OpenTelemetry trace format. This endpoint accepts traces for various operations including OpenAI chat completions, function calls, and other LLM interactions.
+
+### Headers
+
+<ParamField header="x-api-key" type="string" required>
+  Your Langtrace API key
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`
+</ParamField>
+
+<ParamField header="User-Agent" type="string" required>
+  Must be `opentelemetry-python`
+</ParamField>
+
+### Body
+
+<ParamField body="resourceSpans" type="array" required>
+  Array of resource spans containing trace data
+</ParamField>
+
+<ParamField body="resourceSpans[].resource.attributes" type="object" required>
+  Resource attributes identifying the service and environment
+</ParamField>
+
+<ParamField body="resourceSpans[].scopeSpans" type="array" required>
+  Array of scope spans containing individual operation traces
+</ParamField>
+
+<ParamField body="resourceSpans[].scopeSpans[].spans" type="array" required>
+  Array of spans representing individual operations
+</ParamField>
+
+### Request Example for OpenAI Chat Completion
+
+<RequestExample>
+```bash cURL
+curl -X POST 'https://app.langtrace.ai/api/trace' \
+  -H 'Content-Type: application/json' \
+  -H 'User-Agent: opentelemetry-python' \
+  -H 'x-api-key: <LANGTRACE_API_KEY>' \
+  --data-raw '{
+    "resourceSpans": [{
+      "resource": {
+        "attributes": {
+          "service.name": {
+            "stringValue": "my-ai-service"
+          },
+          "service.version": {
+            "stringValue": "1.0.0"
+          }
+        }
+      },
+      "scopeSpans": [{
+        "spans": [{
+          "traceId": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+          "spanId": "1234567890abcdef",
+          "name": "OpenAI ChatCompletion",
+          "kind": 1,
+          "startTimeUnixNano": "1701555555000000000",
+          "endTimeUnixNano": "1701555557000000000",
+          "attributes": {
+            "llm.vendor": {
+              "stringValue": "openai"
+            },
+            "llm.request.model": {
+              "stringValue": "gpt-3.5-turbo"
+            },
+            "llm.request.type": {
+              "stringValue": "chat_completion"
+            },
+            "llm.request.messages": {
+              "stringValue": "[{\"role\":\"user\",\"content\":\"Hello, how are you?\"}]"
+            },
+            "llm.response.choices": {
+              "stringValue": "[{\"role\":\"assistant\",\"content\":\"I'm doing well, thank you for asking!\"}]"
+            }
+          }
+        }]
+      }]
+    }]
+  }'
+```
+
+```python Python
+import json
+import requests
+
+url = 'https://app.langtrace.ai/api/trace'
+headers = {
+    'Content-Type': 'application/json',
+    'User-Agent': 'opentelemetry-python',
+    'x-api-key': '<LANGTRACE_API_KEY>'
+}
+
+payload = {
+    "resourceSpans": [{
+        "resource": {
+            "attributes": {
+                "service.name": {"stringValue": "my-ai-service"},
+                "service.version": {"stringValue": "1.0.0"}
+            }
+        },
+        "scopeSpans": [{
+            "spans": [{
+                "traceId": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+                "spanId": "1234567890abcdef",
+                "name": "OpenAI ChatCompletion",
+                "kind": 1,
+                "startTimeUnixNano": "1701555555000000000",
+                "endTimeUnixNano": "1701555557000000000",
+                "attributes": {
+                    "llm.vendor": {"stringValue": "openai"},
+                    "llm.request.model": {"stringValue": "gpt-3.5-turbo"},
+                    "llm.request.type": {"stringValue": "chat_completion"},
+                    "llm.request.messages": {"stringValue": json.dumps([{"role": "user", "content": "Hello, how are you?"}])},
+                    "llm.response.choices": {"stringValue": json.dumps([{"role": "assistant", "content": "I'm doing well, thank you for asking!"}])}
+                }
+            }]
+        }]
+    }]
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+</RequestExample>
+
+### Response
+
+<ResponseField name="status" type="number">
+  HTTP status code (200 for success)
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<ResponseExample>
+```json Success Response
+{
+  "status": 200,
+  "message": "Traces received successfully"
+}
+```
+
+```json Error Response (Invalid API Key)
+{
+  "status": 401,
+  "message": "Invalid API key"
+}
+```
+</ResponseExample>
+
+### Error Codes
+
+<ResponseField name="401" type="string">
+  Invalid or missing API key
+</ResponseField>
+
+<ResponseField name="400" type="string">
+  Invalid request format or missing required fields
+</ResponseField>
+
+<ResponseField name="500" type="string">
+  Internal server error
+</ResponseField>

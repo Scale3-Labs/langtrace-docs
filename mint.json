@@ -198,7 +198,8 @@
         {
           "group": "Traces API",
           "pages": [
-            "api-reference/traces/POST-traces"
+            "api-reference/traces/POST-traces",
+            "api-reference/traces/POST-trace"
           ]
         }
       ]
