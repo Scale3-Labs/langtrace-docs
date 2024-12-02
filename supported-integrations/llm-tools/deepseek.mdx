@@ -1,0 +1,110 @@
+---
+title: "DeepSeek"
+description: "Learn how to integrate Langtrace with DeepSeek's family of models"
+---
+
+## Introduction
+
+Langtrace provides native support for DeepSeek's family of models. When using DeepSeek models, Langtrace automatically captures essential metrics including:
+- Token usage
+- Cost
+- Latency
+- Model hyperparameters
+
+## Prerequisites
+
+Before integrating DeepSeek with Langtrace, ensure you have:
+- A Langtrace account with an API key
+- DeepSeek API credentials
+- Python environment (3.6 or later)
+
+## Installation
+
+1. Install the Langtrace Python SDK:
+
+```bash
+pip install -U langtrace-python-sdk
+```
+
+2. Set up your environment variables:
+
+```bash
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+```
+
+## Integration
+
+Initialize Langtrace before importing any LLM modules:
+
+<CodeGroup>
+```python Python
+import os
+from langtrace_python_sdk import langtrace  # Must precede any llm module imports
+from openai import OpenAI
+
+# Initialize Langtrace
+langtrace.init(api_key=os.environ['LANGTRACE_API_KEY'])
+
+# Initialize DeepSeek client
+client = OpenAI(
+    api_key="<DeepSeek API Key>",
+    base_url="https://api.deepseek.com"
+)
+
+# Example: Create a chat completion
+response = client.chat.completions.create(
+    model="deepseek-chat",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant"},
+        {"role": "user", "content": "Hello"},
+    ],
+    stream=False
+)
+
+print(response.choices[0].message.content)
+```
+
+```typescript TypeScript
+import * as Langtrace from "@langtrase/typescript-sdk";
+import OpenAI from 'openai';
+
+// Initialize Langtrace
+Langtrace.init({
+    api_key: process.env.LANGTRACE_API_KEY
+});
+
+// Initialize DeepSeek client
+const client = new OpenAI({
+    apiKey: "<DeepSeek API Key>",
+    baseURL: "https://api.deepseek.com"
+});
+
+// Example: Create a chat completion
+async function chatWithDeepSeek() {
+    const response = await client.chat.completions.create({
+        model: "deepseek-chat",
+        messages: [
+            { role: "system", content: "You are a helpful assistant" },
+            { role: "user", content: "Hello" }
+        ],
+        stream: false
+    });
+
+    console.log(response.choices[0].message.content);
+}
+```
+</CodeGroup>
+
+## Viewing Traces
+
+After integration, you can view your DeepSeek model traces in the Langtrace dashboard. The traces will include:
+- Request/response payloads
+- Token usage metrics
+- Cost information
+- Latency measurements
+- Model configuration details
+
+## Additional Resources
+
+- [Langtrace Documentation](https://docs.langtrace.ai/introduction)
+- [DeepSeek API Documentation](https://platform.deepseek.com/docs)
