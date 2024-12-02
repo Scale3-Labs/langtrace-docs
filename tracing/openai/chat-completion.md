@@ -2,6 +2,10 @@
 
 This guide explains how to send OpenTelemetry-compatible traces for OpenAI chat completions to Langtrace using cURL.
 
+Here's an example of how your traces will appear in the Langtrace UI after following this guide:
+
+![OpenAI Chat Completion Trace Example](/images/tracing/openai/chat-completion-trace.png)
+
 ## Prerequisites
 
 - Langtrace API Key
