@@ -82,7 +82,45 @@ curl -X POST 'https://app.langtrace.ai/api/trace' \
             "llm.response.choices": {
               "stringValue": "[{\"role\":\"assistant\",\"content\":\"I'm doing well, thank you for asking!\"}]"
             }
-          }
+          },
+          "events": [
+            {
+              "name": "token_stream",
+              "timeUnixNano": "1701555556000000000",
+              "attributes": {
+                "llm.token.text": {
+                  "stringValue": "I'm"
+                },
+                "llm.token.index": {
+                  "intValue": 0
+                }
+              }
+            },
+            {
+              "name": "token_stream",
+              "timeUnixNano": "1701555556200000000",
+              "attributes": {
+                "llm.token.text": {
+                  "stringValue": " doing"
+                },
+                "llm.token.index": {
+                  "intValue": 1
+                }
+              }
+            },
+            {
+              "name": "function_call",
+              "timeUnixNano": "1701555556500000000",
+              "attributes": {
+                "llm.function.name": {
+                  "stringValue": "get_current_weather"
+                },
+                "llm.function.arguments": {
+                  "stringValue": "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}"
+                }
+              }
+            }
+          ]
         }]
       }]
     }]
@@ -122,7 +160,33 @@ payload = {
                     "llm.request.type": {"stringValue": "chat_completion"},
                     "llm.request.messages": {"stringValue": json.dumps([{"role": "user", "content": "Hello, how are you?"}])},
                     "llm.response.choices": {"stringValue": json.dumps([{"role": "assistant", "content": "I'm doing well, thank you for asking!"}])}
-                }
+                },
+                "events": [
+                    {
+                        "name": "token_stream",
+                        "timeUnixNano": "1701555556000000000",
+                        "attributes": {
+                            "llm.token.text": {"stringValue": "I'm"},
+                            "llm.token.index": {"intValue": 0}
+                        }
+                    },
+                    {
+                        "name": "token_stream",
+                        "timeUnixNano": "1701555556200000000",
+                        "attributes": {
+                            "llm.token.text": {"stringValue": " doing"},
+                            "llm.token.index": {"intValue": 1}
+                        }
+                    },
+                    {
+                        "name": "function_call",
+                        "timeUnixNano": "1701555556500000000",
+                        "attributes": {
+                            "llm.function.name": {"stringValue": "get_current_weather"},
+                            "llm.function.arguments": {"stringValue": "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}"}
+                        }
+                    }
+                ]
             }]
         }]
     }]
@@ -132,6 +196,42 @@ response = requests.post(url, headers=headers, json=payload)
 print(response.json())
 ```
 </RequestExample>
+
+### Span Events
+
+The trace endpoint supports capturing detailed events within spans for chat completions:
+
+<ParamField body="resourceSpans[].scopeSpans[].spans[].events" type="array">
+  Array of events that occurred during the span
+</ParamField>
+
+<ParamField body="resourceSpans[].scopeSpans[].spans[].events[].name" type="string" required>
+  Name of the event (e.g., "token_stream", "function_call")
+</ParamField>
+
+<ParamField body="resourceSpans[].scopeSpans[].spans[].events[].timeUnixNano" type="string" required>
+  Timestamp of the event in Unix nanoseconds
+</ParamField>
+
+<ParamField body="resourceSpans[].scopeSpans[].spans[].events[].attributes" type="object" required>
+  Attributes specific to the event type
+</ParamField>
+
+#### Event Types
+
+**Token Stream Events**
+- name: "token_stream"
+- attributes:
+  - llm.token.text: Text content of the token
+  - llm.token.index: Position in the response sequence
+  - llm.token.logprob: Token log probability (optional)
+
+**Function Call Events**
+- name: "function_call"
+- attributes:
+  - llm.function.name: Name of the called function
+  - llm.function.arguments: JSON string of function arguments
+  - llm.function.response: Function response (optional)
 
 ### Response
 

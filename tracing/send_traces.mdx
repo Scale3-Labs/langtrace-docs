@@ -62,9 +62,9 @@ Once the SDK is initialized, Langtrace will automatically capture traces from su
 
 ### Example: Sending Traces from an OpenAI Application
 
-Here's an example of how to send traces from an LLM application using the OpenAI API. This example demonstrates how to use the Langtrace SDK to send traces from an OpenAI completion request.
+Here's an example of how to send traces from an LLM application using the OpenAI API. This example demonstrates how to use the Langtrace SDK to send traces from an OpenAI completion request, including span events that capture detailed response information.
 
-<Info> 
+<Info>
 Make Sure to pip or npm install the required packages before running the code.
 
 ```bash
@@ -81,7 +81,6 @@ npm install @langtrase/typescript-sdk openai
 
 ```python Python
 from langtrace_python_sdk import langtrace, with_langtrace_root_span
-
 from openai import OpenAI
 
 langtrace.init(
@@ -89,17 +88,47 @@ langtrace.init(
 
 @with_langtrace_root_span()
 def example():
-  client = OpenAI()
-  response = client.chat.completions.create(
-      model="gpt-3.5-turbo",
-      messages=[
-          {
-              "role": "system",
-              "content": "How many states of matter are there?"
-          }
-      ],
-  )
-  print(response.choices[0].message.content)
+    client = OpenAI()
+    # Enable stream to capture token-by-token events
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that can also check the weather."
+            },
+            {
+                "role": "user",
+                "content": "What's the weather like in San Francisco?"
+            }
+        ],
+        stream=True,  # Enable streaming for token events
+        functions=[{  # Define functions to demonstrate function calling
+            "name": "get_current_weather",
+            "description": "Get the current weather in a given location",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "The city and state, e.g. San Francisco, CA"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "enum": ["celsius", "fahrenheit"]
+                    }
+                },
+                "required": ["location"]
+            }
+        }]
+    )
+
+    # Process streamed response
+    for chunk in response:
+        if chunk.choices[0].delta.content:
+            print(chunk.choices[0].delta.content, end="")
+        if chunk.choices[0].delta.function_call:
+            print(f"\nFunction Call: {chunk.choices[0].delta.function_call}")
 
 example()
 ```
@@ -107,22 +136,86 @@ example()
 ```javascript Javascript
 import * as Langtrace from "@langtrase/typescript-sdk";
 import OpenAI from "openai";
+
 Langtrace.init({
   api_key: "<YOUR API KEY>",
 });
+
 const openai = new OpenAI();
 
 async function example() {
-  const completion = await openai.chat.completions.create({
+  const stream = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
       {
         role: "system",
-        content: "How many states of matter are there?",
+        content: "You are a helpful assistant that can also check the weather.",
+      },
+      {
+        role: "user",
+        content: "What's the weather like in San Francisco?",
       },
     ],
+    stream: true,  // Enable streaming for token events
+    functions: [{  // Define functions to demonstrate function calling
+      name: "get_current_weather",
+      description: "Get the current weather in a given location",
+      parameters: {
+        type: "object",
+        properties: {
+          location: {
+            type: "string",
+            description: "The city and state, e.g. San Francisco, CA",
+          },
+          unit: {
+            type: "string",
+            enum: ["celsius", "fahrenheit"],
+          },
+        },
+        required: ["location"],
+      },
+    }],
   });
-  console.log(completion.choices[0]);
+
+  // Process streamed response
+  for await (const chunk of stream) {
+    if (chunk.choices[0].delta.content) {
+      process.stdout.write(chunk.choices[0].delta.content);
+    }
+    if (chunk.choices[0].delta.function_call) {
+      console.log("\nFunction Call:", chunk.choices[0].delta.function_call);
+    }
+  }
+}
+
+example().then(() => {
+  console.log("\nDone");
+});
+        type: "object",
+        properties: {
+          location: {
+            type: "string",
+            description: "The city and state, e.g. San Francisco, CA"
+          },
+          unit: {
+            type: "string",
+            enum: ["celsius", "fahrenheit"]
+          }
+        },
+        required: ["location"]
+      }
+    }]
+  });
+
+  // Process streamed response
+  for (const chunk of completion) {
+    if (chunk.choices[0].delta.content) {
+      process.stdout.write(chunk.choices[0].delta.content);
+    }
+    if (chunk.choices[0].delta.function_call) {
+      console.log(`\nFunction Call: ${chunk.choices[0].delta.function_call}`);
+    }
+  }
 }
 
 example().then(() => {
