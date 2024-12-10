@@ -5,37 +5,86 @@ description: "Langtrace and Elastic APM Integration Guide"
 
 ## Overview
 
-Elastic APM is a powerful solution for monitoring the performance of your applications. As Elastic APM is OpenTelemetry (OTel) compatible by default, you will only need to set the following environment variables to start tracing.
-![Elastic](/images/elasticapm2.png)
+Elastic APM is a powerful solution for monitoring the performance of your applications. As Elastic APM is OpenTelemetry (OTel) compatible by default, you can easily integrate it with Langtrace to monitor your LLM applications.
 
-<Note>
-  We Support all opentelemetry environment variables as well e.g:
-  `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_EXPORTER_OTLP_HEADERS`.
-</Note>
+## Environment Variables
+
+Set up the following environment variables to enable OpenTelemetry tracing and send traces to Elastic APM:
 
 ```bash
-export LANGTRACE_API_HOST="<https://your-elastic-apm-endpoint:443/v1/traces>"
-export LANGTRACE_HEADERS="Authorization=Bearer your-elastic-apm-token"
-export OTEL_SERVICE_NAME=your-elastic-service
+export OTEL_EXPORTER_OTLP_ENDPOINT="abcd1234.apm.us-central1.gcp.cloud.es.io:443"  # Your Elastic OTEL endpoint
+export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer <secret>"
+export OTEL_RESOURCE_ATTRIBUTES="service.name=rag-app-demo,service.version=0.0.1,deployment.environment=production"
 ```
 
-### Initialize the Langtrace SDK
+<Note>
+  We support all OpenTelemetry environment variables. You can also use the legacy format:
+  ```bash
+  export LANGTRACE_API_HOST="<https://your-elastic-apm-endpoint:443/v1/traces>"
+  export LANGTRACE_HEADERS="Authorization=Bearer your-elastic-apm-token"
+  export OTEL_SERVICE_NAME=your-elastic-service
+  ```
+</Note>
+
+## RAG Application Example
+
+Here's an example of monitoring a Retrieval-Augmented Generation (RAG) chatbot application that uses Elastic Search for document search and Azure OpenAI for generating responses.
+
+### Initialize Langtrace
 
 ```python
 from langtrace_python_sdk import langtrace
 langtrace.init()
 
-# rest of your code
+# Rest of your application code
 ```
 
-# **Troubleshooting**
+### Configure Azure OpenAI (if using)
+
+Set up the necessary Azure OpenAI environment variables:
+
+```bash
+export LLM_TYPE=azure
+export OPENAI_VERSION=<version>       # e.g., 2023-05-15
+export OPENAI_BASE_URL=<base_url>     # Azure OpenAI endpoint URL
+export OPENAI_API_KEY=<api_key>       # Azure OpenAI API key
+export OPENAI_ENGINE=<deployment_name> # Azure deployment name
+```
+
+### Monitoring in Elastic APM
+
+After setting up your application, you can monitor your RAG application's performance in the Elastic APM dashboard:
+
+![Elastic APM Dashboard Overview](/images/elastic/dashboard1.png)
+
+The dashboard provides detailed insights into your application's traces:
+
+![Elastic APM Trace Details](/images/elastic/dashboard2.png)
+
+You can analyze specific spans and their relationships:
+
+![Elastic APM Span Analysis](/images/elastic/dashboard3.png)
+
+Use these traces for:
+- Debugging issues
+- Performance monitoring
+- System optimization
+- Understanding user interactions
+
+## Troubleshooting
 
 • **Traces not visible in Elastic APM**:
+- Ensure that all required environment variables are set correctly
+- Verify your `OTEL_EXPORTER_OTLP_ENDPOINT` or `LANGTRACE_API_HOST` includes `/v1/traces` at the end
+- Check if your authentication token is valid and properly formatted
+- Verify your service name is correctly set in `OTEL_RESOURCE_ATTRIBUTES`
 
-- Ensure that all required environment variables are set correctly. Double-check the variable names and values.
-- Also ensure that your `LANGTRACE_API_HOST` or `OTEL_EXPORTER_OTLP_ENDPOINT` is correct. You need to add `/v1/traces` at the end of your endpoint.
+• **Missing spans or incomplete traces**:
+- Ensure Langtrace is initialized before any LLM operations
+- Check if all required dependencies are installed
+- Verify your application has proper permissions to send traces
 
-**Additional Resources**
+## Additional Resources
 
 - [Elastic APM Documentation](https://www.elastic.co/guide/en/apm/get-started/current/quick-start-overview.html)
 - [Elastic Observability Documentation](https://www.elastic.co/guide/en/observability/current/index.html)

@@ -10,17 +10,45 @@ SigNoz is an open-source observability platform that helps developers monitor th
 1. Install langtrace's SDK and [initialize](/quickstart) the SDK in your code.
 2. Sign up and start visualizing the traces on [SigNoz](https://signoz.io/)
 
-## Example
+## Environment Variables
 
-Here's a quick experiment for a FastAPI based RAG endpoint built using LangChain.
+Set up the following environment variables to enable OpenTelemetry tracing and send traces to SigNoz:
 
-You can find the sample code in this link:
-https://gist.github.com/karthikscale3/c13a5b7c53820ee297badd3acaa26d58
+```bash
+OTEL_EXPORTER_OTLP_ENDPOINT="ingest.us.signoz.cloud:443"
+OTEL_EXPORTER_OTLP_HEADERS="signoz-access-token=<token>"
+OTEL_RESOURCE_ATTRIBUTES=service.name="rag chatbot"
+OTEL_EXPORTER_OTLP_PROTOCOL="grpc"
+```
 
-### Steps:
+Replace `<token>` with your SigNoz access token.
 
-1. Get the SigNoz OTLP endpoint and OTLP header to start sending traces to SigNoz cloud
-2. Run the server with the following code.
+## RAG Application Example
+
+Here's an example of monitoring a Retrieval-Augmented Generation (RAG) chatbot application that uses Elastic Search for document search and Azure OpenAI for generating responses.
+
+### Initialize Langtrace
+
+```python
+from langtrace_python_sdk import langtrace
+langtrace.init()
+```
+
+### Configure Azure OpenAI (if using)
+
+Set up the necessary Azure OpenAI environment variables:
+
+```bash
+export LLM_TYPE=azure
+export OPENAI_VERSION=<version>       # e.g., 2023-05-15
+export OPENAI_BASE_URL=<base_url>     # Azure OpenAI endpoint URL
+export OPENAI_API_KEY=<api_key>       # Azure OpenAI API key
+export OPENAI_ENGINE=<deployment_name> # Azure deployment name
+```
+
+### Running Your Application
+
+For a Flask application, use the OpenTelemetry instrumentation:
 
 ```bash
 OTEL_RESOURCE_ATTRIBUTES=service.name=Langtrace \
@@ -29,5 +57,31 @@ OTEL_EXPORTER_OTLP_HEADERS="<SIGNOZ_OTLP_HEADER>" \
 OTEL_EXPORTER_OTLP_PROTOCOL=grpc \
 opentelemetry-instrument uvicorn main:app
 ```
+
+### Monitoring in SigNoz
+
+After setting up your application, you can monitor your RAG application's performance in the SigNoz dashboard:
+
+![SigNoz Dashboard Overview](/images/signoz/dashboard1.png)
+
+The dashboard provides detailed insights into your application's traces:
+
+![SigNoz Trace Details](/images/signoz/dashboard2.png)
+
+You can analyze specific spans and their relationships:
+
+![SigNoz Span Analysis](/images/signoz/dashboard3.png)
+
+Use these traces for:
+- Debugging issues
+- Performance monitoring
+- System optimization
+- Understanding user interactions
+
+## Troubleshooting
+
+- **No traces visible**: Verify your SigNoz endpoint and token are correct
+- **Missing spans**: Ensure Langtrace is properly initialized before any LLM operations
+- **Connection issues**: Check if your OTLP endpoint is accessible from your application
 
 That's it! ✨ 🧙‍♂️ Enjoy the high cardinality traces on SigNoz.
