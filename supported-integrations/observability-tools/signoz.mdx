@@ -60,17 +60,35 @@ opentelemetry-instrument uvicorn main:app
 
 ### Monitoring in SigNoz
 
-After setting up your application, you can monitor your RAG application's performance in the SigNoz dashboard:
+After setting up your application, you can monitor your RAG application's performance in the SigNoz dashboard. The dashboard provides comprehensive visibility into your application's behavior:
 
-![SigNoz Dashboard Overview](/images/signoz/dashboard1.png)
+![SigNoz Dashboard Overview](/images/signoz/new/dashboard1.png)
 
-The dashboard provides detailed insights into your application's traces:
+The main dashboard shows key metrics including:
+- Request rates and latency
+- Error rates and distribution
+- Resource utilization patterns
+- Service dependencies
 
-![SigNoz Trace Details](/images/signoz/dashboard2.png)
+Diving deeper into specific traces reveals detailed execution flows:
 
-You can analyze specific spans and their relationships:
+![SigNoz Trace Details](/images/signoz/new/dashboard2.png)
 
-![SigNoz Span Analysis](/images/signoz/dashboard3.png)
+The trace view helps you:
+- Track request propagation
+- Identify bottlenecks
+- Measure component-wise latency
+- Debug error scenarios
+
+For granular analysis, you can examine individual spans:
+
+![SigNoz Span Analysis](/images/signoz/new/dashboard3.png)
+
+The span view provides:
+- Detailed timing information
+- Input/output parameters
+- Error messages and stack traces
+- Custom attributes and tags
 
 Use these traces for:
 - Debugging issues

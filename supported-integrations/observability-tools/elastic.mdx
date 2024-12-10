@@ -53,17 +53,35 @@ export OPENAI_ENGINE=<deployment_name> # Azure deployment name
 
 ### Monitoring in Elastic APM
 
-After setting up your application, you can monitor your RAG application's performance in the Elastic APM dashboard:
+After setting up your application, you can monitor your RAG application's performance in the Elastic APM dashboard. The interface provides deep insights into your application's behavior:
 
-![Elastic APM Dashboard Overview](/images/elastic/dashboard1.png)
+![Elastic APM Dashboard Overview](/images/elastic/new/dashboard1.png)
 
-The dashboard provides detailed insights into your application's traces:
+The main dashboard displays:
+- Service health metrics
+- Transaction throughput
+- Error rates and patterns
+- Infrastructure metrics
 
-![Elastic APM Trace Details](/images/elastic/dashboard2.png)
+Detailed trace analysis reveals the complete request journey:
 
-You can analyze specific spans and their relationships:
+![Elastic APM Trace Details](/images/elastic/new/dashboard2.png)
 
-![Elastic APM Span Analysis](/images/elastic/dashboard3.png)
+The trace view enables you to:
+- Track request flows
+- Measure operation durations
+- Identify performance bottlenecks
+- Monitor error propagation
+
+For detailed span inspection:
+
+![Elastic APM Span Analysis](/images/elastic/new/dashboard3.png)
+
+The span analysis shows:
+- Precise timing measurements
+- Request/response payloads
+- Error context and details
+- Custom metadata and annotations
 
 Use these traces for:
 - Debugging issues
