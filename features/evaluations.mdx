@@ -80,7 +80,7 @@ inspect eval example_eval.py --model anthropic/claude-3-5-sonnet-20240620 --log-
 inspect eval example_eval.py --model ollama/llama3.1 --log-dir langtracefs://<datasetId>
 ```
 
-**Note**: In order to run the command above you will need to add your API keys for the models you are running the generations against.
+**Note**: In order to run the command above you will need to add your API keys for the models you are running the generations against. Additionally, set the `INSPECT_LOG_FORMAT=json` environment variable before running the inspect command to ensure outputs are generated in JSON format and properly uploaded to Langtrace for reporting.
 
 7. Once the evaluations are complete, you can view the results in the Langtrace dashboard by going to the evaluations page inside the dataset you ran the evaluations on.
 
