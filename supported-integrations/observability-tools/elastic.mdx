@@ -36,31 +36,6 @@ After setting up your application, you can monitor your RAG application's perfor
 
 ![Elastic APM Dashboard Overview](/images/elastic/new/dashboard1.png)
 
-The main dashboard displays:
-- Service health metrics
-- Transaction throughput
-- Error rates and patterns
-- Infrastructure metrics
-
-Use these traces for:
-- Debugging issues
-- Performance monitoring
-- System optimization
-- Understanding user interactions
-
-## Troubleshooting
-
-• **Traces not visible in Elastic APM**:
-- Ensure that all required environment variables are set correctly
-- Verify your `OTEL_EXPORTER_OTLP_ENDPOINT` or `LANGTRACE_API_HOST` includes `/v1/traces` at the end
-- Check if your authentication token is valid and properly formatted
-- Verify your service name is correctly set in `OTEL_RESOURCE_ATTRIBUTES`
-
-• **Missing spans or incomplete traces**:
-- Ensure Langtrace is initialized before any LLM operations
-- Check if all required dependencies are installed
-- Verify your application has proper permissions to send traces
-
 ## Additional Resources
 
 - [Elastic APM Documentation](https://www.elastic.co/guide/en/apm/get-started/current/quick-start-overview.html)
