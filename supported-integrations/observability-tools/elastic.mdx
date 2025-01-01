@@ -12,7 +12,7 @@ Elastic APM is a powerful solution for monitoring the performance of your applic
 Set up the following environment variables to enable OpenTelemetry tracing and send traces to Elastic APM:
 
 ```bash
-export OTEL_EXPORTER_OTLP_ENDPOINT="abcd1234.apm.us-central1.gcp.cloud.es.io:443"  # Your Elastic OTEL endpoint
+export OTEL_EXPORTER_OTLP_ENDPOINT="https://abcd1234.apm.us-central1.gcp.cloud.es.io:443"  # Your Elastic OTEL endpoint
 export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer <secret>"
 export OTEL_RESOURCE_ATTRIBUTES="service.name=rag-app-demo,service.version=0.0.1,deployment.environment=production"
 ```
@@ -26,32 +26,11 @@ export OTEL_RESOURCE_ATTRIBUTES="service.name=rag-app-demo,service.version=0.0.1
   ```
 </Note>
 
-## RAG Application Example
+<Note>
+  For the `OTEL_EXPORTER_OTLP_PROTOCOL`, both `grpc` and `http` protocols are supported. Choose the one that best fits your infrastructure setup.
+</Note>
 
-Here's an example of monitoring a Retrieval-Augmented Generation (RAG) chatbot application that uses Elastic Search for document search and Azure OpenAI for generating responses.
-
-### Initialize Langtrace
-
-```python
-from langtrace_python_sdk import langtrace
-langtrace.init()
-
-# Rest of your application code
-```
-
-### Configure Azure OpenAI (if using)
-
-Set up the necessary Azure OpenAI environment variables:
-
-```bash
-export LLM_TYPE=azure
-export OPENAI_VERSION=<version>       # e.g., 2023-05-15
-export OPENAI_BASE_URL=<base_url>     # Azure OpenAI endpoint URL
-export OPENAI_API_KEY=<api_key>       # Azure OpenAI API key
-export OPENAI_ENGINE=<deployment_name> # Azure deployment name
-```
-
-### Monitoring in Elastic APM
+## Monitoring in Elastic APM
 
 After setting up your application, you can monitor your RAG application's performance in the Elastic APM dashboard. The interface provides deep insights into your application's behavior:
 
@@ -62,26 +41,6 @@ The main dashboard displays:
 - Transaction throughput
 - Error rates and patterns
 - Infrastructure metrics
-
-Detailed trace analysis reveals the complete request journey:
-
-![Elastic APM Trace Details](/images/elastic/new/dashboard2.png)
-
-The trace view enables you to:
-- Track request flows
-- Measure operation durations
-- Identify performance bottlenecks
-- Monitor error propagation
-
-For detailed span inspection:
-
-![Elastic APM Span Analysis](/images/elastic/new/dashboard3.png)
-
-The span analysis shows:
-- Precise timing measurements
-- Request/response payloads
-- Error context and details
-- Custom metadata and annotations
 
 Use these traces for:
 - Debugging issues
