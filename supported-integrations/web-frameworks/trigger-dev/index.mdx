@@ -1,0 +1,64 @@
+---
+title: "Trigger.dev Integration"
+description: "Learn how to integrate Langtrace with Trigger.dev for task orchestration and monitoring"
+---
+
+# Trigger.dev Integration
+
+[Trigger.dev](https://trigger.dev) is a developer-first open source background jobs framework. This guide will help you integrate Langtrace with your Trigger.dev tasks for comprehensive LLM observability.
+
+## Getting Started
+
+To get started with Trigger.dev, follow their [Quick Start Guide](https://trigger.dev/docs/quick-start). Once you have Trigger.dev set up, you can integrate it with Langtrace.
+
+## Basic Integration
+
+Here's a basic example of how to integrate Langtrace with a Trigger.dev task:
+
+```typescript
+import { logger, task, wait } from "@trigger.dev/sdk/v3";
+import * as Langtrace from "@langtrase/typescript-sdk";
+
+export const helloWorldTask = task({
+  id: "hello-world",
+  // Set an optional maxDuration to prevent tasks from running indefinitely
+  maxDuration: 300, // Stop executing after 300 secs (5 mins) of compute
+  run: async (payload: any, { ctx }) => {
+    logger.log("Hello, world!", { payload, ctx });
+    
+    Langtrace.init({ api_key: process.env.LANGTRACE_API_KEY });
+
+    await wait.for({ seconds: 5 });
+
+    return {
+      message: "Hello, world!",
+    }
+  },
+});
+```
+
+## Important Configuration Note
+
+⚠️ **Critical Setup Requirement**: Because the Langtrace TypeScript SDK uses Sentry and Trigger.dev does not load Sentry modules properly, you **MUST** adjust your `trigger.config.ts` file and add the following snippet inside the `defineConfig` object:
+
+```typescript
+build: {
+  external: [
+    "@sentry/profiling-node"
+  ]
+}
+```
+
+This configuration ensures that the Sentry profiling module is properly excluded from the build process, preventing any conflicts between Langtrace and Trigger.dev.
+
+## Best Practices
+
+1. Always initialize Langtrace at the beginning of your task execution
+2. Use environment variables for sensitive information like API keys
+3. Set appropriate maxDuration limits for your tasks to prevent infinite execution
+
+## Next Steps
+
+- Learn more about [Langtrace's tracing capabilities](/tracing/additional_attributes)
+- Explore [advanced configuration options](/api-reference/project/configuration)
+- Check out our [evaluation features](/features/evaluations) for LLM monitoring
