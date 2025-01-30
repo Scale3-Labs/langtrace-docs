@@ -128,6 +128,7 @@
             "supported-integrations/llm-frameworks/vercelaisdk",
             "supported-integrations/llm-frameworks/litellm",
             "supported-integrations/llm-frameworks/bedrock",
+            "supported-integrations/llm-frameworks/graphlit",
             "supported-integrations/llm-frameworks/guardrails"
           ]
         },
