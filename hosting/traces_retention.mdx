@@ -1,0 +1,37 @@
+## Overview
+
+This allows you to automatically delete traces that are older than a defined retention period, which helps in managing storage efficiently and maintaining privacy by not retaining data longer than necessary.
+
+## Key Components
+
+- Users can enable or disable automatic cleanup of old traces.
+- Users can specify the number of days for which traces should be retained.
+- A cron job operation runs to delete traces older than the specified retention period
+
+## How to Use
+<Note>This feature is available for self-hosted users only.</Note>
+
+### Setup
+
+- **Schema Migration:**
+  - Ensure to apply the new Prisma migration to have the `ProjectRetentionPolicy` table available.
+  - Use the command: 
+    ```bash
+    npx prisma migrate deploy
+    ```
+
+- **Enable/Disable Trace Retention:**
+   - Navigate to your project's settings under the "General" tab and locate the "Project Traces" section. Use the toggle switch to enable or disable automatic trace cleanup. Input the number of days you wish to retain traces. Only traces older than this age will be deleted.
+   ![traces retention](/images/retention.jpg)
+
+- **Cron Job:**
+   - Enable authentication for the cron job API calls by setting the `CRON_API_KEY` environment variable.
+   - Set up a cron job to periodically call the `GET /api/cron/cleanup-traces` endpoint with the `cron-api-key` header value matching the one defined in the `CRON_API_KEY` environment variable.
+   ```bash
+    curl -X GET http://localhost:3000/api/cron/cleanup-traces -H "cron-api-key: YOUR_CRON_API_KEY"
+    ```
+
+### Important Notes
+
+- When the retention policy is enabled, traces older than the configured number of days will be permanently deleted during the cron job execution.
+- Make sure to regularly back up your data if long-term storage of traces is needed for compliance or other reasons.

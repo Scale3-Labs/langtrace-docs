@@ -210,8 +210,9 @@
       "group": "Hosting",
       "pages": [
         "hosting/overview",
-        "hosting/using_local_setup",
         "hosting/auth",
+        "hosting/using_local_setup",
+        "hosting/traces_retention",
         {
           "group": "Hosting Options",
           "pages": [
