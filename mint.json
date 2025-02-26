@@ -105,34 +105,6 @@
       "pages": [
         "supported-integrations/overview",
         {
-          "group": "Observability Tools",
-          "pages": [
-            "supported-integrations/observability-tools/elastic",
-            "supported-integrations/observability-tools/grafana",
-            "supported-integrations/observability-tools/signoz",
-            "supported-integrations/observability-tools/newrelic",
-            "supported-integrations/observability-tools/datadog",
-            "supported-integrations/observability-tools/honeycomb",
-            "supported-integrations/observability-tools/ibm-instana"
-          ]
-        },
-        {
-          "group": "LLM Frameworks",
-          "pages": [
-            "supported-integrations/llm-frameworks/llamaindex",
-            "supported-integrations/llm-frameworks/langchain",
-            "supported-integrations/llm-frameworks/crewai",
-            "supported-integrations/llm-frameworks/dspy",
-            "supported-integrations/llm-frameworks/mem0",
-            "supported-integrations/llm-frameworks/swarmzero",
-            "supported-integrations/llm-frameworks/vercelaisdk",
-            "supported-integrations/llm-frameworks/litellm",
-            "supported-integrations/llm-frameworks/bedrock",
-            "supported-integrations/llm-frameworks/graphlit",
-            "supported-integrations/llm-frameworks/guardrails"
-          ]
-        },
-        {
           "group": "LLM & Tools",
           "pages": [
             "supported-integrations/llm-tools/anthropic",
@@ -149,6 +121,35 @@
             "supported-integrations/llm-tools/openai",
             "supported-integrations/llm-tools/perplexity",
             "supported-integrations/llm-tools/xai"
+          ]
+        },
+        {
+          "group": "LLM Frameworks",
+          "pages": [
+            "supported-integrations/llm-frameworks/llamaindex",
+            "supported-integrations/llm-frameworks/langchain",
+            "supported-integrations/llm-frameworks/crewai",
+            "supported-integrations/llm-frameworks/dspy",
+            "supported-integrations/llm-frameworks/mem0",
+            "supported-integrations/llm-frameworks/swarmzero",
+            "supported-integrations/llm-frameworks/vercelaisdk",
+            "supported-integrations/llm-frameworks/litellm",
+            "supported-integrations/llm-frameworks/bedrock",
+            "supported-integrations/llm-frameworks/graphlit",
+            "supported-integrations/llm-frameworks/guardrails",
+            "supported-integrations/llm-frameworks/agno"
+          ]
+        },
+        {
+          "group": "Observability Tools",
+          "pages": [
+            "supported-integrations/observability-tools/elastic",
+            "supported-integrations/observability-tools/grafana",
+            "supported-integrations/observability-tools/signoz",
+            "supported-integrations/observability-tools/newrelic",
+            "supported-integrations/observability-tools/datadog",
+            "supported-integrations/observability-tools/honeycomb",
+            "supported-integrations/observability-tools/ibm-instana"
           ]
         },
         {
