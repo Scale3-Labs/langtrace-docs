@@ -137,7 +137,8 @@
             "supported-integrations/llm-frameworks/bedrock",
             "supported-integrations/llm-frameworks/graphlit",
             "supported-integrations/llm-frameworks/guardrails",
-            "supported-integrations/llm-frameworks/agno"
+            "supported-integrations/llm-frameworks/agno",
+            "supported-integrations/llm-frameworks/cleanlab"
           ]
         },
         {

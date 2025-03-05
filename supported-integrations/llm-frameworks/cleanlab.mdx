@@ -1,0 +1,96 @@
+---
+title: "Cleanlab"
+description: "Integrate Cleanlab TLM with Langtrace for LLM observability"
+---
+
+# Cleanlab Integration
+
+[Cleanlab](https://cleanlab.ai) provides tools for evaluating and improving the quality of LLM outputs. The Cleanlab TLM (Trustworthy Language Model) library helps you assess the trustworthiness of LLM responses and provides explanations for its evaluations.
+
+This guide shows you how to integrate Cleanlab TLM with Langtrace to monitor and trace your Cleanlab interactions.
+
+## Installation
+
+First, install the required packages:
+
+```bash
+pip install cleanlab-tlm langtrace-python-sdk python-dotenv
+```
+
+## Integration Example
+
+Here's a complete example showing how to integrate Cleanlab TLM with Langtrace:
+
+```python
+import os
+
+from cleanlab_tlm import TLM
+from dotenv import find_dotenv, load_dotenv
+
+from langtrace_python_sdk import langtrace
+
+_ = load_dotenv(find_dotenv())
+
+# Initialize Langtrace
+langtrace.init()
+
+# Set up Cleanlab TLM
+api_key = os.getenv("CLEANLAB_API_KEY")
+tlm = TLM(api_key=api_key, options={"log": ["explanation"], "model": "gpt-4o-mini"})  # GPT, Claude, etc
+
+# Generate a response using Cleanlab TLM
+out = tlm.prompt("What's the third month of the year alphabetically?")
+
+# Get trustworthiness score for a specific question and response
+trustworthiness_score = tlm.get_trustworthiness_score("What's the first month of the year?", response="January")
+
+print(out)
+print(trustworthiness_score)
+```
+
+## What Gets Traced
+
+When you integrate Cleanlab TLM with Langtrace, the following information is captured in your traces:
+
+- **Service Name**: Cleanlab
+- **Service Type**: framework
+- **Inputs**: The prompt or question sent to the model
+- **Response**: The model's response
+- **Trustworthiness Score**: The score calculated by Cleanlab TLM
+- **Explanation**: The reasoning behind the trustworthiness assessment (when enabled)
+
+## Viewing Traces
+
+After running your application with the Cleanlab TLM integration, you can view the traces in the Langtrace dashboard. The traces will show the Cleanlab TLM operations, including:
+
+1. The prompt operation
+2. The trustworthiness score calculation
+
+Each trace will include the inputs, outputs, and metadata from your Cleanlab TLM interactions.
+
+### Example Traces
+
+Here's how Cleanlab TLM traces appear in the Langtrace dashboard:
+
+![Cleanlab TLM Trace Overview](/images/cleanlab/cleanlab-trace-1.png)
+
+You can see detailed information about each trace, including the trustworthiness score and explanation:
+
+![Cleanlab TLM Trace Details](/images/cleanlab/cleanlab-trace-2.png)
+
+## Additional Configuration
+
+You can customize your Cleanlab TLM configuration by adjusting the options parameter:
+
+```python
+tlm = TLM(
+    api_key=api_key,
+    options={
+        "log": ["explanation", "prompt"],  # Log explanation and prompt
+        "model": "gpt-4o-mini",            # Specify the model
+        # Add other Cleanlab TLM options as needed
+    }
+)
+```
+
+For more information about Cleanlab and its capabilities, visit [cleanlab.ai](https://cleanlab.ai).
