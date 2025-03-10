@@ -26,6 +26,10 @@ from langtrace_python_sdk import langtrace # Must precede any llm module imports
 langtrace.init(api_key = '<LANGTRACE_API_KEY>')
 ```
 
+<Note>
+    When using Langtrace with CrewAI, you must initialize Langtrace before importing CrewAI. If you initialize Langtrace after importing CrewAI, it will fail.
+</Note>
+
 ## For self-hosted Langtrace add *`api_host`* and point the URL to your own DNS or IP sddress.Langtrace
 Example below:
 <CodeGroup>

@@ -23,6 +23,10 @@ dependencies = [
 
 After adding the dependency, you can import and initialize Langtrace in your CrewAI project:
 
+<Note>
+    You must initialize Langtrace before importing CrewAI. If you initialize Langtrace after importing CrewAI, it will fail.
+</Note>
+
 ```python
 import os
 from langtrace_python_sdk import langtrace  # Must precede any llm module imports

@@ -12,6 +12,10 @@ CrewAI is an innovative, open-source framework that revolutionizes the way AI ag
 1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
 2. Install CrewAI's SDK and [initialize](https://docs.crewai.com/how-to/Installing-CrewAI/) the SDK in your code.
 
+<Note>
+    You must initialize Langtrace before importing CrewAI. If you initialize Langtrace after importing CrewAI, it will fail.
+</Note>
+
 ### Additional Setup for CrewAI CLI Projects
 
 When using CrewAI's CLI (e.g., when you create a project using `crewai create crew <crewname>`), you need to add Langtrace as a dependency in your project's `pyproject.toml` file:
