@@ -1,0 +1,84 @@
+---
+title: "OpenAI Agents SDK"
+description: "Langtrace and OpenAI Agents SDK Integration Guide with OTEL Compatibility"
+---
+
+OpenAI Agents SDK is a powerful framework for building AI agents that can interact with tools and APIs. Langtrace now provides native integration with OpenAI Agents SDK, offering full OpenTelemetry (OTEL) compatibility for comprehensive tracing and monitoring of your AI agents.
+
+## Setup
+
+1. Install Langtrace's SDK and [initialize](/quickstart) the SDK in your code.
+
+*Note: You'll need API key from Langtrace. Sign up for [Langtrace](https://langtrace.ai) if you haven't done so already.*
+
+```bash Python
+# Install the SDK
+pip install -U langtrace-python-sdk openai
+```
+
+2. Setup environment variables:
+```bash Shell
+export LANGTRACE_API_KEY=YOUR_LANGTRACE_API_KEY
+export OPENAI_API_KEY=YOUR_OPENAI_API_KEY
+```
+
+## Usage
+
+Here's a quick example of how to use Langtrace with OpenAI Agents SDK:
+
+```python Python
+import os
+from langtrace_python_sdk import langtrace  # Must precede any llm module imports
+langtrace.init(api_key=os.environ['LANGTRACE_API_KEY'])
+
+from openai import OpenAI
+from openai.types.beta.agent import Agent
+
+client = OpenAI()
+
+# Create an agent
+agent = client.beta.agents.create(
+    name="Customer Support Agent",
+    description="You are a customer support agent for a clothing retailer.",
+    model="gpt-4o",
+    instructions="You are a customer support agent for a clothing retailer. Be friendly and helpful.",
+)
+
+# Create a thread
+thread = client.beta.threads.create()
+
+# Add a message to the thread
+message = client.beta.threads.messages.create(
+    thread_id=thread.id,
+    role="user",
+    content="I need help finding a shirt in my size.",
+)
+
+# Run the agent
+run = client.beta.threads.runs.create(
+    thread_id=thread.id,
+    agent_id=agent.id,
+)
+
+# Wait for the run to complete
+while run.status in ["queued", "in_progress"]:
+    run = client.beta.threads.runs.retrieve(
+        thread_id=thread.id,
+        run_id=run.id,
+    )
+
+# Get the messages
+messages = client.beta.threads.messages.list(
+    thread_id=thread.id,
+)
+
+# Print the assistant's response
+for message in messages.data:
+    if message.role == "assistant":
+        print(message.content[0].text.value)
+```
+
+You can now view your traces on the Langtrace dashboard, with full OTEL compatibility.
+![traces](/images/openai-agents-sdk.png)
+
+For more information, check out the [OpenAI Agents SDK documentation](https://platform.openai.com/docs/api-reference/agents).
