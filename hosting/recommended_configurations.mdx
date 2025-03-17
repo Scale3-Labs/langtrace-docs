@@ -1,0 +1,50 @@
+---
+title: "Recommended Configurations"
+description: "Recommended hardware configurations for running Langtrace on your own cloud infrastructure."
+---
+
+## Recommended Configurations for Running Langtrace on Your Own Cloud
+
+When self-hosting Langtrace on your own cloud infrastructure, it's important to ensure that your resources are properly sized to handle your expected workload. Below are the recommended configurations for each component of the Langtrace stack.
+
+### Clickhouse
+
+Clickhouse is used for storing and querying trace data. For optimal performance, we recommend:
+
+- **Memory**: 8GB
+- **CPU**: 1 vCPU per node
+- **Scaling**: Vertical scaling enabled
+- **Replicas**: 2 replicas for high availability
+
+### Postgres
+
+Postgres is used for storing user data, project information, and other metadata. We recommend:
+
+- **Memory**: 16GB
+- **CPU**: 4 vCPUs
+- **Storage**: 512GB
+
+### Langtrace Client
+
+The Langtrace Client is a Next.js application that serves as the frontend for Langtrace. We recommend:
+
+- **Memory**: 3GB
+- **CPU**: 1 vCPU
+
+## Scaling Considerations
+
+These recommendations provide a good starting point for most deployments. However, you may need to adjust these configurations based on your specific workload:
+
+- **High Traffic**: For applications with high trace volume, consider increasing the resources for Clickhouse.
+- **Many Users**: If you have many concurrent users accessing the Langtrace dashboard, consider scaling up the Langtrace Client.
+- **Long-term Storage**: If you plan to retain traces for extended periods, increase the storage allocation for Clickhouse.
+
+## Cloud Provider Specific Notes
+
+Different cloud providers may have slightly different terminology or options for these resources. Here are some general guidelines:
+
+- **AWS**: Use t3.medium or similar for Langtrace Client, m5.xlarge for Postgres, and r5.large with Auto Scaling for Clickhouse.
+- **Azure**: Use B2s or similar for Langtrace Client, D4s_v3 for Postgres, and E2s_v3 with Scale Sets for Clickhouse.
+- **GCP**: Use e2-medium for Langtrace Client, n2-standard-4 for Postgres, and n2-standard-2 with Instance Groups for Clickhouse.
+
+For more detailed setup instructions for specific hosting options, refer to our guides for [Docker](/hosting/hosting_options/docker-standalone), [Docker Compose](/hosting/hosting_options/docker-compose), [Kubernetes](/hosting/hosting_options/kubernetes), [Azure](/hosting/hosting_options/azure), and [Railway](/hosting/hosting_options/railway).
