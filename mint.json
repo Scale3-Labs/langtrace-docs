@@ -216,6 +216,7 @@
         "hosting/auth",
         "hosting/using_local_setup",
         "hosting/traces_retention",
+        "hosting/recommended_configurations",
         {
           "group": "Hosting Options",
           "pages": [
