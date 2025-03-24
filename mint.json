@@ -145,6 +145,7 @@
         {
           "group": "Observability Tools",
           "pages": [
+            "supported-integrations/observability-tools/dash0",
             "supported-integrations/observability-tools/elastic",
             "supported-integrations/observability-tools/grafana",
             "supported-integrations/observability-tools/signoz",
