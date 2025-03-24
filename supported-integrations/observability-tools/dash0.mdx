@@ -1,0 +1,26 @@
+---
+title: "Dash0"
+description: "Langtrace and Dash0 Integration Guide."
+---
+
+## Overview
+
+[Dash0](https://www.dash0.com) is an OpenTelemetry native observability solutions that helps developers monitor their applications and troubleshoot issues. 
+It provides features for monitoring and analyzing traces, metrics, and logs as well as support for other CNCF projects like Perses.
+
+## Environment Variables
+
+Set up the following environment variables to enable OpenTelemetry tracing and send traces to Dash0:
+
+```bash
+OTEL_EXPORTER_OTLP_ENDPOINT="https://ingress.<region>.aws.dash0.com"
+OTEL_EXPORTER_OTLP_HEADERS="Authentication=Bearer <your-accces-token>"
+OTEL_RESOURCE_ATTRIBUTES=service.name=<your-service-name>"
+OTEL_EXPORTER_OTLP_PROTOCOL="http"
+```
+
+<Note>
+  For the `OTEL_EXPORTER_OTLP_PROTOCOL`, both `grpc` and `http` protocols are
+  supported. Choose the one that correlates to the chosen endpoint.
+</Note>
+
