@@ -139,7 +139,8 @@
             "supported-integrations/llm-frameworks/graphlit",
             "supported-integrations/llm-frameworks/guardrails",
             "supported-integrations/llm-frameworks/agno",
-            "supported-integrations/llm-frameworks/cleanlab"
+            "supported-integrations/llm-frameworks/cleanlab",
+            "supported-integrations/llm-frameworks/neo4j-graphrag"
           ]
         },
         {
@@ -163,7 +164,8 @@
             "supported-integrations/vector-stores/qdrant",
             "supported-integrations/vector-stores/weaviate",
             "supported-integrations/vector-stores/mongodb",
-            "supported-integrations/vector-stores/milvus"
+            "supported-integrations/vector-stores/milvus",
+            "supported-integrations/vector-stores/neo4j"
           ]
         },
         {
