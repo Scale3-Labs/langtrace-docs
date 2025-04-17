@@ -24,28 +24,44 @@ Here's a complete example showing how to integrate Cleanlab TLM with Langtrace:
 ```python
 import os
 
-from cleanlab_tlm import TLM
 from dotenv import find_dotenv, load_dotenv
-
 from langtrace_python_sdk import langtrace
+from langtrace_python_sdk.utils.with_root_span import with_langtrace_root_span
 
 _ = load_dotenv(find_dotenv())
 
-# Initialize Langtrace
 langtrace.init()
 
-# Set up Cleanlab TLM
-api_key = os.getenv("CLEANLAB_API_KEY")
-tlm = TLM(api_key=api_key, options={"log": ["explanation"], "model": "gpt-4o-mini"})  # GPT, Claude, etc
+from cleanlab_tlm import TLM
+from openai import OpenAI
 
-# Generate a response using Cleanlab TLM
-out = tlm.prompt("What's the third month of the year alphabetically?")
+openai_client = OpenAI()
 
-# Get trustworthiness score for a specific question and response
-trustworthiness_score = tlm.get_trustworthiness_score("What's the first month of the year?", response="January")
+tlm = TLM(
+    api_key=os.getenv("TLM_API_KEY"),
+    options={"log": ["explanation"], "model": "gpt-4o-mini"},
+)
 
-print(out)
-print(trustworthiness_score)
+
+def inference(prompt: str):
+    response = openai_client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": prompt},
+        ],
+        stream=False,
+    )
+    response_text = response.choices[0].message.content
+    return response_text
+
+
+@with_langtrace_root_span("Get Trustworthiness Score")
+def inference_get_trustworthiness_score(prompt: str):
+    response = inference(prompt)
+    return tlm.get_trustworthiness_score(prompt, response)
+
+
+print(inference_get_trustworthiness_score("How many r's are in strawberry?"))
 ```
 
 ## What Gets Traced
